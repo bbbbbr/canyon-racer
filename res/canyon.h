@@ -10,9 +10,9 @@
 #define canyon_TILE_W 8
 #define canyon_TILE_H 8
 #define canyon_WIDTH 160
-#define canyon_HEIGHT 144
-#define canyon_TILE_COUNT 40
-#define canyon_TILES_UNCOMPRESSED_SZ 640
+#define canyon_HEIGHT 256
+#define canyon_TILE_COUNT 28
+#define canyon_TILES_UNCOMPRESSED_SZ 448
 #define canyon_PALETTE_COUNT 1
 #define canyon_COLORS_PER_PALETTE 4
 #define canyon_TOTAL_COLORS 4
@@ -23,6 +23,6 @@ BANKREF_EXTERN(canyon)
 extern const palette_color_t canyon_palettes[4];
 extern const uint8_t canyon_tiles[];
 
-extern const unsigned char canyon_map[360];
+extern const unsigned char canyon_map[640];
 
 #endif

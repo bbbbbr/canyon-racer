@@ -7,56 +7,93 @@
 
 #include "common.h"
 
-static uint8_t map_lcd_scy_start = 0;
+static uint8_t map_lcd_scy_start;
+
+static bool            map_lcd_scx_table_is_inc;
+static uint16_t        map_lcd_scx_table_start;
+static const uint8_t * p_scx_addr;
+static const uint8_t * p_scx_table;
+static uint8_t         map_lcd_scx_wait_counter;
 
 // Start of New Frame
 //
 // 1. VBlank:
 // 3. HBlank Interrupts:
 
+// TODO: doesn't actually need to be 256 byte aligned anymore, can be const
 // TODO : reduce amount of space allocated
 // # -Wl-g_shadow_OAM=0xC800 -Wl-b_DATA=0xc8a0
-uint8_t __at(0xC000) scx_table[] = {
-     0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
+// uint8_t __at(0xC000) scx_table[] = {
+const uint8_t scx_table_1[] = {
 
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
+// 144 entry sine wave
+// (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)2, (uint8_t)2, (uint8_t)3, (uint8_t)3, (uint8_t)4, (uint8_t)4, (uint8_t)5, (uint8_t)5, (uint8_t)5, (uint8_t)6, (uint8_t)6, (uint8_t)7, (uint8_t)7, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)7, (uint8_t)7, (uint8_t)6, (uint8_t)6, (uint8_t)6, (uint8_t)5, (uint8_t)5, (uint8_t)4, (uint8_t)4, (uint8_t)3, (uint8_t)3, (uint8_t)2, (uint8_t)2, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)-1, (uint8_t)-2, (uint8_t)-2, (uint8_t)-3, (uint8_t)-3, (uint8_t)-4, (uint8_t)-4, (uint8_t)-5, (uint8_t)-5, (uint8_t)-6, (uint8_t)-6, (uint8_t)-6, (uint8_t)-7, (uint8_t)-7, (uint8_t)-8, (uint8_t)-8, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-8, (uint8_t)-8, (uint8_t)-7, (uint8_t)-7, (uint8_t)-7, (uint8_t)-6, (uint8_t)-6, (uint8_t)-5, (uint8_t)-5, (uint8_t)-4, (uint8_t)-4, (uint8_t)-3, (uint8_t)-3, (uint8_t)-2, (uint8_t)-2, (uint8_t)-1, (uint8_t)-1, 
 
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
-    ,0,0,0,0,0,0,0,0,0,0
+// 143 & 144
+    0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 120
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 60
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 0
+
+// OK, but not aligned to non-shifted 0 segment (288 long - but using 144 calc)
+// (uint8_t)0, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)2, (uint8_t)2, (uint8_t)3, (uint8_t)3, (uint8_t)4, (uint8_t)4, (uint8_t)5, (uint8_t)5, (uint8_t)5, (uint8_t)6, (uint8_t)6, (uint8_t)7, (uint8_t)7, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)7, (uint8_t)7, (uint8_t)6, (uint8_t)6, (uint8_t)6, (uint8_t)5, (uint8_t)5, (uint8_t)4, (uint8_t)4, (uint8_t)3, (uint8_t)3, (uint8_t)2, (uint8_t)2, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)-1, (uint8_t)-2, (uint8_t)-2, (uint8_t)-3, (uint8_t)-3, (uint8_t)-4, (uint8_t)-4, (uint8_t)-5, (uint8_t)-5, (uint8_t)-6, (uint8_t)-6, (uint8_t)-6, (uint8_t)-7, (uint8_t)-7, (uint8_t)-8, (uint8_t)-8, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-8, (uint8_t)-8, (uint8_t)-7, (uint8_t)-7, (uint8_t)-7, (uint8_t)-6, (uint8_t)-6, (uint8_t)-5, (uint8_t)-5, (uint8_t)-4, (uint8_t)-4, (uint8_t)-3, (uint8_t)-3, (uint8_t)-2, (uint8_t)-2, (uint8_t)-1, (uint8_t)-1, (uint8_t)0, (uint8_t)1, (uint8_t)1, (uint8_t)2, (uint8_t)2, (uint8_t)3, (uint8_t)3, (uint8_t)4, (uint8_t)4, (uint8_t)5, (uint8_t)5, (uint8_t)5, (uint8_t)6, (uint8_t)6, (uint8_t)7, (uint8_t)7, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)11, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)10, (uint8_t)9, (uint8_t)9, (uint8_t)9, (uint8_t)8, (uint8_t)8, (uint8_t)8, (uint8_t)7, (uint8_t)7, (uint8_t)6, (uint8_t)6, (uint8_t)6, (uint8_t)5, (uint8_t)5, (uint8_t)4, (uint8_t)4, (uint8_t)3, (uint8_t)3, (uint8_t)2, (uint8_t)2, (uint8_t)1, (uint8_t)1, (uint8_t)0, (uint8_t)0, (uint8_t)-1, (uint8_t)-2, (uint8_t)-2, (uint8_t)-3, (uint8_t)-3, (uint8_t)-4, (uint8_t)-4, (uint8_t)-5, (uint8_t)-5, (uint8_t)-6, (uint8_t)-6, (uint8_t)-6, (uint8_t)-7, (uint8_t)-7, (uint8_t)-8, (uint8_t)-8, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-12, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-11, (uint8_t)-10, (uint8_t)-10, (uint8_t)-10, (uint8_t)-9, (uint8_t)-9, (uint8_t)-9, (uint8_t)-8, (uint8_t)-8, (uint8_t)-7, (uint8_t)-7, (uint8_t)-7, (uint8_t)-6, (uint8_t)-6, (uint8_t)-5, (uint8_t)-5, (uint8_t)-4, (uint8_t)-4, (uint8_t)-3, (uint8_t)-3, (uint8_t)-2, (uint8_t)-2, (uint8_t)-1, (uint8_t)-1, 
+
+// Aligned to non-shifted 0 segment, but too gradual (288 long)
+// (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+
+// Too slow
+    // Sharper curves (144)
+    (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-12,(uint8_t)-12,(uint8_t)-13,(uint8_t)-13,(uint8_t)-14,(uint8_t)-15,(uint8_t)-15,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-17,(uint8_t)-17,(uint8_t)-18,(uint8_t)-18,(uint8_t)-19,(uint8_t)-19,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-19,(uint8_t)-19,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-17,(uint8_t)-17,(uint8_t)-16,(uint8_t)-16,(uint8_t)-15,(uint8_t)-15,(uint8_t)-14,(uint8_t)-14,(uint8_t)-13,(uint8_t)-13,(uint8_t)-12,(uint8_t)-12,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+
+    // Slow curve (288)
+    (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-12,(uint8_t)-12,(uint8_t)-12,(uint8_t)-12,(uint8_t)-13,(uint8_t)-13,(uint8_t)-13,(uint8_t)-13,(uint8_t)-14,(uint8_t)-14,(uint8_t)-14,(uint8_t)-15,(uint8_t)-15,(uint8_t)-15,(uint8_t)-15,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-17,(uint8_t)-17,(uint8_t)-17,(uint8_t)-17,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-19,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-17,(uint8_t)-17,(uint8_t)-17,(uint8_t)-17,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-15,(uint8_t)-15,(uint8_t)-15,(uint8_t)-15,(uint8_t)-14,(uint8_t)-14,(uint8_t)-14,(uint8_t)-14,(uint8_t)-13,(uint8_t)-13,(uint8_t)-13,(uint8_t)-13,(uint8_t)-12,(uint8_t)-12,(uint8_t)-12,(uint8_t)-12,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+
+    // Sharpercurves (144)
+    (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-12,(uint8_t)-12,(uint8_t)-13,(uint8_t)-13,(uint8_t)-14,(uint8_t)-15,(uint8_t)-15,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-17,(uint8_t)-17,(uint8_t)-18,(uint8_t)-18,(uint8_t)-19,(uint8_t)-19,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-19,(uint8_t)-19,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-17,(uint8_t)-17,(uint8_t)-16,(uint8_t)-16,(uint8_t)-15,(uint8_t)-15,(uint8_t)-14,(uint8_t)-14,(uint8_t)-13,(uint8_t)-13,(uint8_t)-12,(uint8_t)-12,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+    (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-12,(uint8_t)-12,(uint8_t)-13,(uint8_t)-13,(uint8_t)-14,(uint8_t)-15,(uint8_t)-15,(uint8_t)-16,(uint8_t)-16,(uint8_t)-16,(uint8_t)-17,(uint8_t)-17,(uint8_t)-18,(uint8_t)-18,(uint8_t)-19,(uint8_t)-19,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-23,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-22,(uint8_t)-21,(uint8_t)-21,(uint8_t)-21,(uint8_t)-20,(uint8_t)-20,(uint8_t)-20,(uint8_t)-19,(uint8_t)-19,(uint8_t)-18,(uint8_t)-18,(uint8_t)-18,(uint8_t)-17,(uint8_t)-17,(uint8_t)-16,(uint8_t)-16,(uint8_t)-15,(uint8_t)-15,(uint8_t)-14,(uint8_t)-14,(uint8_t)-13,(uint8_t)-13,(uint8_t)-12,(uint8_t)-12,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+
+// Lower frequency waves
+    // (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+    // (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+    // (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+    // (uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-11,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-10,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-9,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-8,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-7,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-6,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-5,(uint8_t)-4,(uint8_t)-4,(uint8_t)-4,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-3,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-2,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)-1,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,(uint8_t)0,
+
+// 143 & 144
+    0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 120
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 60
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+// 0
+
 };
 
-
-// = {
-//     0,1,2,3,4,5,6,7,8,9
-//     ,10,11,12,13,14,15,16,17,18,19
-//     ,20,21,22,23,24,25,26,27,28,29
-//     ,30,30,30,30,30,30,30,30,30,30
-//     ,30,30,30,30,30,30,30,30,30,30
-
-//     ,40,40,40,40,40,40,40,40,40,40
-//     ,40,40,40,40,40,40,40,40,40,40
-//     ,40,40,40,40,40,40,40,40,40,40
-//     ,40,40,40,40,40,40,40,40,40,40
-//     ,40,40,40,40,40,40,40,40,40,40
-
-//     ,0,1,2,3,4,5,6,7,8,9
-//     ,10,11,12,13,14,15,16,17,18,19
-//     ,20,21,22,23,24,25,26,27,28,29
-//     ,30,30,30,30,30,30,30,30,30,30
-//     ,30,30,30,30,30,30,30,30,30,30};
-
-uint8_t * p_scx_addr = scx_table;
 
 
 #define SCROLL_START_Y 10u
@@ -70,26 +107,16 @@ uint8_t * p_scx_addr = scx_table;
 void map_fx_stat_isr_dmg(void) __interrupt __naked {
     __asm \
 
-                    // push hl  // 4
-    push af
-
-                // = 7
-                // ldh     a, (_SCY_REG+0) // 3
-                // ld      l,a      // 1
-                // ld      h,#0xC0  // 2
-                // ld      a,(hl)   // 2
-                // ldh     (_SCX_REG+0), a // 3
-
-                // 4 + 11 = 15, only have 9
-                // Change LCD to trigger on previous mode - may need to change timing alignment method
-
+    push af // 4
 
     ldh a, (_SCY_REG+0) // 3
 
-
     // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
 
-    .rept 9
+    // TODO: Fixup timing back to hardware. It was working on hardware, but changed it to work in emulator for easier debugging
+
+    // .rept 9
+    .rept 8
         nop
     .endm
     rra
@@ -122,10 +149,33 @@ void map_fx_stat_isr_dmg(void) __interrupt __naked {
     // Rendering Outer V Scroll Area (4 tiles) [RIGHT]
     // No need to update SCY, original value has been restored
 
+    push hl
+    push bc
+
+    // Set Y scroll for next line (won't apply to current line due to timing)
+    // SCX_REG = *p_scx_addr++;
+    ld  hl, #_p_scx_addr
+    ld  a, (hl+)
+    ld  c, a
+    ld  a, (hl-)
+    ld  b, a
+    ld  a, (bc)
+    ldh (_SCX_REG + 0), a
+
+    // Increment pointer to next line value
+    inc (hl)
+    jr  nz, 00103$
+
+    inc hl
+    inc (hl)
+    00103$:
+
+    pop bc
+    pop hl
 
     pop af
-                //    pop hl
     reti
+
 
     __endasm;
 }
@@ -200,8 +250,31 @@ void map_fx_stat_isr_cgb(void) __interrupt __naked {
 ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 
 
+// ### Test/debug controls ###
+
+#define DMG_SLOW
+// #define DMG_FAST
+
+
+// Turns on / off SCX table scrolling
+#define SCX_TABLE_SCROLL
+
+
 // 4 Region mode slow
-#define SCROLL_Y_OUTER 2u // 2u: good, 1u: slow (better for testing)
+#ifdef DMG_SLOW
+    #define SCROLL_Y_OUTER 1u // 1u: slow (better for testing)
+#else
+    #define SCROLL_Y_OUTER 2u // 2u: faster (looks nice without curves)
+#endif
+
+
+// Effect pans up from end of SCX table to start to reveal curves
+#define MAP_LCD_SCX_TABLE_START    (sizeof(scx_table_1) - 145u) // start at farthest point possible into the table, it scrolls toward the start
+#define MAP_LCD_SCX_TABLE_INC_STOP (MAP_LCD_SCX_TABLE_START)
+#define MAP_LCD_SCX_TABLE_DEC_STOP 0u
+#define MAP_LCD_SCX_COUNTER_WAIT_TIME  120u
+
+
 
 // * Top of Screen Area
 //   - Increment frame-global SCY
@@ -211,13 +284,74 @@ void vblank_isr_map_reset (void) {
     // Y Axis: Scroll  the outer vertical edges by max amount
     SCY_REG -= SCROLL_Y_OUTER;
 
-    // X Axis: Reset SCX
-    p_scx_addr = &scx_table[0];
+    // X Axis: Reset SCX table
+    p_scx_addr = &scx_table_1[map_lcd_scx_table_start];
+    SCX_REG = *p_scx_addr++;
+
+    // if ((sys_time & 0x07) == 0x00) {
+    // if ((sys_time & 0x03) == 0x00) {
+    if (sys_time & 0x01) {
+
+    // LOOP MODE
+    #ifdef SCX_TABLE_SCROLL
+
+        #ifdef DMG_SLOW
+            map_lcd_scx_table_start--;
+        #else
+            map_lcd_scx_table_start-=2; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_OUTER 2u
+        #endif
+        if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_DEC_STOP) {
+            // MODE: LOOP (requires SCX table to have perfectly matching start and end segments
+            map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
+            map_lcd_scy_start = 0;
+
+        }
+    #endif
+
+    // MODE: ADVANCE & REWIND
+/*    // Increment offset into table, reverse direction if at end points
+    // TODO: just make this a base point instead of an index into the array?
+    if (map_lcd_scx_wait_counter) {
+        map_lcd_scx_wait_counter--;
+        // if (map_lcd_scx_wait_counter == 0) {
+        //     map_lcd_scx_table_is_inc = true;
+        // }
+    }
+    else if (map_lcd_scx_table_is_inc) {
+
+        map_lcd_scx_table_start++;
+        if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_INC_STOP)
+            map_lcd_scx_table_is_inc = false;
+    }
+    else {
+        map_lcd_scx_table_start--;
+        if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_DEC_STOP) {
+
+            // ALT MODE: LOOP, NO REWIND
+            // Relies on there being a full-frame non-curve section at both start and end of table
+            map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
+            map_lcd_scy_start = 0;
+
+        }
+    }
+    */
+//    }
+}
+
+
     // if (_cpu == CGB_TYPE) {
 }
 
 
 void map_fx_isr_enable(void) {
+
+    // Init control vars
+    map_lcd_scx_table_is_inc = false;
+    map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
+    map_lcd_scy_start = 0;
+    p_scx_addr = &scx_table_1[map_lcd_scx_table_start];
+    map_lcd_scx_wait_counter = 0;
+
 
     // Enable STAT ISR
     __critical {
@@ -227,6 +361,10 @@ void map_fx_isr_enable(void) {
     }
     // Try to wait until just after the start of the next frame
     wait_vbl_done();
+
+    // Pre-load SCX
+    // SCX_REG = *p_scx_addr++;
+
     set_interrupts(IE_REG | LCD_IFLAG);
 }
 
