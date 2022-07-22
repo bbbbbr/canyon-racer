@@ -24,19 +24,15 @@ void init_gfx_map() {
         // Set CGB Palette
         // set_bkg_palette(0, nes_num_pals, nes_pal_cgb);
         cgb_compatibility();
+        // TODO: CGB Colors
     } else {
         // Set DMG palette
         // BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_DARK_GRAY, DMG_LITE_GRAY, DMG_WHITE);
     }
 
+    // TODO: Do this right with a full size map?
     set_bkg_tiles(0,0, canyon_WIDTH / canyon_TILE_W, canyon_HEIGHT / canyon_TILE_H, canyon_map);
-// TODO: Do this right with a full size map
-    // Set full hardware map for wraparound
-    set_bkg_tiles(0,18, canyon_WIDTH / canyon_TILE_W, 32 - (canyon_HEIGHT / canyon_TILE_H), canyon_map);
 
-    // Set up horizon on alternate map (usually used for the Window)
-    // set_bkg_data(245u, horizon_tiles_count, horizon_tiles);
-    // set_win_submap(0, 0, 32, 4, horizon_map, horizon_map_width);
 }
 
 
@@ -74,7 +70,6 @@ void init_gfx(void) {
 
 void init(void) {
 
-
     if (_cpu == CGB_TYPE) {
         // Use 2x CGB speed if available
         cpu_fast();
@@ -85,8 +80,6 @@ void init(void) {
 
     // TODO: fade-out
     init_gfx();
-
-//    map_scroll_init();
 
     map_fx_isr_enable();
 
