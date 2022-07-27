@@ -7,6 +7,7 @@
 # to match your GBDK root directory (ex: GBDK_HOME = "C:/GBDK/"
 GBDK_HOME = ../../gbdk2020/gbdk-2020-git/build/gbdk/
 
+PNG2ASSET = $(GBDK_HOME)bin/png2asset
 LCC = $(GBDK_HOME)bin/lcc
 
 # You can set flags for LCC here
@@ -57,6 +58,14 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
+
+assets:
+	# Ship
+	# -8, -16 offset is to remove GB hardware sprite offset
+	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 24 -ph 32  -spr8x16 -c $(RESDIR)/sprite_ship.c
+	# Canyon BG Map
+	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map
+
 
 prepare:
 	mkdir -p $(OBJDIR)

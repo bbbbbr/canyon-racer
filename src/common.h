@@ -2,6 +2,26 @@
 #ifndef common_H
 #define common_H
 
+
+
+#define FIXED_BITSHIFT 8
+
+
+// SHIP
+#define SPR_TILES_START_SHIP 0
+#define SPR_COUNT_SHIP_MAX   6u
+
+
+#define SPR_RANGE_END (SPR_COUNT_SHIP_MAX) // Should be max number of sprites used
+
+
+// CANYON
+#define CANYON_LEFT_X_BASE    (8u * 8u) // 8 tiles x 8 pixels per tile // ((160u  - 10u) / 2u) // TODO
+#define CANYON_WIDTH          (4u * 8u) // 4 tiles x 8 pixels per tile
+
+
+
+
 /*#define HORIZON_Y_START (32 - 1) // One line before desired start line
 
 #define SPR_NUM_START            0

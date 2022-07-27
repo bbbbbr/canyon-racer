@@ -14,7 +14,7 @@
 
 #include "map_fx.h"
 
-// #include "entity_ship.h"
+#include "entity_ship.h"
 
 
 
@@ -38,16 +38,6 @@ void init_gfx_map() {
 
 }
 
-#define SPR_SHIP_SHADOW_X_OFS 4u
-#define SPR_SHIP_SHADOW_Y_OFS 5u
-#define SPR_SHIP_SHADOW 2u // index [2] in ship metasprite array
-uint8_t ship_sprite_sel = 0u;
-uint8_t ship_x = (160  - 10) / 2;
-uint8_t ship_y = 255u - 32u;
-
-#define SPR_TILES_START_SHIP 0
-
-uint8_t oam_high_water = 0u;
 
 void init_gfx_sprites() {
 
@@ -91,9 +81,12 @@ void init_gfx(void) {
     DISPLAY_ON;
 }
 
+
 void init(void) {
 
     if (_cpu == CGB_TYPE) {
+
+        // Don't use CGB 2x mode, it throws off timing (unless an additional ISR is implemented)
         // Use 2x CGB speed if available
         // cpu_fast();
     }
@@ -104,21 +97,15 @@ void init(void) {
     // TODO: fade-out
     init_gfx();
 
+    entity_ship_init();
+
     map_fx_isr_enable();
 
     // TODO: fade-in
 }
 
 
-// uint8_t oam_high_water = 0;
-
-// uint8_t last_sys_time = 0;
-
-extern const uint8_t * p_scx_addr;
-extern const uint8_t scx_table_1[];
-extern uint16_t map_lcd_scx_table_start;
-int8_t map_offset_x_last = 0;
-uint8_t ship_move_hyst = 0;
+uint8_t oam_high_water;
 
 void main() {
 
@@ -126,52 +113,14 @@ void main() {
 
     while (1) {
         wait_vbl_done();
-        int8_t map_offset_x = 0;
 
-
-        if (ship_y  < (144 + 32)) {
-            // Possible race condtion here, could fix with:
-            // int8_t map_offset_x = (int8_t)scx_table_1[map_lcd_scx_table_start + ship_y];
-            map_offset_x = (int8_t)p_scx_addr[ship_y];
-        } else {
-            map_offset_x = (int8_t)p_scx_addr[8];
-        }
-
-
-
-            if (map_offset_x < map_offset_x_last) {
-                ship_sprite_sel = 2u;
-                ship_move_hyst = 10u;
-            }
-            else if (map_offset_x > map_offset_x_last) {
-                ship_sprite_sel = 1u;
-                ship_move_hyst = 10u;
-            }
-            else {
-                if (ship_move_hyst)
-                    ship_move_hyst--;
-                else
-                    ship_sprite_sel = 0u;
-            }
-
-            map_offset_x_last = map_offset_x;
-
+        // == Sprites ==
         oam_high_water = 0;
-        oam_high_water += move_metasprite(sprite_ship_metasprites[ship_sprite_sel],
-                                         (SPR_TILES_START_SHIP),
-                                         oam_high_water, ship_x - (uint8_t)map_offset_x, ship_y);
-        ship_y -= (sys_time & 0x01u);
-        // ship_y = -1; //144u /2;
+        oam_high_water = entity_ship_update(oam_high_water);
 
-        // if (sys_time & 0x01) {
-        //     move_metasprite(sprite_ship_metasprites[SPR_SHIP_SHADOW],
-        //                      (SPR_TILES_START_SHIP),
-        //                      oam_high_water,
-        //                      (ship_x - p_scx_addr[ship_y]) + SPR_SHIP_SHADOW_X_OFS,
-        //                      ship_y + SPR_SHIP_SHADOW_Y_OFS);
-        // } else {
-        //     hide_sprites_range(oam_high_water, 24u);
-        // }
+        // Hide rest of the hardware sprites, because amount of sprites differ between animation frames.
+        hide_sprites_range(oam_high_water, SPR_RANGE_END);
 
+        UPDATE_KEYS();
     }
 }

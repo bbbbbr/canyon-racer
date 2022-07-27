@@ -12,16 +12,15 @@
 #define map_canyon_WIDTH 160
 #define map_canyon_HEIGHT 256
 #define map_canyon_TILE_COUNT 28
-#define map_canyon_TILES_UNCOMPRESSED_SZ 448
 #define map_canyon_PALETTE_COUNT 1
 #define map_canyon_COLORS_PER_PALETTE 4
 #define map_canyon_TOTAL_COLORS 4
 #define map_canyon_MAP_ATTRIBUTES 0
 
-BANKREF_EXTERN(canyon)
+BANKREF_EXTERN(map_canyon)
 
 extern const palette_color_t map_canyon_palettes[4];
-extern const uint8_t map_canyon_tiles[];
+extern const uint8_t map_canyon_tiles[448];
 
 extern const unsigned char map_canyon_map[640];
 
