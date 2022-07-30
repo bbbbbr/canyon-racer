@@ -253,9 +253,11 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 
 // ### Test/debug controls ###
 
+// #define DMG_SPEED_STOPPED
 // #define DMG_SPEED_SLOW
 // #define DMG_SPEED_MED
 #define DMG_SPEED_FAST
+// #define DMG_SPEED_MAX
 
 
 // Turns on / off SCX table scrolling
@@ -267,12 +269,22 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 //  * 1/2/4 for Y scroll speed or every/other/fourth for update masking
 
 // Region scrolling speed
-#if defined (DMG_SPEED_SLOW)
-    #define SCROLL_Y_OUTER 1u
+// table size MUST be multiple of SCROLL_Y_MAP_SPEED
+#if defined (DMG_SPEED_STOPPED)
+    #define SCROLL_Y_PARALLAX_SPEED   0u
+    #define SCROLL_Y_MAP_SPEED        0u
+#elif defined (DMG_SPEED_SLOW)
+    #define SCROLL_Y_PARALLAX_SPEED   1u
+    #define SCROLL_Y_MAP_SPEED        1u
 #elif defined (DMG_SPEED_MED)
-    #define SCROLL_Y_OUTER 2u
+    #define SCROLL_Y_PARALLAX_SPEED   2u
+    #define SCROLL_Y_MAP_SPEED        2u
 #elif defined (DMG_SPEED_FAST)
-    #define SCROLL_Y_OUTER 2u
+    #define SCROLL_Y_PARALLAX_SPEED   2u
+    #define SCROLL_Y_MAP_SPEED        4u
+#elif defined (DMG_SPEED_MAX)
+    #define SCROLL_Y_PARALLAX_SPEED   8u
+    #define SCROLL_Y_MAP_SPEED        8u
 #endif
 
 
@@ -290,7 +302,7 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 void vblank_isr_map_reset (void) {
 
     // Y Axis: Scroll  the outer vertical edges by max amount
-    SCY_REG -= SCROLL_Y_OUTER;
+    SCY_REG -= SCROLL_Y_PARALLAX_SPEED;
 
     // X Axis: Reset SCX table
     p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
@@ -302,13 +314,14 @@ void vblank_isr_map_reset (void) {
         // if ((sys_time & 0x03) == 0x00) {
         if (sys_time & 0x01) {
 
-            #if defined (DMG_SPEED_SLOW)
-                map_lcd_scx_table_start--;
-            #elif defined (DMG_SPEED_MED)
-                map_lcd_scx_table_start-=2; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_OUTER 2u
-            #elif defined (DMG_SPEED_FAST)
-                map_lcd_scx_table_start-=4; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_OUTER 2u
-            #endif
+            map_lcd_scx_table_start -= SCROLL_Y_MAP_SPEED;
+            // #if defined (DMG_SPEED_SLOW)
+            //     map_lcd_scx_table_start--;
+            // #elif defined (DMG_SPEED_MED)
+            //     map_lcd_scx_table_start-=2; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_PARALLAX_SPEED 2u
+            // #elif defined (DMG_SPEED_FAST)
+            //     map_lcd_scx_table_start-=4; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_PARALLAX_SPEED 2u
+            // #endif
 
             if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_DEC_STOP) {
                 // MODE: LOOP (requires SCX table to have perfectly matching start and end segments

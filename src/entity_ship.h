@@ -3,8 +3,8 @@
 
  // divide by half to get pixel movement per frame after fixed point conversion
 // #define SHIP_SPEED 3u
-#define SHIP_SPEED 2u
-// #define SHIP_SPEED 1u
+// #define SHIP_SPEED 2u
+#define SHIP_SPEED 1u
 
 #define SHIP_MOVE_AMT_X ((SHIP_SPEED) << (FIXED_BITSHIFT - 1))
 #define SHIP_MOVE_AMT_Y ((SHIP_SPEED) << (FIXED_BITSHIFT - 1))
@@ -20,8 +20,9 @@
 #define SHIP_X_INIT (SHIP_X_CENTERED)
 #define SHIP_Y_INIT (SHIP_Y_MAX)
 
-#define SHIP_Z_MIN  0u   // Ground
-#define SHIP_Z_MAX  60u  // Max air time
+#define SHIP_Z_MIN      0   // Ground
+// #define SHIP_Z_LANDING  2u   // Landing ground is more generous
+// #define SHIP_Z_MAX  60u  // Max air time
 
 #define SHIP_Z_INIT (SHIP_Z_MIN)
 
@@ -29,7 +30,7 @@
 #define SHIP_STATE_DO_RESET  0u
 #define SHIP_STATE_STARTUP   1u
 #define SHIP_STATE_PLAYING   2u
-#define SHIP_STATE_JUMPING   3u
+#define SHIP_STATE_JUMP      3u
 #define SHIP_STATE_CRASHED   4u
 
 
@@ -41,9 +42,11 @@
 #define SHIP_SPR_CRASH_MID 4u //
 #define SHIP_SPR_CRASH_MAX 6u // START of Crash sequence
 
-#define SHIP_SPR_JUMP_MIN 7u // END of Jump Shadow sequence
-#define SHIP_SPR_JUMP_MID 8u //
-#define SHIP_SPR_JUMP_MAX 9u // START of Jump Shadow sequence
+#define SHIP_SPR_JUMP      7u // Shadow sprite
+
+// #define SHIP_SPR_JUMP_MIN 7u // END of Jump Shadow sequence
+// #define SHIP_SPR_JUMP_MID 8u //
+// #define SHIP_SPR_JUMP_MAX 9u // START of Jump Shadow sequence
 
 
 #define SHIP_SPR_NONE      0xFFu
@@ -54,6 +57,9 @@
 #define SHIP_COUNTER_CRASH_FRAMES   (SHIP_SPR_CRASH_MAX - SHIP_SPR_CRASH_MIN + 1)  // Should match number of crash frames
 #define SHIP_COUNTER_CRASH_BITSHIFT 4u  // Sets number of frames as power of 2: 4u = 16 frames per (1/4 sec)
 #define SHIP_COUNTER_CRASH   (SHIP_COUNTER_CRASH_FRAMES << SHIP_COUNTER_CRASH_BITSHIFT)
+
+#define SHIP_COUNTER_JUMP   30u // 1/2 sec 
+
 
 
 

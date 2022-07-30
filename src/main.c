@@ -106,6 +106,7 @@ void init(void) {
 
 
 uint8_t oam_high_water;
+uint8_t oam_high_water_prev = 0u;
 
 void main() {
 
@@ -115,11 +116,12 @@ void main() {
         wait_vbl_done();
 
         // == Sprites ==
-        oam_high_water = 0;
+        oam_high_water = 0u;
         oam_high_water = entity_ship_update(oam_high_water);
 
-        // Hide rest of the hardware sprites, because amount of sprites differ between animation frames.
-        hide_sprites_range(oam_high_water, SPR_RANGE_END);
+        // Hide rest of the hardware sprites. Amount of sprites differ between animation frames.
+        hide_sprites_range(oam_high_water, oam_high_water_prev);
+        oam_high_water_prev = oam_high_water;
 
         UPDATE_KEYS();
     }

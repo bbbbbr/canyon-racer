@@ -17,8 +17,7 @@ LCC = $(GBDK_HOME)bin/lcc
 # MBC5 + Ram + Battery, ROM Banks=0, RAM Banks = 2, DMG+CGB support
 # -Wf--max-allocs-per-node50000
 # -Wl-w   Wide map listing
-# -Wl-g_shadow_OAM=0xC800 -Wl-b_DATA=0xc8a0  // Create unallocated RAM area from 0xC000 -> 0xC800 for manual data placement
-LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc -Wl-g_shadow_OAM=0xC800 -Wl-b_DATA=0xc8a0
+LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc
 
 
 # You can set the name of the .gb ROM file here
@@ -61,8 +60,8 @@ $(BINS):	$(OBJS)
 
 assets:
 	# Ship
-	# -8, -16 offset is to remove GB hardware sprite offset
-	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 24 -ph 32  -spr8x16 -c $(RESDIR)/sprite_ship.c
+	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
+	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 24  -spr8x16 -c $(RESDIR)/sprite_ship.c
 	# Canyon BG Map
 	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map
 

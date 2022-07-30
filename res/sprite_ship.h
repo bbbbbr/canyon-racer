@@ -11,20 +11,20 @@
 #define sprite_ship_TILE_H 16
 #define sprite_ship_WIDTH 24
 #define sprite_ship_HEIGHT 32
-#define sprite_ship_TILE_COUNT 76
+#define sprite_ship_TILE_COUNT 64
 #define sprite_ship_PALETTE_COUNT 1
 #define sprite_ship_COLORS_PER_PALETTE 4
 #define sprite_ship_TOTAL_COLORS 4
 #define sprite_ship_PIVOT_X -8
 #define sprite_ship_PIVOT_Y -16
-#define sprite_ship_PIVOT_W 24
-#define sprite_ship_PIVOT_H 32
+#define sprite_ship_PIVOT_W 8
+#define sprite_ship_PIVOT_H 24
 
 BANKREF_EXTERN(sprite_ship)
 
 extern const palette_color_t sprite_ship_palettes[4];
-extern const uint8_t sprite_ship_tiles[1216];
+extern const uint8_t sprite_ship_tiles[1024];
 
-extern const metasprite_t* const sprite_ship_metasprites[10];
+extern const metasprite_t* const sprite_ship_metasprites[8];
 
 #endif

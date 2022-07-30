@@ -23,27 +23,67 @@ uint8_t ship_move_hyst = 0;
 */
 
 fixed   ship_x, ship_y;
-uint8_t ship_z;
+fixed   ship_z;
 uint8_t ship_sprite_sel;
 uint8_t ship_state;
 uint8_t ship_counter;
 uint8_t ship_sprite_sel;
+int16_t ship_velocity;
 
 void entity_ship_init(void) {
     ship_x.w = SHIP_X_INIT;
     ship_y.w = SHIP_Y_INIT;
-    ship_z   = SHIP_Z_INIT;
+    ship_z.w = SHIP_Z_INIT;
     ship_state = SHIP_STATE_STARTUP;
     ship_counter = SHIP_COUNTER_STARTUP;
+    ship_velocity = 0u;
 }
 
+#define SHIP_VELOCITY_START 768
+#define SHIP_GRAVITY 32
+#define SHIP_VELOCITY_MIN -512
+#define SHIP_VELOCITY_MIN_ABS 512
 
 
+// TODO: split to functions if there is enough overhead left
 uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     ship_sprite_sel = SHIP_SPR_DEFAULT;
 
-    if (ship_state == SHIP_STATE_STARTUP) {
+    // Reorder or change to switch statement
+    if (ship_state == SHIP_STATE_JUMP) {
+
+        // No X/Y movement allowed during jump
+
+        ship_z.w += ship_velocity;
+
+        // if (ship_z.w <= SHIP_Z_LANDING) {
+        // if (ship_z.h == 0) {
+        if (ship_z.w <= SHIP_VELOCITY_MIN_ABS) {
+            // Ship landed
+            ship_z.w = SHIP_Z_INIT;
+            ship_state = SHIP_STATE_PLAYING;
+
+        } else {
+
+            // Handle jump state
+            ship_velocity -= SHIP_GRAVITY;
+            if (ship_velocity < SHIP_VELOCITY_MIN)
+                ship_velocity = SHIP_VELOCITY_MIN;
+
+            // // Do a little bounce on landing?
+            // // Use a lookup table for Y offset of ship from shadow?
+        }
+        // Set shadow
+        ship_sprite_sel = SHIP_SPR_JUMP; // (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
+
+        // And also draw separated ship
+        oam_high_water += move_metasprite(sprite_ship_metasprites[SHIP_SPR_DEFAULT],
+                                     (SPR_TILES_START_SHIP),
+                                     oam_high_water, ship_x.h, ship_y.h - ship_z.h);
+
+    }
+    else if (ship_state == SHIP_STATE_STARTUP) {
         // TODO: this should just be normal movable, but with flickering and no collision
 
         if (ship_counter)
@@ -56,6 +96,10 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             ship_sprite_sel = SHIP_SPR_DEFAULT;
         else
             ship_sprite_sel = SHIP_SPR_NONE;
+
+            // TESTING
+            uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
+            ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
     }
     else if (ship_state == SHIP_STATE_CRASHED) {
 
@@ -74,18 +118,30 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
         // ==== Handle Input ====
 
-        // Horizontal movement
-        if (KEY_PRESSED(J_LEFT)) {
-            if (ship_x.w > SHIP_X_MIN) {
-                ship_x.w -= SHIP_MOVE_AMT_X;
-            }
-            ship_sprite_sel > SHIP_SPR_LEFT;
+        // Horizontal movement & jumps
+        switch (KEYS() & (J_LEFT | J_RIGHT)) {
+
+            case J_LEFT:
+                if (ship_x.w > SHIP_X_MIN) {
+                    ship_x.w -= SHIP_MOVE_AMT_X;
+                }
+                ship_sprite_sel = SHIP_SPR_LEFT;
+                break;
+
+            case J_RIGHT:
+                if (ship_x.w < SHIP_X_MAX) {
+                    ship_x.w += SHIP_MOVE_AMT_X;
+                }
+                ship_sprite_sel = SHIP_SPR_RIGHT;
+                break;
         }
-        else if (KEY_PRESSED(J_RIGHT)) {
-            if (ship_x.w < SHIP_X_MAX) {
-                ship_x.w += SHIP_MOVE_AMT_X;
-            }
-            ship_sprite_sel > SHIP_SPR_RIGHT;
+
+        // Vertical Movement
+        if (KEY_TICKED(J_A)) {
+            ship_state = SHIP_STATE_JUMP;
+            // ship_counter = SHIP_COUNTER_JUMPSTART;
+            ship_velocity = SHIP_VELOCITY_START;
+            ship_z.h = 1;
         }
 
         // Vertical Movement
@@ -116,11 +172,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
         // Use the ship Y position to index into the canyon background X offset table (one row per scanline)
         // p_scx_table_base gets updated at the start of every frame
-
-        // ship_y.h = 144u / 2u;
         uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
-
-        // ship_x.h = ship_canyon_left_x;
 
         if ((ship_x.h + SHIP_HITBOX_X_LEFT) < ship_canyon_left_x) {
             ship_state = SHIP_STATE_CRASHED;
