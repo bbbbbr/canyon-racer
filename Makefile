@@ -59,11 +59,14 @@ $(BINS):	$(OBJS)
 	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
 
 assets:
+	# Canyon BG Map
+	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map
 	# Ship
 	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 24  -spr8x16 -c $(RESDIR)/sprite_ship.c
-	# Canyon BG Map
-	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map
+	# Obstacles
+	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
+	$(PNG2ASSET) $(RESDIR)/sprite_obstacles.png -sw 32 -sh 16 -px -8 -py -16 -pw 32 -ph 8  -spr8x16 -c $(RESDIR)/sprite_obstacles.c
 
 
 prepare:

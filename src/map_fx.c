@@ -301,6 +301,12 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 //
 void vblank_isr_map_reset (void) {
 
+    #ifdef DEBUG_BENCHMARK_BG
+        // Debug: Benchmark time left by toggling background source at end of processing
+        LCDC_REG ^= 0x08u; // Toggle BG source (VBL int for toggle back on)
+    #endif
+
+
     // Y Axis: Scroll  the outer vertical edges by max amount
     SCY_REG -= SCROLL_Y_PARALLAX_SPEED;
 

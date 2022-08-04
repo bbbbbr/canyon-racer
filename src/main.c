@@ -15,6 +15,7 @@
 #include "map_fx.h"
 
 #include "entity_ship.h"
+#include "entity_obstacles.h"
 
 
 
@@ -44,6 +45,7 @@ void init_gfx_sprites() {
 
     // Load metasprite tile data into VRAM
     set_sprite_data(SPR_TILES_START_SHIP, sprite_ship_TILE_COUNT, sprite_ship_tiles);
+    set_sprite_data(SPR_TILES_START_OBSTACLES, sprite_obstacles_TILE_COUNT, sprite_obstacles_tiles);
 
     // set_sprite_data((SPR_TILES_START_SHIP), sprite_ship_TILE_COUNT, sprite_ship_tiles);
     // set_sprite_data((SPR_TILES_START_SHIP_CANOPY), sprite_ship_canopy_TILE_COUNT, sprite_ship_canopy_tiles);
@@ -98,6 +100,7 @@ void init(void) {
     init_gfx();
 
     entity_ship_init();
+    entity_obstacles_init();
 
     map_fx_isr_enable();
 
@@ -105,8 +108,10 @@ void init(void) {
 }
 
 
+// TODO: make global?
 uint8_t oam_high_water;
 uint8_t oam_high_water_prev = 0u;
+
 
 void main() {
 
@@ -118,11 +123,17 @@ void main() {
         // == Sprites ==
         oam_high_water = 0u;
         oam_high_water = entity_ship_update(oam_high_water);
+        oam_high_water = entity_obstacles_update(oam_high_water);
 
         // Hide rest of the hardware sprites. Amount of sprites differ between animation frames.
         hide_sprites_range(oam_high_water, oam_high_water_prev);
         oam_high_water_prev = oam_high_water;
 
         UPDATE_KEYS();
+
+        #ifdef DEBUG_BENCHMARK_BG
+            // Debug: Benchmark time left by toggling background source at end of processing
+            LCDC_REG |= 0x08u; // Toggle BG source (VBL int for toggle back on)
+        #endif
     }
 }

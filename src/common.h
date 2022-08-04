@@ -2,17 +2,24 @@
 #ifndef common_H
 #define common_H
 
+#include "../res/sprite_ship.h"
+#include "../res/sprite_obstacles.h"
 
+
+// #define DEBUG_BENCHMARK_BG
 
 #define FIXED_BITSHIFT 8
 
 
 // SHIP
 #define SPR_TILES_START_SHIP 0
-#define SPR_COUNT_SHIP_MAX   6u
+#define SPR_COUNT_SHIP_MAX   (sprite_ship_TILE_COUNT - 1u)
+
+#define SPR_TILES_START_OBSTACLES (SPR_COUNT_SHIP_MAX + 1u)
+#define SPR_COUNT_OBSTACLES_MAX   ((SPR_TILES_START_OBSTACLES + sprite_obstacles_TILE_COUNT) - 1u)
 
 
-#define SPR_RANGE_END (SPR_COUNT_SHIP_MAX) // Should be max number of sprites used
+// #define SPR_RANGE_END (SPR_COUNT_SHIP_MAX) // Should be max number of sprites used
 
 
 // CANYON
