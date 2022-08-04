@@ -58,8 +58,13 @@
 #define SHIP_COUNTER_CRASH_BITSHIFT 4u  // Sets number of frames as power of 2: 4u = 16 frames per (1/4 sec)
 #define SHIP_COUNTER_CRASH   (SHIP_COUNTER_CRASH_FRAMES << SHIP_COUNTER_CRASH_BITSHIFT)
 
-#define SHIP_COUNTER_JUMP   30u // 1/2 sec 
+#define SHIP_COUNTER_JUMP   30u // 1/2 sec
 
+
+
+// ship_x & ship_y are in upper left of metasprite hit box (0, 8) of metasprite
+#define SHIP_HITBOX_X_LEFT   ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u)
+#define SHIP_HITBOX_X_RIGHT  ((sprite_ship_PIVOT_W) + ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u))
 
 
 

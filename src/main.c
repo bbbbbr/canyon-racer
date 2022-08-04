@@ -122,8 +122,8 @@ void main() {
 
         // == Sprites ==
         oam_high_water = 0u;
-        oam_high_water = entity_ship_update(oam_high_water);
         oam_high_water = entity_obstacles_update(oam_high_water);
+        oam_high_water = entity_ship_update(oam_high_water);
 
         // Hide rest of the hardware sprites. Amount of sprites differ between animation frames.
         hide_sprites_range(oam_high_water, oam_high_water_prev);
