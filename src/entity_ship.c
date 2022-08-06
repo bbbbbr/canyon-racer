@@ -8,19 +8,15 @@
 
 #include "map_fx.h"
 
+#include "entity_collisions.h"
+
 #include "entity_ship.h"
 #include "../res/sprite_ship.h"
 
+#include "entity_obstacles.h"
+#include "../res/sprite_obstacles.h"
 
 
-/*
-extern const uint8_t * p_scx_addr;
-extern const uint8_t scx_table_1[];
-extern uint16_t map_lcd_scx_table_start;
-int8_t map_offset_x_last = 0;
-uint8_t ship_move_hyst = 0;
-
-*/
 
 fixed   ship_x, ship_y;
 fixed   ship_z;
@@ -43,30 +39,6 @@ void entity_ship_init(void) {
 #define SHIP_GRAVITY 32
 #define SHIP_VELOCITY_MIN -512
 #define SHIP_VELOCITY_MIN_ABS 512
-
-
-static bool ship_check_collisions(void) {
-    // ==== Collision Checking ====
-    // Hitbox is forgiving
-    // Controlled by metasprite info (set during conversion)
-
-
-    // == Check Wall collision
-
-    // Use the ship Y position to index into the canyon background X offset table (one row per scanline)
-    // p_scx_table_base gets updated at the start of every frame
-    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
-
-    if ((ship_x.h + SHIP_HITBOX_X_LEFT) < ship_canyon_left_x) {
-        return true;
-    }
-    else if ((ship_x.h + SHIP_HITBOX_X_RIGHT) > (ship_canyon_left_x + CANYON_WIDTH)) {
-        return true;
-    }
-
-    return false;
-}
-
 
 
 static void ship_handle_input(void) {
@@ -125,6 +97,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
     ship_sprite_sel = SHIP_SPR_DEFAULT;
 
     switch (ship_state) {
+        
         case SHIP_STATE_CRASHED:
             // If crashed, render explosion then restart
             if (ship_counter)
@@ -169,7 +142,6 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 ship_velocity -= SHIP_GRAVITY;
                 if (ship_velocity < SHIP_VELOCITY_MIN)
                     ship_velocity = SHIP_VELOCITY_MIN;
-                // TODO: a little bounce on landing?
                 // TODO: Use a lookup table for Y offset of ship from shadow?
                 // TODO: Adjustable duration jump?
             }
@@ -186,7 +158,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
             ship_handle_input();
 
-            if (ship_check_collisions() == true) {
+            if (check_collisions() == true) {
                 // Will take effect next frame
                 ship_state = SHIP_STATE_CRASHED;
                 ship_counter = SHIP_COUNTER_CRASH;

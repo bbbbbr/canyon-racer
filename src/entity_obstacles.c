@@ -13,12 +13,8 @@
 #include "../res/sprite_obstacles.h"
 
 
-typedef struct obs_ent {
-    fixed   y;
-    uint8_t state;  // Should this be "Type" instead? how to deal with "bobbing" ?
-} obs_ent;
-
 obs_ent obstacles[ENTITY_COUNT_OBSTACLES_TOTAL];
+uint8_t obstacles_active_first;
 uint8_t obstacles_active_last;
 uint8_t obstacles_active_count;
 uint8_t obstacles_spawn_countdown;
@@ -34,6 +30,8 @@ static inline void reset_spawn_countdown(void) {
 
 void entity_obstacles_init(void) {
     obstacles_active_count = 0;
+    obstacles_active_last = 0;
+    obstacles_active_first = 0;
     reset_spawn_countdown();
 }
 
@@ -44,7 +42,8 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
 
     // Update all active obstacles
-    // They are in order from top of screen down to bottom (starting with obstacles_active_last)
+    // Process them in order from top of screen (last) down to bottom (first)
+    // TODO: swap this out to using obstacles_active_first for counter?
     uint8_t idx = obstacles_active_last;
     for (uint8_t c = obstacles_active_count; c != 0; c--) {
 
@@ -53,9 +52,15 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
         if (y_pos > OBSTACLE_Y_REMOVE) {
             // Obstacles are always in linear order. First in is always
-            // first out, so the furthers down can be removed just by
+            // first out, so the ones further down can be removed just by
             // reducing the total count.
             obstacles_active_count--;
+
+            // Move head of list
+            obstacles_active_first++;
+            if (obstacles_active_first == ENTITY_COUNT_OBSTACLES_WRAP)
+                obstacles_active_first = 0;
+
         } else {
             uint8_t object_sprite_sel = 2u;  // TODO
 
@@ -90,6 +95,8 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             // Spawn a new obstacle
             reset_spawn_countdown();
 
+            obstacles_active_count++;
+
             // Obstacles are stored as a circular buffer, wrap around to start if maxed
             obstacles_active_last++;
             if (obstacles_active_last == ENTITY_COUNT_OBSTACLES_WRAP)
@@ -99,7 +106,9 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
             obstacles[obstacles_active_last].state = OBSTACLE_SPAWN_STATE; // TODO
 
-            obstacles_active_count++;
+            // If it is the first entry added, also set head of list
+            if (obstacles_active_count == 1)
+                obstacles_active_first = obstacles_active_last;
         }
     }
 

@@ -1,5 +1,5 @@
-#ifndef entity_ship_H
-#define entity_ship_H
+#ifndef ENTITY_SHIP_H
+#define ENTITY_SHIP_H
 
  // divide by half to get pixel movement per frame after fixed point conversion
 // #define SHIP_SPEED 3u
@@ -61,10 +61,15 @@
 #define SHIP_COUNTER_JUMP   30u // 1/2 sec
 
 
-
 // ship_x & ship_y are in upper left of metasprite hit box (0, 8) of metasprite
 #define SHIP_HITBOX_X_LEFT   ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u)
 #define SHIP_HITBOX_X_RIGHT  ((sprite_ship_PIVOT_W) + ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u))
+
+#define SHIP_HITBOX_Y_TOP    ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u)
+#define SHIP_HITBOX_Y_BOTTOM ((sprite_ship_PIVOT_H) + ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u))
+
+extern fixed   ship_x, ship_y;
+extern fixed   ship_z;
 
 
 

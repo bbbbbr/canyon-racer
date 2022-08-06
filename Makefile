@@ -18,6 +18,7 @@ LCC = $(GBDK_HOME)bin/lcc
 # -Wf--max-allocs-per-node50000
 # -Wl-w   Wide map listing
 LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc
+# Platform megaduck: -msm83:duck
 
 
 # You can set the name of the .gb ROM file here
