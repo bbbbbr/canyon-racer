@@ -70,7 +70,7 @@
 
 extern fixed   ship_x, ship_y;
 extern fixed   ship_z;
-
+extern uint8_t ship_state;
 
 
 void entity_ship_init(void);

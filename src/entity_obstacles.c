@@ -6,7 +6,9 @@
 
 #include "common.h"
 #include "input.h"
+
 #include "score.h"
+#include "entity_ship.h"
 
 #include "map_fx.h"
 
@@ -60,6 +62,10 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             // // Record number of obstacles cleared
             // TODO: obstacles_cleared_count++;
             // Increment score and update display
+
+            // TODO: HACK: state test ehre is temporary
+            if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP))
+                SCORE_INCREMENT();
             score_update();
 
             // Move head of list

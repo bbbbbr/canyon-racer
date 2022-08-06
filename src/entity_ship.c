@@ -5,6 +5,7 @@
 
 #include "common.h"
 #include "input.h"
+#include "score.h"
 
 #include "map_fx.h"
 
@@ -97,13 +98,18 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
     ship_sprite_sel = SHIP_SPR_DEFAULT;
 
     switch (ship_state) {
-        
+
         case SHIP_STATE_CRASHED:
             // If crashed, render explosion then restart
             if (ship_counter)
                 ship_counter--;
-            else
+            else {
                 ship_state = SHIP_STATE_DO_RESET;
+
+                // TODO: HACK: Score reset here is just temporary
+                score_reset();
+                score_update();
+            }
 
             // Select crash frame
             ship_sprite_sel = (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;

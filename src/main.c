@@ -98,7 +98,7 @@ void init(void) {
 
     entity_ship_init();
     entity_obstacles_init();
-    score_init();
+    score_reset();
 
     map_fx_isr_enable();
 
