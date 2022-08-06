@@ -17,7 +17,7 @@ LCC = $(GBDK_HOME)bin/lcc
 # MBC5 + Ram + Battery, ROM Banks=0, RAM Banks = 2, DMG+CGB support
 # -Wf--max-allocs-per-node50000
 # -Wl-w   Wide map listing
-LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc
+LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc -debug
 # Platform megaduck: -msm83:duck
 
 
@@ -68,6 +68,8 @@ assets:
 	# Obstacles
 	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/sprite_obstacles.png -sw 32 -sh 16 -px -8 -py -16 -pw 32 -ph 8  -spr8x16 -c $(RESDIR)/sprite_obstacles.c
+	# Font Numbers
+	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
 
 
 prepare:

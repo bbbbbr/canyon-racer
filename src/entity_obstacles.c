@@ -6,6 +6,7 @@
 
 #include "common.h"
 #include "input.h"
+#include "score.h"
 
 #include "map_fx.h"
 
@@ -55,6 +56,11 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             // first out, so the ones further down can be removed just by
             // reducing the total count.
             obstacles_active_count--;
+
+            // // Record number of obstacles cleared
+            // TODO: obstacles_cleared_count++;
+            // Increment score and update display
+            score_update();
 
             // Move head of list
             obstacles_active_first++;
