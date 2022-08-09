@@ -116,6 +116,8 @@ void main() {
     init();
     oam_high_water_prev = SPR_ID_MAX;
 
+    score_update();
+
     while (1) {
         wait_vbl_done();
 
