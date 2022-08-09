@@ -11,7 +11,7 @@
 #define sprite_obstacles_TILE_H 16
 #define sprite_obstacles_WIDTH 32
 #define sprite_obstacles_HEIGHT 16
-#define sprite_obstacles_TILE_COUNT 8
+#define sprite_obstacles_TILE_COUNT 20
 #define sprite_obstacles_PALETTE_COUNT 1
 #define sprite_obstacles_COLORS_PER_PALETTE 4
 #define sprite_obstacles_TOTAL_COLORS 4
@@ -23,7 +23,7 @@
 BANKREF_EXTERN(sprite_obstacles)
 
 extern const palette_color_t sprite_obstacles_palettes[4];
-extern const uint8_t sprite_obstacles_tiles[128];
+extern const uint8_t sprite_obstacles_tiles[320];
 
 extern const metasprite_t* const sprite_obstacles_metasprites[6];
 
