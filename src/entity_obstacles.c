@@ -20,14 +20,32 @@ obs_ent obstacles[ENTITY_COUNT_OBSTACLES_TOTAL];
 uint8_t obstacles_active_first;
 uint8_t obstacles_active_last;
 uint8_t obstacles_active_count;
-uint8_t obstacles_spawn_countdown;
+uint8_t obstacles_next_countdown;
+uint8_t obstacles_next_type;
+
+const uint8_t obstacles_x_hitbox_left[] = {
+    OBSTACLE_HITBOX_X_ST__TYPE_LEFT,
+    OBSTACLE_HITBOX_X_ST__TYPE_RIGHT,
+    OBSTACLE_HITBOX_X_ST__TYPE_MIDDLE,
+    OBSTACLE_HITBOX_X_ST__TYPE_FULL
+};
+
+const uint8_t obstacles_x_hitbox_right[] = {
+    OBSTACLE_HITBOX_X_END_TYPE_LEFT,
+    OBSTACLE_HITBOX_X_END_TYPE_RIGHT,
+    OBSTACLE_HITBOX_X_END_TYPE_MIDDLE,
+    OBSTACLE_HITBOX_X_END_TYPE_FULL
+};
 
 
-static inline void reset_spawn_countdown(void) {
+static inline void queue_next(void) {
 
-    // TODO: just use div reg for this for speed?
-    // obstacles_spawn_countdown = (DIV_REG & OBJECTS_SPAWN_COUNT_BITMASK) + OBJECTS_SPAWN_COUNT_MIN;
-    obstacles_spawn_countdown = (rand() & OBJECTS_SPAWN_COUNT_BITMASK) + OBJECTS_SPAWN_COUNT_MIN;
+    // TODO:
+    // #define OBJECTS_FLAG_DOUBLE_BIT  0x04u
+    // #define OBJECTS_FLAG_BOBBING_BIT 0x08u
+
+    obstacles_next_type      = (rand() & OBSTACLE_TYPE_MASK);
+    obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + OBSTACLE_NEXT_COUNT_MIN;
 }
 
 
@@ -35,7 +53,7 @@ void entity_obstacles_init(void) {
     obstacles_active_count = 0;
     obstacles_active_last = 0;
     obstacles_active_first = 0;
-    reset_spawn_countdown();
+    queue_next();
 }
 
 
@@ -52,6 +70,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
         obstacles[idx].y.w += OBSTACLE_INC_SPEED;
         uint8_t y_pos = obstacles[idx].y.h;
+        uint8_t object_sprite_sel = obstacles[idx].type;
 
         if (y_pos > OBSTACLE_Y_REMOVE) {
             // Obstacles are always in linear order. First in is always
@@ -63,10 +82,11 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             // TODO: obstacles_cleared_count++;
             // Increment score and update display
 
-            // TODO: HACK: state test ehre is temporary
-            if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP))
+            // TODO: HACK: state test here is temporary
+            if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP)) {
                 SCORE_INCREMENT();
-            score_update();
+                score_update();
+            }
 
             // Move head of list
             obstacles_active_first++;
@@ -74,7 +94,8 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
                 obstacles_active_first = 0;
 
         } else {
-            uint8_t object_sprite_sel = 2u;  // TODO
+            // Obstacle is active and not getting removed
+            // uint8_t object_sprite_sel = 2u;
 
             // X position is found in the X scroll effect offset table at the Y position of the obstacle
             oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_sprite_sel],
@@ -100,13 +121,11 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     if (obstacles_active_count != ENTITY_COUNT_OBSTACLES_TOTAL) {
 
         // Is it time to spawn yet?
-        if (obstacles_spawn_countdown)
+        if (obstacles_next_countdown)
             //  If not just increment counter
-            obstacles_spawn_countdown--;
+            obstacles_next_countdown--;
         else {
             // Spawn a new obstacle
-            reset_spawn_countdown();
-
             obstacles_active_count++;
 
             // Obstacles are stored as a circular buffer, wrap around to start if maxed
@@ -116,11 +135,14 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
             // TODO: scroll screen down so starting at zero doesn't pop on-screen?
             obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
-            obstacles[obstacles_active_last].state = OBSTACLE_SPAWN_STATE; // TODO
+            obstacles[obstacles_active_last].type = obstacles_next_type;
 
-            // If it is the first entry added, also set head of list
+            // If this is first entry added, also set head of list
             if (obstacles_active_count == 1)
                 obstacles_active_first = obstacles_active_last;
+
+            // Queue up another now that current is activated
+            queue_next();
         }
     }
 

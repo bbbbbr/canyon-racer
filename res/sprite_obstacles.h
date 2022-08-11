@@ -25,6 +25,6 @@ BANKREF_EXTERN(sprite_obstacles)
 extern const palette_color_t sprite_obstacles_palettes[4];
 extern const uint8_t sprite_obstacles_tiles[320];
 
-extern const metasprite_t* const sprite_obstacles_metasprites[6];
+extern const metasprite_t* const sprite_obstacles_metasprites[8];
 
 #endif

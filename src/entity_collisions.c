@@ -52,6 +52,7 @@ bool check_collisions(void) {
 
 
         uint8_t obstacle_y_pos = obstacles[idx].y.h;
+        uint8_t obstacle_type  = obstacles[idx].type;
 
         // First check if BOTTOM of obstacle is ABOVE top of ship
         if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_BOTTOM) < (ship_y.h + SHIP_HITBOX_Y_TOP)) {
@@ -68,11 +69,14 @@ bool check_collisions(void) {
 
             // // If this is reached then the ship has Y overlap with the obstacle
             uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - p_scx_table_base[obstacle_y_pos];
+            // TODO: optimize lookups
+            uint8_t obstacle_x_hitbox_left  = obstacle_x_pos + obstacles_x_hitbox_left[obstacle_type];
+            uint8_t obstacle_x_hitbox_right = obstacle_x_pos + obstacles_x_hitbox_right[obstacle_type];
 
             // TODO: variable width collision for different obstacle widths
             // Check X axis Overlap (via non-overlap)
-            if ( ((obstacle_x_pos + OBSTACLE_HITBOX_X_LEFT) <= (ship_x.h + SHIP_HITBOX_X_RIGHT)) &&
-                 ((obstacle_x_pos + OBSTACLE_HITBOX_X_RIGHT) >= (ship_x.h + SHIP_HITBOX_X_LEFT)) ) {
+            if ( ((obstacle_x_hitbox_left) <= (ship_x.h + SHIP_HITBOX_X_RIGHT)) &&
+                 ((obstacle_x_hitbox_right) >= (ship_x.h + SHIP_HITBOX_X_LEFT)) ) {
                 // Collision with object
                 return true;
             }

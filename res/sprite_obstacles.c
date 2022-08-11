@@ -21,6 +21,15 @@ const uint8_t sprite_obstacles_tiles[320] = {
 	0x00,0x00,0x00,0x00,
 	0x00,0x00,0x00,0x00,
 	
+0x78,0x00,0xfc,0x00,
+	0xfe,0x00,0x7e,0x86,
+	0x1e,0xfe,0x0d,0xfc,
+	0x03,0x04,0x01,0x03,
+	0x00,0x00,0x00,0x00,
+	0x00,0x00,0x00,0x00,
+	0x00,0x00,0x00,0x00,
+	0x00,0x00,0x00,0x00,
+	
 0x37,0x08,0x73,0x0c,
 	0xf8,0x07,0x7c,0x83,
 	0x3f,0xc0,0x01,0xff,
@@ -34,15 +43,6 @@ const uint8_t sprite_obstacles_tiles[320] = {
 	0xe1,0x80,0xe0,0x01,
 	0xec,0x61,0xfe,0xe0,
 	0xc6,0xda,0x86,0x8e,
-	0x00,0x00,0x00,0x00,
-	0x00,0x00,0x00,0x00,
-	0x00,0x00,0x00,0x00,
-	0x00,0x00,0x00,0x00,
-	
-0xf8,0x00,0xfc,0x00,
-	0xfe,0x00,0x7e,0x86,
-	0x1e,0xfe,0x0d,0xfc,
-	0x03,0x04,0x01,0x03,
 	0x00,0x00,0x00,0x00,
 	0x00,0x00,0x00,0x00,
 	0x00,0x00,0x00,0x00,
@@ -113,21 +113,29 @@ const metasprite_t sprite_obstacles_metasprite1[] = {
 };
 
 const metasprite_t sprite_obstacles_metasprite2[] = {
-	METASPR_ITEM(16, 8, 2, 0), METASPR_ITEM(0, 8, 4, 0), METASPR_ITEM(0, 8, 6, 0), METASPR_ITEM(0, 8, 8, 0), METASPR_TERM
+	METASPR_ITEM(16, 16, 0, 0), METASPR_ITEM(0, 8, 2, 0), METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite3[] = {
-	METASPR_ITEM(16, 8, 10, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 4, 0), METASPR_ITEM(0, 8, 6, 0), METASPR_ITEM(0, 8, 2, 0), METASPR_ITEM(0, 8, 8, 0), METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite4[] = {
-	METASPR_ITEM(16, 32, 10, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 10, 0), METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite5[] = {
+	METASPR_ITEM(16, 32, 10, 0), METASPR_TERM
+};
+
+const metasprite_t sprite_obstacles_metasprite6[] = {
+	METASPR_ITEM(16, 16, 10, 0), METASPR_ITEM(0, 8, 10, 0), METASPR_TERM
+};
+
+const metasprite_t sprite_obstacles_metasprite7[] = {
 	METASPR_ITEM(16, 8, 12, 0), METASPR_ITEM(0, 8, 14, 0), METASPR_ITEM(0, 8, 16, 0), METASPR_ITEM(0, 8, 18, 0), METASPR_TERM
 };
 
-const metasprite_t* const sprite_obstacles_metasprites[6] = {
-	sprite_obstacles_metasprite0, sprite_obstacles_metasprite1, sprite_obstacles_metasprite2, sprite_obstacles_metasprite3, sprite_obstacles_metasprite4, sprite_obstacles_metasprite5
+const metasprite_t* const sprite_obstacles_metasprites[8] = {
+	sprite_obstacles_metasprite0, sprite_obstacles_metasprite1, sprite_obstacles_metasprite2, sprite_obstacles_metasprite3, sprite_obstacles_metasprite4, sprite_obstacles_metasprite5, sprite_obstacles_metasprite6, sprite_obstacles_metasprite7
 };
