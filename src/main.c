@@ -90,9 +90,6 @@ void init(void) {
         // cpu_fast();
     }
 
-    // TODO: bind this to a button press
-//    initrand(sys_time);
-
     // TODO: fade-out
     init_gfx();
 
@@ -116,7 +113,10 @@ void main() {
     init();
     oam_high_water_prev = SPR_ID_MAX;
 
+    // Game start sequence, move
     score_update();
+    // Random number generator set to a (arbitrary) fixed value so gameplay is deterministic
+    initrand(0x1234);
 
     while (1) {
         wait_vbl_done();
@@ -127,8 +127,16 @@ void main() {
         oam_high_water = entity_obstacles_update(oam_high_water);
         oam_high_water = entity_ship_update(oam_high_water);
 
-        // Hide rest of the hardware sprites. Amount of sprites differ between animation frames.
-        hide_sprites_range(oam_high_water, oam_high_water_prev);
+        // hide_sprites_range(0x0Eu, 0x0Fu);
+        // Only need to clear other sprites if more were used last frame
+        // Plus, calling this with prev < current would cause a crash
+        if (oam_high_water_prev > oam_high_water) {
+            // Hide rest of the hardware sprites. Amount of sprites differ between animation frames.
+            //
+            // TODO: FIXME: +1 is a workaround for hide_sprites_range needing: End > Start + 1,
+            //       otherwise hide_sprites_range() crashes
+            hide_sprites_range(oam_high_water, oam_high_water_prev + 1);
+        }
         oam_high_water_prev = oam_high_water;
 
         UPDATE_KEYS();
