@@ -8,7 +8,8 @@
 
 // TODO: make spawn count min a function of obstacle speed so it's always correct
 // #define OBSTACLE_NEXT_COUNT_MIN     45u // for speed ~128u  // min frames between spawning
-        #define OBSTACLE_NEXT_COUNT_MIN     42u // for speed ~255u   // min frames between spawning
+        // #define OBSTACLE_NEXT_COUNT_MIN     42u // for speed ~255u   // min frames between spawning
+        #define OBSTACLE_NEXT_COUNT_MIN     25u // for speed ~255u   // min frames between spawning
 #define OBSTACLE_NEXT_COUNT_BITMASK 0x3Fu  // bitmask to select range + min
 // #define OBSTACLE_NEXT_COUNT_MIN     0x1Fu  // min frames between spawning
 // #define OBSTACLE_NEXT_COUNT_BITMASK 0x7Fu  // bitmask to select range + min

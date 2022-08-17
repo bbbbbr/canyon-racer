@@ -22,6 +22,7 @@ uint8_t obstacles_active_last;
 uint8_t obstacles_active_count;
 uint8_t obstacles_next_countdown;
 uint8_t obstacles_next_type;
+uint8_t obstacles_next_isdouble;
 
 const uint8_t obstacles_x_hitbox_left[] = {
     OBSTACLE_HITBOX_X_ST__TYPE_LEFT,
@@ -44,8 +45,18 @@ static inline void queue_next(void) {
     // #define OBJECTS_FLAG_DOUBLE_BIT  0x04u
     // #define OBJECTS_FLAG_BOBBING_BIT 0x08u
 
-    obstacles_next_type      = (rand() & OBSTACLE_TYPE_MASK);
-    obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + OBSTACLE_NEXT_COUNT_MIN;
+    uint8_t type = rand();
+    obstacles_next_type      = (type & OBSTACLE_TYPE_MASK);
+
+    // If random selection is for a double obstacle, space the next one close together
+    if ((type & OBJECTS_FLAG_DOUBLE_BIT) && (!obstacles_next_isdouble)) {
+        obstacles_next_countdown = OBSTACLE_NEXT_COUNT_DOUBLE;
+        obstacles_next_isdouble = true;
+    }
+    else {
+        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + OBSTACLE_NEXT_COUNT_MIN;
+        obstacles_next_isdouble = false;
+    }
 }
 
 
@@ -53,6 +64,7 @@ void entity_obstacles_init(void) {
     obstacles_active_count = 0;
     obstacles_active_last = 0;
     obstacles_active_first = 0;
+    obstacles_next_isdouble = false;
     queue_next();
 }
 
