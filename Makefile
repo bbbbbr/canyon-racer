@@ -28,6 +28,7 @@ SRCDIR      = src
 OBJDIR      = obj
 RESDIR      = res
 BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
+NOI_FILE    = $(OBJDIR)/$(PROJECTNAME).noi
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
 OBJS       = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
@@ -70,7 +71,11 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/sprite_obstacles.png -sw 32 -sh 16 -px -8 -py -16 -pw 32 -ph 8  -spr8x16 -c $(RESDIR)/sprite_obstacles.c
 	# Font Numbers
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
+	# Intro Logo
+	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
 
+romusage:
+	romusage $(NOI_FILE) -g
 
 prepare:
 	mkdir -p $(OBJDIR)

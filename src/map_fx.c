@@ -24,6 +24,9 @@ static uint8_t         map_lcd_scx_wait_counter;
 // TODO : reduce amount of space allocated
 // # -Wl-g_shadow_OAM=0xC800 -Wl-b_DATA=0xc8a0
 // uint8_t __at(0xC000) scx_table[] = {
+
+
+// Needs to be an even multple of....
 const uint8_t scx_table_1[] = {
 
     // Non-curving zone
@@ -89,6 +92,55 @@ const uint8_t scx_table_1[] = {
     0,0,0,0,0,0,0,0,0,0,
     // 0
 
+};
+
+
+const uint8_t scx_table_straight[] = {
+
+    // Non-curving zone
+    // 143 & 144
+    0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 120
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 60
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 0
+
+    // Non-curving zone
+    // 143 & 144
+    0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 120
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 60
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,
+    // 0
+
+    // Padding
+    0,
 };
 
 
@@ -255,8 +307,8 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 
 // #define DMG_SPEED_STOPPED
 // #define DMG_SPEED_SLOW
-// #define DMG_SPEED_MED
-#define DMG_SPEED_FAST
+#define DMG_SPEED_MED
+// #define DMG_SPEED_FAST  // <-- Current default
 // #define DMG_SPEED_MAX
 
 
@@ -289,7 +341,10 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 
 
 // Effect pans up from end of SCX table to start to reveal curves
-#define MAP_LCD_SCX_TABLE_START    (sizeof(scx_table_1) - 145u) // start at farthest point possible into the table, it scrolls toward the start
+
+//  #define MAP_LCD_SCX_TABLE_START    (sizeof(scx_table_1) - 145u) // start at farthest point possible into the table, it scrolls toward the start
+ #define MAP_LCD_SCX_TABLE_START    (sizeof(scx_table_straight) - 145u) // start at farthest point possible into the table, it scrolls toward the start
+
 #define MAP_LCD_SCX_TABLE_INC_STOP (MAP_LCD_SCX_TABLE_START)
 #define MAP_LCD_SCX_TABLE_DEC_STOP 0u
 #define MAP_LCD_SCX_COUNTER_WAIT_TIME  120u
@@ -311,7 +366,8 @@ void vblank_isr_map_reset (void) {
     SCY_REG -= SCROLL_Y_PARALLAX_SPEED;
 
     // X Axis: Reset SCX table
-    p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    // p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    p_scx_table_base = p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
     SCX_REG = *p_scx_table++;
 
     // LOOP MODE
@@ -321,13 +377,6 @@ void vblank_isr_map_reset (void) {
         if (sys_time & 0x01) {
 
             map_lcd_scx_table_start -= SCROLL_Y_MAP_SPEED;
-            // #if defined (DMG_SPEED_SLOW)
-            //     map_lcd_scx_table_start--;
-            // #elif defined (DMG_SPEED_MED)
-            //     map_lcd_scx_table_start-=2; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_PARALLAX_SPEED 2u
-            // #elif defined (DMG_SPEED_FAST)
-            //     map_lcd_scx_table_start-=4; // To use this, table size MUST be multiple of 2, pairs with: SCROLL_Y_PARALLAX_SPEED 2u
-            // #endif
 
             if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_DEC_STOP) {
                 // MODE: LOOP (requires SCX table to have perfectly matching start and end segments
@@ -349,7 +398,8 @@ void map_fx_isr_enable(void) {
     map_lcd_scx_table_is_inc = false;
     map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
     map_lcd_scy_start = 0;
-    p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    // p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
     map_lcd_scx_wait_counter = 0;
 
 

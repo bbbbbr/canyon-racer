@@ -11,15 +11,9 @@ UINT8 key_repeat_count = 0x00;
 
 // Reduce CPU usage by only checking once per frame
 // Allows a loop control to be passed in
-void waitpadticked_lowcpu(UINT8 button_mask, volatile UINT8 * loop_control) {
+void waitpadticked_lowcpu(UINT8 button_mask) {
 
-    UINT8 always_loop = 1;
-
-    // If no loop control var specified, use a placeholder
-    if (loop_control == NULL)
-        loop_control = &always_loop;
-
-    while (*loop_control) {
+    while (1) {
 
         wait_vbl_done(); // yield CPU
         UPDATE_KEYS();

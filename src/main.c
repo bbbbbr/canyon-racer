@@ -12,12 +12,17 @@
 #include "input.h"
 #include "common.h"
 
+#include "splash_screen.h"
+
 #include "map_fx.h"
 
 #include "score.h"
 #include "entity_ship.h"
 #include "entity_obstacles.h"
 
+
+uint8_t bg_next_free_tile;
+uint8_t spr_next_free_tile;
 
 
 // TODO: move to gfx.x
@@ -38,7 +43,7 @@ void init_gfx_map() {
     // TODO: Do this right with a full size map?
     // Or just fill_bkg_tiles()
     set_bkg_tiles(0,0, map_canyon_WIDTH / map_canyon_TILE_W, map_canyon_HEIGHT / map_canyon_TILE_H, map_canyon_map);
-
+    bg_next_free_tile += map_canyon_TILE_COUNT;
 }
 
 
@@ -49,8 +54,10 @@ void init_gfx_sprites() {
     set_sprite_data(SPR_TILES_START_SHIP, sprite_ship_TILE_COUNT, sprite_ship_tiles);
     set_sprite_data(SPR_TILES_START_OBSTACLES, sprite_obstacles_TILE_COUNT, sprite_obstacles_tiles);
     set_sprite_data(SPR_TILES_START_FONTNUMS, tiles_font_nums_TILE_COUNT, tiles_font_nums_tiles);
+    spr_next_free_tile += sprite_ship_TILE_COUNT + sprite_obstacles_TILE_COUNT + tiles_font_nums_TILE_COUNT;
 
 
+    // TODO: move to after game start
     for (int c = 0u; c < SCORE_DIGITS; c++) {
         set_sprite_tile(SPR_ID_SCORE_START + c, SPR_TILES_FONTNUMS_DIGIT_0);
         move_sprite(SPR_ID_SCORE_START + c, SCORE_X_START + c * 8u, SCORE_Y_START);
@@ -71,11 +78,14 @@ void init_gfx_sprites() {
 
 void init_gfx(void) {
 
+    bg_next_free_tile = 0u;
+    spr_next_free_tile = 0u;
+
     init_gfx_map();
     init_gfx_sprites();
 
     SHOW_BKG;
-    SHOW_SPRITES;
+    // SHOW_SPRITES;
 
     DISPLAY_ON;
 }
@@ -111,6 +121,11 @@ uint8_t oam_high_water_prev;
 void main() {
 
     init();
+
+    splash_intro_run(bg_next_free_tile);
+
+    SHOW_SPRITES;
+
     oam_high_water_prev = SPR_ID_MAX;
 
     // Game start sequence, move

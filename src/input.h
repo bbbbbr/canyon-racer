@@ -3,6 +3,7 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#define J_ANY (J_UP | J_DOWN | J_LEFT | J_RIGHT | J_A | J_B | J_START | J_SELECT)
 #define J_WAIT_ALL_RELEASED 0xFF
 #define J_WAIT_ANY_PRESSED  0x00
 
@@ -18,7 +19,7 @@
 
 #define ANY_KEY_PRESSED (keys)
 
-void waitpadticked_lowcpu(UINT8 button_mask, volatile UINT8 * loop_control);
+void waitpadticked_lowcpu(UINT8 button_mask);
 
 extern UINT8 keys;
 extern UINT8 previous_keys;
