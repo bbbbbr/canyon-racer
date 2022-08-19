@@ -62,7 +62,7 @@ $(BINS):	$(OBJS)
 
 assets:
 	# Canyon BG Map
-	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map
+	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map -noflip
 	# Ship
 	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 24  -spr8x16 -c $(RESDIR)/sprite_ship.c
