@@ -93,6 +93,10 @@ void init_gfx(void) {
 
 void init(void) {
 
+    // Random number generator set to a (arbitrary) fixed value
+    // so gameplay is deterministic
+    initrand(0x1234u);
+
     if (_cpu == CGB_TYPE) {
 
         // Don't use CGB 2x mode, it throws off timing (unless an additional ISR is implemented)
@@ -130,8 +134,6 @@ void main() {
 
     // Game start sequence, move
     score_update();
-    // Random number generator set to a (arbitrary) fixed value so gameplay is deterministic
-    initrand(0x1234);
 
     while (1) {
         wait_vbl_done();
