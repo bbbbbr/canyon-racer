@@ -15,6 +15,18 @@ const  uint8_t *       p_scx_table;
 const  uint8_t *       p_scx_table_base;
 static uint8_t         map_lcd_scx_wait_counter;
 
+
+// *** Vertical Parallax clock timing ***
+// TODO: Prob don't need this anymore
+//       Found a timing that works on hardware AND BGB / Emulicious
+// #define _EMU_PIXEL_TIMING  // Emulicious and BGB differ from hardware
+//    -> It was: [8/0,0,4,0,0]
+
+// TODO: Analogue Pocket .pocket format special timing & #define?
+
+
+
+
 // Start of New Frame
 //
 // 1. VBlank:
@@ -168,8 +180,7 @@ void map_fx_stat_isr_dmg(void) __interrupt __naked {
     // TODO: Fixup timing back to hardware. It was working on hardware, but changed
     //  it to work with emulator timing for easier debugging
 
-    // .rept 9
-    .rept 8
+    .rept 9
         nop
     .endm
     rra
@@ -180,12 +191,11 @@ void map_fx_stat_isr_dmg(void) __interrupt __naked {
         ldh (_SCY_REG+0), a
 
             // Rendering Inner V Scroll Area (2 tiles) [LEFT]
-            nop
             rra
             ldh (_SCY_REG+0), a
 
                 // Rendering Center Water Area  (4 tiles) [CENTER]
-                .rept 3
+                .rept 4
                     nop
                 .endm
                 rla
@@ -310,6 +320,7 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 #define DMG_SPEED_MED
 // #define DMG_SPEED_FAST  // <-- Current default
 // #define DMG_SPEED_MAX
+// TODO: half speed steps? 1.5, 2.5, etc
 
 
 // Turns on / off SCX table scrolling
@@ -338,6 +349,11 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
     #define SCROLL_Y_PARALLAX_SPEED   8u
     #define SCROLL_Y_MAP_SPEED        8u
 #endif
+
+
+// Makes Canyon Shape scrolling even slower
+#define SCX_TABLE_EVERY_OTHER_FRAME
+
 
 
 // Effect pans up from end of SCX table to start to reveal curves
@@ -372,9 +388,9 @@ void vblank_isr_map_reset (void) {
 
     // LOOP MODE
     #ifdef SCX_TABLE_SCROLL
-        // if ((sys_time & 0x07) == 0x00) {
-        // if ((sys_time & 0x03) == 0x00) {
+        #ifdef SCX_TABLE_EVERY_OTHER_FRAME
         if (sys_time & 0x01) {
+        #endif
 
             map_lcd_scx_table_start -= SCROLL_Y_MAP_SPEED;
 
@@ -384,7 +400,9 @@ void vblank_isr_map_reset (void) {
                 map_lcd_scy_start = 0;
 
             }
+        #ifdef SCX_TABLE_EVERY_OTHER_FRAME
         }
+        #endif
     #endif
 
 
