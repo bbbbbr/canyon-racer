@@ -4,6 +4,8 @@
 
 extern const uint8_t * p_scx_table_base;
 
+#define SCREEN_H_PLUS_1 (145u)
+
 void map_fx_isr_enable(void);
 void map_fx_isr_disable(void);
 

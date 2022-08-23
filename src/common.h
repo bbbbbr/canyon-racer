@@ -6,6 +6,8 @@
 #include "../res/sprite_obstacles.h"
 #include "../res/tiles_font_nums.h"
 
+#define ARRAY_LEN(A)  sizeof(A) / sizeof(A[0])
+
 
 // #define DEBUG_BENCHMARK_BG
 
