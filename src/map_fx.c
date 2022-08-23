@@ -53,7 +53,7 @@ static uint8_t         map_lcd_scx_wait_counter;
 //
 // Note: To make this non-interruptable by other ISRs add: __critical
 // http://sdcc.sourceforge.net/doc/sdccman.pdf#subsection.3.8.4
-void map_fx_stat_isr_dmg(void) __interrupt __naked {
+void map_fx_stat_isr(void) __interrupt __naked {
     __asm \
 
     push af // 4
@@ -129,82 +129,19 @@ void map_fx_stat_isr_dmg(void) __interrupt __naked {
 }
 
 
-// CGB: Same deal as DMG version, different timing
-// np = 2 dots
-
-// 4 REGION MODE: Outer / Mid / Inner / Center
-void map_fx_stat_isr_cgb(void) __interrupt __naked {
-    __asm \
-
-    push af
-
-    // Get current Scroll Y
-    ldh a, (_SCY_REG+0)
-
-    // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
-    .rept 39
-        nop
-    .endm
-    rra
-    ldh (_SCY_REG+0), a
-
-        // Rendering Mid V Scroll Area (2 tiles) [LEFT]
-        rra
-        .rept 3
-            nop
-        .endm
-        ldh (_SCY_REG+0), a
-
-            // Rendering Inner V Scroll Area (2 tiles) [LEFT]
-            .rept 3
-                nop
-            .endm
-            rra
-            ldh (_SCY_REG+0), a
-
-                // Rendering Center Water Area  (4 tiles) [CENTER]
-                .rept 14
-                    nop
-                .endm
-                rla
-                ldh (_SCY_REG+0), a
-
-            // Rendering Inner V Scroll Area (2 tiles) [RIGHT]
-            rla
-            .rept 3
-                nop
-            .endm
-            ldh (_SCY_REG+0), a
-
-        // Rendering Mid V Scroll Area (2 tiles) [RIGHT]
-        rla
-        .rept 4
-            nop
-        .endm
-        ldh (_SCY_REG+0), a
-
-    // Rendering Outer V Scroll Area (4 tiles) [RIGHT]
-    // No need to update SCY, original value has been restored
-    pop af
-    reti
-
-    __endasm;
-}
-
-
 
 // Register scanline / STAT ISR handler function for the STAT interrupt
 // ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_cgb)
-ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
+ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 
 
 // ### Test/debug controls ###
 
-// #define DMG_SPEED_STOPPED
-// #define DMG_SPEED_SLOW
-#define DMG_SPEED_MED
-// #define DMG_SPEED_FAST  // <-- Current default
-// #define DMG_SPEED_MAX
+// #define SCY_FX_SPEED_STOPPED
+// #define SCY_FX_SPEED_SLOW
+#define SCY_FX_SPEED_MED
+// #define SCY_FX_SPEED_FAST  // <-- Current default
+// #define SCY_FX_SPEED_MAX
 // TODO: half speed steps? 1.5, 2.5, etc
 
 
@@ -218,19 +155,19 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_dmg)
 
 // Region scrolling speed
 // table size MUST be multiple of SCROLL_Y_MAP_SPEED
-#if defined (DMG_SPEED_STOPPED)
+#if defined (SCY_FX_SPEED_STOPPED)
     #define SCROLL_Y_PARALLAX_SPEED   0u
     #define SCROLL_Y_MAP_SPEED        0u
-#elif defined (DMG_SPEED_SLOW)
+#elif defined (SCY_FX_SPEED_SLOW)
     #define SCROLL_Y_PARALLAX_SPEED   1u
     #define SCROLL_Y_MAP_SPEED        1u
-#elif defined (DMG_SPEED_MED)
+#elif defined (SCY_FX_SPEED_MED)
     #define SCROLL_Y_PARALLAX_SPEED   2u
     #define SCROLL_Y_MAP_SPEED        2u
-#elif defined (DMG_SPEED_FAST)
+#elif defined (SCY_FX_SPEED_FAST)
     #define SCROLL_Y_PARALLAX_SPEED   2u
     #define SCROLL_Y_MAP_SPEED        4u
-#elif defined (DMG_SPEED_MAX)
+#elif defined (SCY_FX_SPEED_MAX)
     #define SCROLL_Y_PARALLAX_SPEED   8u
     #define SCROLL_Y_MAP_SPEED        8u
 #endif
