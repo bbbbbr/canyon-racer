@@ -31,10 +31,11 @@ void init_gfx_map() {
 
     set_bkg_data(map_canyon_TILE_ORIGIN, map_canyon_TILE_COUNT, map_canyon_tiles);
 
-    if (_cpu == CGB_TYPE) {
-        // Set CGB Palette
-        cgb_compatibility();
-    }
+    // if (_cpu == CGB_TYPE) {
+    //     // Set CGB Palette
+    //     cgb_compatibility();
+    // }
+
     // TODO: Do this right with a full size map?
     // Or just fill_bkg_tiles()
     set_bkg_tiles(0,0, map_canyon_WIDTH / map_canyon_TILE_W, map_canyon_HEIGHT / map_canyon_TILE_H, map_canyon_map);
