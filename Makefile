@@ -22,6 +22,12 @@ LCCFLAGS = -debug -Wl-yt0x1B -Wl-w -Wl-ya1 -Wm-yS -debug
 
 # Set ROM Title / Name
 LCCFLAGS += -Wm-yn"CANYONRACER"
+	# Legal chars are from 0x20 - 0x5F
+	# Optional Alternate title that generates a Green CGB palette (id:0x0E -> checksum 0xBD)
+	# LCCFLAGS += -Wm-yn"CANYONRACERDD" # Or "CANYONRACER["
+	#
+	# Optional Alternate title that generates a GreyCGB palette (id:0x16 -> checksum 0x58)
+	# LCCFLAGS += -Wm-yn"CANYONRACER=MAX" # Or "CANYONRACERIIIH", "CANYONRACERCLIK", "CANYONRACERCRAM", "CANYONRACER!VVV"
 
 # Set CGB Boot ROM color palette to 0x13
 # 1. Old Licensee is already 0x33 -> Use New Licensee
