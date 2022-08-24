@@ -17,7 +17,20 @@ LCC = $(GBDK_HOME)bin/lcc
 # MBC5 + Ram + Battery, ROM Banks=0, RAM Banks = 2, DMG+CGB support
 # -Wf--max-allocs-per-node50000
 # -Wl-w   Wide map listing
-LCCFLAGS = -debug -Wl-yt0x1B -Wm-yn"CANYON" -Wl-w -Wl-ya1 -Wm-yS -Wm-yc -debug
+# -Wm-yc <- Nope, operate in DMG compatibility mode
+LCCFLAGS = -debug -Wl-yt0x1B -Wl-w -Wl-ya1 -Wm-yS -debug
+
+# Set ROM Title / Name
+LCCFLAGS += -Wm-yn"CANYONRACER"
+
+# Set CGB Boot ROM color palette to 0x13
+# 1. Old Licensee is already 0x33 -> Use New Licensee
+# 2. Sets New Licensee to "01" "(Nintendo)
+# 3. (Sum of ROM Header title bytes 0x134 - 0x143) & 0xFF = 0x35 -> CGB Boot Pal 0x12
+#    https://tcrf.net/Notes:Game_Boy_Color_Bootstrap_ROM#Manual_Select_Palette_Configurations
+LCCFLAGS += -Wm-yk01
+
+
 # Platform megaduck: -msm83:duck
 
 
