@@ -8,34 +8,33 @@
 
 #include "input.h"
 #include "common.h"
+#include "fade.h"
 
 #include "map_fx.h"
-
 
 
 #define WIN_X_OFFSET   7u // GameBoy Window hardware X offset
 #define WIN_X_FINAL    0u // Hide almost one column off-screen
 #define WIN_X_INITIAL  0u // Same as final, but gets changed almost instantly
 
-static void splash_init(uint8_t bg_next_free_tile) {
 
+static void splash_init(uint8_t bg_next_free_tile) {
 
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
 
     // Splash logo goes on the Window so it can overlay on top of the scrolling background
     set_win_based_tiles(0,0, splash_logo_WIDTH / splash_logo_TILE_W, splash_logo_HEIGHT / splash_logo_TILE_H, splash_logo_map, bg_next_free_tile);
 
-    // HIDE_SPRITES;
-    // TODO: Fade in
 
     // TODO: Play Intro Splash Music?
 
     // Window start off-screen
     WY_REG = (SCREENHEIGHT + 1u);
     WX_REG = WIN_X_INITIAL;
-
-    // move_win(0 + WIN_X_OFFSET, (SCREENHEIGHT) - (splash_logo_HEIGHT));
     SHOW_WIN;
+}
+
+static void window_move_up_with_shake(void) {
 
     // Window destination
     uint8_t scroll_amt;
@@ -47,7 +46,7 @@ static void splash_init(uint8_t bg_next_free_tile) {
         win_y_delta = WY_REG - win_y_moveto;
 
         if (win_y_delta > 20u)
-            scroll_amt =  4u; // 6u;
+            scroll_amt =  4u;
         else if (win_y_delta > 10u)
             scroll_amt = 2u;
         else
@@ -75,12 +74,13 @@ static void window_move_down(void) {
 
     // Scroll window out of view (with a small ease-out)
     while (WY_REG < win_y_moveto) {
+        
         if ((WY_REG - win_y_moveto) <= 8u)
             scroll_amt = 1u;
         else if ((WY_REG - win_y_moveto) <= 18u)
             scroll_amt = 2u;
         else
-            scroll_amt = 4u; // 6u;
+            scroll_amt = 4u;
 
         WY_REG += scroll_amt;
         wait_vbl_done();
@@ -88,14 +88,20 @@ static void window_move_down(void) {
 }
 
 
+// Expects Sprites to be turned off
 void splash_intro_run(uint8_t bg_next_free_tile) {
 
     splash_init(bg_next_free_tile);
+
+    fade_in(FADE_DELAY_FX_RUNNING);
+    window_move_up_with_shake();
+
+    // Idle until user presses any button
     waitpadticked_lowcpu(J_ANY);
 
     window_move_down();
+    fade_out(FADE_DELAY_FX_RUNNING);
 
     HIDE_WIN;
-    SHOW_SPRITES;
 }
 

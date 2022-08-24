@@ -11,6 +11,7 @@
 
 #include "input.h"
 #include "common.h"
+#include "fade.h"
 
 #include "splash_screen.h"
 
@@ -32,14 +33,8 @@ void init_gfx_map() {
 
     if (_cpu == CGB_TYPE) {
         // Set CGB Palette
-        // set_bkg_palette(0, nes_num_pals, nes_pal_cgb);
         cgb_compatibility();
-        // TODO: CGB Colors
-    } else {
-        // Set DMG palette
-        // BGP_REG = DMG_PALETTE(DMG_BLACK, DMG_DARK_GRAY, DMG_LITE_GRAY, DMG_WHITE);
     }
-
     // TODO: Do this right with a full size map?
     // Or just fill_bkg_tiles()
     set_bkg_tiles(0,0, map_canyon_WIDTH / map_canyon_TILE_W, map_canyon_HEIGHT / map_canyon_TILE_H, map_canyon_map);
@@ -64,19 +59,12 @@ void init_gfx_sprites() {
     }
 
     SPRITES_8x16;
-
-    if (_cpu == CGB_TYPE) {
-        // Set CGB Palette
-        // set_sprite_palette(0, nes_num_pals, nes_pal_cgb);
-    } else {
-        // Set DMG palette (top two colors BLACK for higher contrast against background)
-        // OBP0_REG = DMG_PALETTE(DMG_BLACK, DMG_BLACK, DMG_LITE_GRAY, DMG_WHITE);
-        OBP0_REG = DMG_PALETTE( DMG_WHITE, DMG_WHITE, DMG_LITE_GRAY, DMG_BLACK);
-    }
 }
 
 
 void init_gfx(void) {
+
+    fade_out(FADE_DELAY_NORM);
 
     bg_next_free_tile = 0u;
     spr_next_free_tile = 0u;
@@ -84,8 +72,8 @@ void init_gfx(void) {
     init_gfx_map();
     init_gfx_sprites();
 
+    SHOW_SPRITES;
     SHOW_BKG;
-    // SHOW_SPRITES;
 
     DISPLAY_ON;
 }
@@ -93,6 +81,7 @@ void init_gfx(void) {
 
 void init(void) {
 
+    // TODO: move this to start of each new game
     // Random number generator set to a (arbitrary) fixed value
     // so gameplay is deterministic
     initrand(0x1234u);
@@ -104,7 +93,6 @@ void init(void) {
         // cpu_fast();
     }
 
-    // TODO: fade-out
     init_gfx();
 
     entity_ship_init();
@@ -126,14 +114,15 @@ void main() {
 
     init();
 
+    HIDE_SPRITES;
     splash_intro_run(bg_next_free_tile);
 
-    SHOW_SPRITES;
-
-    oam_high_water_prev = SPR_ID_MAX;
-
     // Game start sequence, move
+    delay(50u); // Short delay before fade-in
+    SHOW_SPRITES;
+    oam_high_water_prev = SPR_ID_MAX;
     score_update();
+    fade_in(FADE_DELAY_FX_RUNNING);
 
     while (1) {
         wait_vbl_done();
