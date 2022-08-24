@@ -17,6 +17,10 @@
 #define WIN_X_FINAL    0u // Hide almost one column off-screen
 #define WIN_X_INITIAL  0u // Same as final, but gets changed almost instantly
 
+#define WIN_SPEED_SLOW 1u
+#define WIN_SPEED_MED  2u
+#define WIN_SPEED_FAST 4u
+
 
 static void splash_init(uint8_t bg_next_free_tile) {
 
@@ -34,58 +38,53 @@ static void splash_init(uint8_t bg_next_free_tile) {
     SHOW_WIN;
 }
 
-static void window_move_up_with_shake(void) {
+const uint8_t scx_shake_offset[] = {7u, 6u, 5u, 4u, 3u, 2u};
+
+
+#define WIN_MOVE_DIR_DOWN 0
+#define WIN_MOVE_DIR_UP   1
+static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 
     // Window destination
     uint8_t scroll_amt;
-    uint8_t win_y_moveto = (SCREENHEIGHT) - (splash_logo_HEIGHT);
     uint8_t win_y_delta;
 
     // Scroll window into view (with a small ease-in)
-    while (WY_REG > win_y_moveto) {
+    while (1) {
         win_y_delta = WY_REG - win_y_moveto;
 
         if (win_y_delta > 20u)
-            scroll_amt =  4u;
+            scroll_amt =  WIN_SPEED_FAST;
         else if (win_y_delta > 10u)
-            scroll_amt = 2u;
+            scroll_amt = WIN_SPEED_MED;
         else
-            scroll_amt = 1u;
+            scroll_amt = WIN_SPEED_SLOW;
 
-        const uint8_t scx_shake_offset[] = {7u, 6u, 5u, 4u, 3u, 2u};
-        // This one looks a little better than the version below, against expectations
-        WX_REG = WIN_X_OFFSET + ((DIV_REG >> 4) & (0x1u << (win_y_delta >> 5))) - scx_shake_offset[(win_y_delta >> 5)];
-        // const uint8_t scx_shake_mask[] = {0x01u, 0x03u, 0x05u, 0x07u, 0x0Fu};
-        // WX_REG = WIN_X_OFFSET + ((DIV_REG >> 3) & scx_shake_mask[(win_y_delta >> 4)]);
-
-        WY_REG -= scroll_amt;
+        if (move_dir == WIN_MOVE_DIR_UP) {
+            // Give the window progressively smaller X Axis shakes as it
+            // approaches the target Y location (scrolling in from the bottom).
+            //
+            // To prevent the background from showing through during the shakes:
+            // * There is a 8 pixel (1 tile) margin on the left side
+            // * The Window left edge gradually moves left as the shakes diminish
+            //   to ensure it ends up with the logo properly aligned and the
+            //   left margin hidden.
+            //
+            WX_REG = WIN_X_OFFSET + ((DIV_REG >> 4) & (0x1u << (win_y_delta >> 5))) - scx_shake_offset[(win_y_delta >> 5)];
+            WY_REG -= scroll_amt;
+            if (WY_REG <= win_y_moveto) break;
+        }
+        else {
+            // Implied: WIN_MOVE_DIR_DOWN
+            WY_REG += scroll_amt;
+            if (WY_REG >= win_y_moveto) break;
+        }
         wait_vbl_done();
     }
     // Make sure Window ends up at desired location
     WX_REG = WIN_X_FINAL;
 }
 
-
-static void window_move_down(void) {
-
-    // Window destination
-    uint8_t scroll_amt;
-    uint8_t win_y_moveto = (SCREENHEIGHT + 1u);
-
-    // Scroll window out of view (with a small ease-out)
-    while (WY_REG < win_y_moveto) {
-        
-        if ((WY_REG - win_y_moveto) <= 8u)
-            scroll_amt = 1u;
-        else if ((WY_REG - win_y_moveto) <= 18u)
-            scroll_amt = 2u;
-        else
-            scroll_amt = 4u;
-
-        WY_REG += scroll_amt;
-        wait_vbl_done();
-    }
-}
 
 
 // Expects Sprites to be turned off
@@ -94,12 +93,13 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
     splash_init(bg_next_free_tile);
 
     fade_in(FADE_DELAY_FX_RUNNING);
-    window_move_up_with_shake();
+    window_move_with_shake(((SCREENHEIGHT) - (splash_logo_HEIGHT)), WIN_MOVE_DIR_UP);
+
 
     // Idle until user presses any button
     waitpadticked_lowcpu(J_ANY);
 
-    window_move_down();
+    window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
     fade_out(FADE_DELAY_FX_RUNNING);
 
     HIDE_WIN;
