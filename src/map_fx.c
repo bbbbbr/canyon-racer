@@ -57,13 +57,13 @@ void map_fx_stat_isr(void) __interrupt __naked {
     __asm \
 
     push af // 4
+    push hl // 4
+    push bc // 4
 
     ldh a, (_SCY_REG+0) // 3
 
     // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
 
-    push hl // 4
-    push bc // 4
     // .rept 1 // 9
     .rept 1
         nop
@@ -80,7 +80,10 @@ void map_fx_stat_isr(void) __interrupt __naked {
             ldh (_SCY_REG+0), a
 
                 // Rendering Center Water Area  (4 tiles) [CENTER]
-                .rept 4
+                // Load something useful during idle cycles
+                ld  hl, #_p_scx_table  // 3
+                // .rept 4
+                .rept 1
                     nop
                 .endm
                 rla
@@ -99,13 +102,13 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
     // Set Y scroll for next line (won't apply to current line due to timing)
     // SCX_REG = *p_scx_table++;
-    ld  hl, #_p_scx_table
+        // ld  hl, #_p_scx_table  // Loaded above during idle cycle burn instead
     ld  a, (hl+)
-    ld  c, a
+    ld  c, a                      // Low pointer address byte -> C
     ld  a, (hl-)
-    ld  b, a
+    ld  b, a                      // Hi  pointer address byte -> B
     ld  a, (bc)
-    ldh (_SCX_REG + 0), a
+        //ldh (_SCX_REG + 0), a   // Loaded below instead
 
     // Increment pointer to next line value
     inc (hl)
@@ -118,6 +121,11 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
     pop bc
     pop hl
+
+    // Apply SCX update as late as possible to try and take effect
+    // ~after rendering of scanline is completed
+    // (sprites/etc could push timing out)
+    ldh (_SCX_REG + 0), a    // Load value at (*p_scx_table)
 
     pop af
     reti
@@ -178,8 +186,8 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 
 // Effect pans up from end of SCX table to start to reveal curves
 
-//  #define MAP_LCD_SCX_TABLE_START    (scx_table_1_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
- #define MAP_LCD_SCX_TABLE_START    (scx_table_straight_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
+#define MAP_LCD_SCX_TABLE_START    (scx_table_1_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
+ // #define MAP_LCD_SCX_TABLE_START    (scx_table_straight_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
 
 #define MAP_LCD_SCX_TABLE_INC_STOP (MAP_LCD_SCX_TABLE_START)
 #define MAP_LCD_SCX_TABLE_DEC_STOP 0u
@@ -202,8 +210,8 @@ void vblank_isr_map_reset (void) {
     SCY_REG -= SCROLL_Y_PARALLAX_SPEED;
 
     // X Axis: Reset SCX table
-    // p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
-    p_scx_table_base = p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
+    p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    // p_scx_table_base = p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
     SCX_REG = *p_scx_table++;
 
     // LOOP MODE
@@ -236,8 +244,8 @@ void map_fx_isr_enable(void) {
     map_lcd_scx_table_is_inc = false;
     map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
     map_lcd_scy_start = 0;
-    // p_scx_table = &scx_table_1[map_lcd_scx_table_start];
-    p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
+    p_scx_table = &scx_table_1[map_lcd_scx_table_start];
+    // p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
     map_lcd_scx_wait_counter = 0;
 
 
