@@ -62,10 +62,10 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
     // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
 
-    // TODO: Fixup timing back to hardware. It was working on hardware, but changed
-    //  it to work with emulator timing for easier debugging
-
-    .rept 9
+    push hl // 4
+    push bc // 4
+    // .rept 1 // 9
+    .rept 1
         nop
     .endm
     rra
@@ -97,9 +97,6 @@ void map_fx_stat_isr(void) __interrupt __naked {
     // Rendering Outer V Scroll Area (4 tiles) [RIGHT]
     // No need to update SCY, original value has been restored
 
-    push hl
-    push bc
-
     // Set Y scroll for next line (won't apply to current line due to timing)
     // SCX_REG = *p_scx_table++;
     ld  hl, #_p_scx_table
@@ -114,6 +111,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
     inc (hl)
     jr  nz, 00103$
 
+    // Upper nybble increment
     inc hl
     inc (hl)
     00103$:
