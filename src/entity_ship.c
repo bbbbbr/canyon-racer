@@ -99,22 +99,6 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     switch (ship_state) {
 
-        case SHIP_STATE_CRASHED:
-            // If crashed, render explosion then restart
-            if (ship_counter)
-                ship_counter--;
-            else {
-                ship_state = SHIP_STATE_DO_RESET;
-
-                // TODO: HACK: Score reset here is just temporary
-                score_reset();
-                score_update();
-            }
-
-            // Select crash frame
-            ship_sprite_sel = (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
-            break;
-
         case SHIP_STATE_STARTUP:
             if (ship_counter)
                 ship_counter--;
@@ -127,9 +111,24 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             else
                 ship_sprite_sel = SHIP_SPR_NONE;
 
-                // Run ship along edge of canyon automatically during startup
-                uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
-                ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
+            // Run ship along edge of canyon automatically during startup
+            uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
+            ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
+            break;
+
+        case SHIP_STATE_CRASHED:
+            // If crashed, render explosion then restart
+            if (ship_counter) {
+                ship_counter--;
+                // Select crash frame
+                ship_sprite_sel = (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
+            }
+            else {
+                // Done showing crash explosion, hide ship and exit gameplay
+                ship_state = SHIP_STATE_GAMEOVER;
+                ship_sprite_sel = SHIP_SPR_NONE;
+            }
+
             break;
 
         case SHIP_STATE_JUMP:
@@ -182,11 +181,6 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
         oam_high_water += move_metasprite(sprite_ship_metasprites[ship_sprite_sel],
                                          (SPR_TILES_START_SHIP),
                                          oam_high_water, ship_x.h, ship_y.h);
-
-    // TODO: FIXME
-    if (ship_state == SHIP_STATE_DO_RESET) {
-        entity_ship_init();
-    }
 
     return (oam_high_water);
 }

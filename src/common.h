@@ -9,10 +9,14 @@
 #define ARRAY_LEN(A)  sizeof(A) / sizeof(A[0])
 
 
+#define GAME_STATE_SHOW_INTRO 0u
+#define GAME_STATE_START_GAME 1u
+#define GAME_STATE_RUNNING    2u
+#define GAME_STATE_OVER       3u
+
 // #define DEBUG_BENCHMARK_BG
 
 #define FIXED_BITSHIFT 8
-
 
 // SHIP
 #define SPR_TILES_START_SHIP 0

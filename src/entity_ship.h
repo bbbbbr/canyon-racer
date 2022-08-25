@@ -27,11 +27,11 @@
 #define SHIP_Z_INIT (SHIP_Z_MIN)
 
 
-#define SHIP_STATE_DO_RESET  0u
 #define SHIP_STATE_STARTUP   1u
 #define SHIP_STATE_PLAYING   2u
 #define SHIP_STATE_JUMP      3u
 #define SHIP_STATE_CRASHED   4u
+#define SHIP_STATE_GAMEOVER  0u
 
 
 #define SHIP_SPR_DEFAULT   0u // First sprite is neutral one
@@ -72,6 +72,7 @@ extern fixed   ship_x, ship_y;
 extern fixed   ship_z;
 extern uint8_t ship_state;
 
+extern uint8_t ship_state;
 
 void entity_ship_init(void);
 
