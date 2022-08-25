@@ -24,6 +24,7 @@
 
 static void splash_init(uint8_t bg_next_free_tile) {
 
+    mapfx_set_intro();
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
 
     // Splash logo goes on the Window so it can overlay on top of the scrolling background

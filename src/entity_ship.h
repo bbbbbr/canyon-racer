@@ -74,6 +74,8 @@ extern uint8_t ship_state;
 
 extern uint8_t ship_state;
 
+#define SHIP_STATE_GET() (ship_state)
+
 void entity_ship_init(void);
 
 uint8_t entity_ship_update(uint8_t);

@@ -30,6 +30,8 @@ uint8_t oam_high_water_prev;
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
 
+    mapfx_set_gameplay();
+
     // Random number generator set to a (arbitrary) fixed value
     // at the start of each round so gameplay is deterministic
     initrand(GAMEPLAY_START_RAND_INIT);
@@ -74,7 +76,7 @@ void gameplay_run(void) {
         UPDATE_KEYS();
 
         // If game is over, break out and return to main state select
-        if (ship_state == SHIP_STATE_GAMEOVER)
+        if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER)
             break;
 
         #ifdef DEBUG_BENCHMARK_BG

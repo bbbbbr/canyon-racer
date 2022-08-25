@@ -9,35 +9,39 @@
 #include "map_fx.h"
 #include "lookup_tables.h"
 
-static uint8_t map_lcd_scy_start;
 
-static bool            map_lcd_scx_table_is_inc;
-       uint16_t        map_lcd_scx_table_start;
-const  uint8_t *       p_scx_table;
-const  uint8_t *       p_scx_table_base;
-static uint8_t         map_lcd_scx_wait_counter;
+static bool      mapfx_scx_table_is_inc;
+       uint16_t  mapfx_scx_table_start;
+const  uint8_t * p_scx_table;
+const  uint8_t * p_scx_table_base;
+
+       uint8_t   mapfx_y_parallax_speed = MAPFX_SCY_SPEED_DEFAULT;
+       uint8_t   mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_DEFAULT;
 
 
-// *** Vertical Parallax clock timing ***
-// TODO: Prob don't need this anymore
-//       Found a timing that works on hardware AND BGB / Emulicious
-// #define _EMU_PIXEL_TIMING  // Emulicious and BGB differ from hardware
-//    -> It was: [8/0,0,4,0,0]
+// Effect pans up from end of SCX table to start to reveal curves
 
+
+// == Vertical Parallax clock timing ==
 // TODO: Analogue Pocket .pocket format special timing & #define?
 
-
-
-
-// Start of New Frame
+// == Interrupt Activity ==
 //
 // 1. VBlank:
-// 3. HBlank Interrupts:
-
-// TODO: doesn't actually need to be 256 byte aligned anymore, can be const
-// TODO : reduce amount of space allocated
-// # -Wl-g_shadow_OAM=0xC800 -Wl-b_DATA=0xc8a0
-// uint8_t __at(0xC000) scx_table[] = {
+// * SCX Wave Tables
+//   - Increment SCX table base pointer
+//   - Reset per-scanline pointer
+//   - Apply SCX value for first scanline
+// * Y Parallax Effect
+//   - Increment ... TODO
+//
+// 2. HBlank Interrupts: (Start in Mode 2 OAM Scan)
+// * Y Parallax Effect
+//   - Load Y Scroll amount, shift and apply to each column area
+// * SCX Wave Tables
+//   - Apply SCX value for NEXT scanline
+//   - Increment per-scanline pointer value
+//
 
 
 
@@ -137,61 +141,15 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
 
 // Register scanline / STAT ISR handler function for the STAT interrupt
-// ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr_cgb)
 ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 
 
-// ### Test/debug controls ###
+#define MAPfX_SCX_TABLE_START    (scx_table_1_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
+ // #define MAPfX_SCX_TABLE_START    (scx_table_straight_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
 
-// #define SCY_FX_SPEED_STOPPED
-// #define SCY_FX_SPEED_SLOW
-#define SCY_FX_SPEED_MED
-// #define SCY_FX_SPEED_FAST  // <-- Current default
-// #define SCY_FX_SPEED_MAX
-// TODO: half speed steps? 1.5, 2.5, etc
-
-
-// Turns on / off SCX table scrolling
-#define SCX_TABLE_SCROLL
-
-
-// TODO: Make speed an adjustable var
-//  * 1/2/4 for Y parallax speed
-//  * 1/2/4 for Y scroll speed or every/other/fourth for update masking
-
-// Region scrolling speed
-// table size MUST be multiple of SCROLL_Y_MAP_SPEED
-#if defined (SCY_FX_SPEED_STOPPED)
-    #define SCROLL_Y_PARALLAX_SPEED   0u
-    #define SCROLL_Y_MAP_SPEED        0u
-#elif defined (SCY_FX_SPEED_SLOW)
-    #define SCROLL_Y_PARALLAX_SPEED   1u
-    #define SCROLL_Y_MAP_SPEED        1u
-#elif defined (SCY_FX_SPEED_MED)
-    #define SCROLL_Y_PARALLAX_SPEED   2u
-    #define SCROLL_Y_MAP_SPEED        2u
-#elif defined (SCY_FX_SPEED_FAST)
-    #define SCROLL_Y_PARALLAX_SPEED   2u
-    #define SCROLL_Y_MAP_SPEED        4u
-#elif defined (SCY_FX_SPEED_MAX)
-    #define SCROLL_Y_PARALLAX_SPEED   8u
-    #define SCROLL_Y_MAP_SPEED        8u
-#endif
-
-
-// Makes Canyon Shape scrolling even slower
-#define SCX_TABLE_EVERY_OTHER_FRAME
-
-
-
-// Effect pans up from end of SCX table to start to reveal curves
-
-#define MAP_LCD_SCX_TABLE_START    (scx_table_1_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
- // #define MAP_LCD_SCX_TABLE_START    (scx_table_straight_SZ - SCREEN_H_PLUS_1) // start at farthest point possible into the table, it scrolls toward the start
-
-#define MAP_LCD_SCX_TABLE_INC_STOP (MAP_LCD_SCX_TABLE_START)
-#define MAP_LCD_SCX_TABLE_DEC_STOP 0u
-#define MAP_LCD_SCX_COUNTER_WAIT_TIME  120u
+#define MAPfX_SCX_TABLE_INC_STOP (MAPfX_SCX_TABLE_START)
+#define MAPfX_SCX_TABLE_DEC_STOP 0u
+#define MAPfX_SCX_COUNTER_WAIT_TIME  120u
 
 
 
@@ -207,11 +165,12 @@ void vblank_isr_map_reset (void) {
 
 
     // Y Axis: Scroll  the outer vertical edges by max amount
-    SCY_REG -= SCROLL_Y_PARALLAX_SPEED;
+    SCY_REG -= mapfx_y_parallax_speed;
+
 
     // X Axis: Reset SCX table
-    p_scx_table_base = p_scx_table = &scx_table_1[map_lcd_scx_table_start];
-    // p_scx_table_base = p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
+    p_scx_table_base = p_scx_table = &scx_table_1[mapfx_scx_table_start];
+    // p_scx_table_base = p_scx_table = &scx_table_straight[mapfx_scx_table_start];
     SCX_REG = *p_scx_table++;
 
     // LOOP MODE
@@ -220,12 +179,11 @@ void vblank_isr_map_reset (void) {
         if (sys_time & 0x01) {
         #endif
 
-            map_lcd_scx_table_start -= SCROLL_Y_MAP_SPEED;
+            mapfx_scx_table_start -= mapfx_scx_table_map_speed;
 
-            if (map_lcd_scx_table_start == MAP_LCD_SCX_TABLE_DEC_STOP) {
+            if (mapfx_scx_table_start == MAPfX_SCX_TABLE_DEC_STOP) {
                 // MODE: LOOP (requires SCX table to have perfectly matching start and end segments
-                map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
-                map_lcd_scy_start = 0;
+                mapfx_scx_table_start = MAPfX_SCX_TABLE_START;
 
             }
         #ifdef SCX_TABLE_EVERY_OTHER_FRAME
@@ -238,34 +196,56 @@ void vblank_isr_map_reset (void) {
 }
 
 
-void map_fx_isr_enable(void) {
 
+// Medium Y Parallax, No X Scrolling
+void mapfx_set_intro(void) {
+
+    mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
+    mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
+    // TODO: set straight SCX table
+    mapfx_scx_table_reset();
+}
+
+// Medium Y Parallax, Medium X Scrolling
+// TODO: selectable speed param
+void mapfx_set_gameplay(void) {
+
+    mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
+    mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_MED;
+    // TODO: set SCX table ______
+    mapfx_scx_table_reset();
+}
+
+
+void mapfx_scx_table_reset(void) {
     // Init control vars
-    map_lcd_scx_table_is_inc = false;
-    map_lcd_scx_table_start = MAP_LCD_SCX_TABLE_START;
-    map_lcd_scy_start = 0;
-    p_scx_table = &scx_table_1[map_lcd_scx_table_start];
-    // p_scx_table = &scx_table_straight[map_lcd_scx_table_start];
-    map_lcd_scx_wait_counter = 0;
+    mapfx_scx_table_is_inc = false;
+    mapfx_scx_table_start = MAPfX_SCX_TABLE_START;
+    p_scx_table = &scx_table_1[mapfx_scx_table_start];
+    // p_scx_table = &scx_table_straight[mapfx_scx_table_start];
+}
 
+
+// mapfx_set_*() should be called before this
+// to correcty initialize scoll speeds
+void mapfx_isr_enable(void) {
 
     // Enable STAT ISR
     __critical {
-        // Actually want to start at the beginning of Mode 3 / Rendering, but there isn't a STAT interrupt for that
         STAT_REG = STATF_MODE10; // Fire interrupt at start of OAM SCAN (Mode 2) right before rendering
         add_VBL(vblank_isr_map_reset);
     }
-    // Try to wait until just after the start of the next frame
+
+    // Try to wait until just after the start of the next frame before enabling
     wait_vbl_done();
 
     // Pre-load SCX
     // SCX_REG = *p_scx_table++;
-
     set_interrupts(IE_REG | LCD_IFLAG);
 }
 
 
-void map_fx_isr_disable(void) {
+void mapfx_isr_disable(void) {
 
     // Disable STAT ISR
     __critical {

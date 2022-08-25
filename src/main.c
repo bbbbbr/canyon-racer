@@ -47,7 +47,8 @@ void init(void) {
 
     init_gfx();
 
-    map_fx_isr_enable();
+    mapfx_set_intro();
+    mapfx_isr_enable();
 }
 
 
