@@ -96,6 +96,9 @@ assets:
 romusage:
 	romusage $(NOI_FILE) -g
 
+run:
+	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar $(BINS) &
+
 prepare:
 	mkdir -p $(OBJDIR)
 
