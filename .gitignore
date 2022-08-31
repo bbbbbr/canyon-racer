@@ -2,3 +2,6 @@ obj/
 work/
 notes/
 archived_builds/
+build/
+*.noi
+*.sav
