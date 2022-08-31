@@ -27,9 +27,9 @@ void init_gfx(void) {
     bg_next_free_tile = 0u;
     spr_next_free_tile = 0u;
 
-    bg_next_free_tile = init_gfx_bg(bg_next_free_tile);
-    spr_next_free_tile = init_gfx_sprites(spr_next_free_tile);
+    bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
 
+    SPRITES_8x16;
     SHOW_SPRITES;
     SHOW_BKG;
 
@@ -70,6 +70,9 @@ void main() {
                 break;
 
             case GAME_STATE_START_GAME:
+                // Expects: screen paletfade_out(FADE_DELAY_FX_RUNNING);tes faded-out
+                spr_next_free_tile = 0u; // TODO: fix this up
+                spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
                 SHOW_SPRITES;
                 gameplay_prestart();
                 game_state = GAME_STATE_RUNNING;
@@ -82,7 +85,6 @@ void main() {
 
             case GAME_STATE_OVER:
                 gameplay_show_gameover(bg_next_free_tile);
-                fade_out(FADE_DELAY_FX_RUNNING);
                 game_state = GAME_STATE_SHOW_INTRO;
                 break;
         }

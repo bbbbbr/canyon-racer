@@ -16,7 +16,7 @@
 
 
 // TODO: move to gfx.x
-uint8_t init_gfx_bg(uint8_t bg_next_free_tile) {
+uint8_t init_gfx_bg_mapfx(uint8_t bg_next_free_tile) {
 
     set_bkg_data(map_canyon_TILE_ORIGIN, map_canyon_TILE_COUNT, map_canyon_tiles);
 
@@ -34,7 +34,7 @@ uint8_t init_gfx_bg(uint8_t bg_next_free_tile) {
 }
 
 
-uint8_t init_gfx_sprites(uint8_t spr_next_free_tile) {
+uint8_t init_gfx_sprites_gameplay(uint8_t spr_next_free_tile) {
 
 
     // Load metasprite tile data into VRAM
@@ -50,6 +50,5 @@ uint8_t init_gfx_sprites(uint8_t spr_next_free_tile) {
         move_sprite(SPR_ID_SCORE_START + c, SCORE_X_START + c * 8u, SCORE_Y_START);
     }
 
-    SPRITES_8x16;
     return spr_next_free_tile;
 }
