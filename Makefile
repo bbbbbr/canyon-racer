@@ -1,8 +1,3 @@
-#
-# A Makefile that compiles all .c and .s files in "src" and "res"
-# subdirectories and places the output in a "obj" subdirectory
-#
-
 # If you move this project you can change the directory
 # to match your GBDK root directory (ex: GBDK_HOME = "C:/GBDK/"
 GBDK_HOME = ../../gbdk2020/gbdk-2020-git/build/gbdk/
@@ -10,15 +5,22 @@ GBDK_HOME = ../../gbdk2020/gbdk-2020-git/build/gbdk/
 PNG2ASSET = $(GBDK_HOME)bin/png2asset
 LCC = $(GBDK_HOME)bin/lcc
 
+VERSION=0.5.0
+
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
 # LCCFLAGS = -debug
 
-# MBC5 + Ram + Battery, ROM Banks=0, RAM Banks = 2, DMG+CGB support
-# -Wf--max-allocs-per-node50000
-# -Wl-w   Wide map listing
-# -Wm-yc <- Nope, operate in DMG compatibility mode
-LCCFLAGS = -debug -Wl-yt0x1B -Wl-w -Wl-ya1 -Wm-yS -debug
+# Alternate languages can be passed in as follows
+# - 32k_nosave
+# - 31k_1kflash
+# - mbc5
+# make CART_TYPE=<cart type>
+ifndef CART_TYPE
+#	CART_TYPE=32k_nosave
+	CART_TYPE=mbc5
+#	CART_TYPE=31k_1kflash
+endif
 
 # Set ROM Title / Name
 LCCFLAGS += -Wm-yn"CANYONRACER"
@@ -27,9 +29,9 @@ LCCFLAGS += -Wm-yn"CANYONRACER"
 	# LCCFLAGS += -Wm-yn"CANYONRACERDD" # Or "CANYONRACER["
 	#
 	# Optional Alternate title that generates a GreyCGB palette (id:0x16 -> checksum 0x58)
-	# LCCFLAGS += -Wm-yn"CANYONRACER=MAX" # Or "CANYONRACERIIIH", "CANYONRACERCLIK", "CANYONRACERCRAM", "CANYONRACER!VVV"
+	# LCCFLAGS += -Wm-yn"CANYONRACER=MAX" # "CANYONRACER!VVV"
 
-# Set CGB Boot ROM color palette to 0x13
+# Set CGB Boot ROM color palette to 0x13 (relies on title settings above)
 # 1. Old Licensee is already 0x33 -> Use New Licensee
 # 2. Sets New Licensee to "01" "(Nintendo)
 # 3. (Sum of ROM Header title bytes 0x134 - 0x143) & 0xFF = 0x35 -> CGB Boot Pal 0x12
@@ -37,48 +39,140 @@ LCCFLAGS += -Wm-yn"CANYONRACER"
 LCCFLAGS += -Wm-yk01
 
 
-# Platform megaduck: -msm83:duck
+CFLAGS += -DCART_$(CART_TYPE)
+# CFLAGS += -Wf--max-allocs-per-node50000
+# CFLAGS += -Wf--max-allocs-per-node150000 # diminishing (but present) size returns after this
+# CFLAGS += -Wf--max-allocs-per-node500000
 
 
-# You can set the name of the .gb ROM file here
-PROJECTNAME    = canyon_parallax
+# Configure platform specific LCC flags here:
+LCCFLAGS_gb      = # -Wm-yc # No Color support (DMG mode on the CGB)
+LCCFLAGS_pocket  = # -Wm-yc # No Color support (DMG mode on the CGB)
+LCCFLAGS_duck    = # No MBC
+LCCFLAGS_gbc     = 
+LCCFLAGS_sms     =
+LCCFLAGS_gg      =
 
+
+### Handle cart specific flags
+
+ifeq ($(CART_TYPE),mbc5)
+	TARGETS=gb # pocket  # Turn of .pocket during development for faster compile times
+	LCCFLAGS_gb      += -Wl-yt0x1B -Wl-ya1 # Set an MBC for banking (1B-ROM+MBC5+RAM+BATT)
+	LCCFLAGS_pocket  += -Wl-yt0x1B -Wl-ya1 # Same as for .gb
+endif
+
+# 31K+1k cart loses 1024 bytes at the end for flash storage
+ifeq ($(CART_TYPE),31k_1kflash)
+	# No reason to build .pocket for the 31K + 1k flash cart
+	TARGETS=gb
+	# Add the flash 1K region as an exclusive no-use area for rom usage calcs
+	ROMUSAGE_flags = -e:FLASH_SAVE:7C00:400
+endif
+
+# Generic 32 Cart with no save support
+ifeq ($(CART_TYPE),32k_nosave)
+	TARGETS=gb pocket megaduck
+endif
+
+
+# Targets can be forced with this override, but normally they will be controlled per-cart type above
+#
+# Set platforms to build here, spaced separated. (These are in the separate Makefile.targets)
+# They can also be built/cleaned individually: "make gg" and "make gg-clean"
+# Possible are: gb gbc pocket megaduck sms gg
+# TARGETS=gb pocket
+
+
+LCCFLAGS += $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Flags
+
+# Super Game Boy (border) support (not-enabled)
+# LCCFLAGS += -Wm-ys
+
+# No autobanking needed for 32k ROM
+# CFLAGS += -Wl-j -Wm-yoA -Wm-ya4 -autobank -Wb-ext=.rel -Wb-v # MBC + Autobanking related flags
+# CFLAGS += -v     # Uncomment for lcc verbose output
+
+
+# You can set the name of the ROM file here
+PROJECTNAME    = canyon_racer_$(VERSION)_$(CART_TYPE)
+
+# -Wl-w   Wide map listing
+CFLAGS += -debug -Wl-w
+CFLAGS += -Wf-MMD
+# Add include path for type of flash cart if enabled
+CFLAGS += -Wf-I"$(CART_TYPE_DIR)/"
+# Add language directory to include path
+CFLAGS += -Wf-I"$(LANGDIR)/"
 SRCDIR      = src
-OBJDIR      = obj
+SFXDIR         = $(SRCDIR)/sfx
+CART_TYPE_DIR  = $(SRCDIR)/cart_$(CART_TYPE)
+
+OBJDIR      = obj/$(EXT)/$(CART_TYPE)
 RESDIR      = res
-BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
-NOI_FILE    = $(OBJDIR)/$(PROJECTNAME).noi
-CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
+BINDIR      = build/$(EXT)
+MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
+
+BINS	      = $(OBJDIR)/$(PROJECTNAME).$(EXT)
+CSOURCES      = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES      += $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES      += $(foreach dir,$(SFXDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES_CART = $(foreach dir,$(CART_TYPE_DIR),$(notdir $(wildcard $(dir)/*.c)))
+
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
-OBJS       = $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
+ASMSOURCES_CART = $(foreach dir,$(CART_TYPE_DIR),$(notdir $(wildcard $(dir)/*.s)))
 
-all:	prepare $(BINS)
+OBJS        = $(CSOURCES:%.c=$(OBJDIR)/%.o)
+OBJS        += $(CSOURCES_CART:%.c=$(OBJDIR)/%.o)
 
-compile.bat: Makefile
-	@echo "REM Automatically generated from Makefile" > compile.bat
-	@make -sn | sed y/\\//\\\\/ | sed /mkdir -p/mkdir/ | grep -v make >> compile.bat
+OBJS        += $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
+OBJS        += $(ASMSOURCES_CART:%.s=$(OBJDIR)/%.o)
+
+# Builds all targets sequentially
+all: $(TARGETS)
+
+# Dependencies
+DEPS = $(OBJS:%.o=%.d)
+
+-include $(DEPS)
 
 # Compile .c files in "src/" to .o object files
 $(OBJDIR)/%.o:	$(SRCDIR)/%.c
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # Compile .c files in "res/" to .o object files
 $(OBJDIR)/%.o:	$(RESDIR)/%.c
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
+# Compile .c files in "sfx/" to .o object files
+$(OBJDIR)/%.o:	$(SFXDIR)/%.c
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
+# Compile .c files in "src/<CART_TYPE_DIR>/" to .o object files
+$(OBJDIR)/%.o:	$(CART_TYPE_DIR)/%.c
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
+# Compile .s assembly files in "src/" to .o object files
+$(OBJDIR)/%.o:	$(CART_TYPE_DIR)/%.s
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
 
 # Compile .s assembly files in "src/" to .o object files
 $(OBJDIR)/%.o:	$(SRCDIR)/%.s
-	$(LCC) $(LCCFLAGS) -c -o $@ $<
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
 
 # If needed, compile .c files i n"src/" to .s assembly files
 # (not required if .c is compiled directly to .o)
 $(OBJDIR)/%.s:	$(SRCDIR)/%.c
-	$(LCC) $(LCCFLAGS) -S -o $@ $<
+	$(LCC) $(CFLAGS) -S -o $@ $<PROJECTNAME
 
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
-	$(LCC) $(LCCFLAGS) -o $(BINS) $(OBJS)
+	$(LCC) $(LCCFLAGS) $(CFLAGS) -o $(BINDIR)/$(PROJECTNAME).$(EXT) $(OBJS)
 
+# Convert source PNGs -> C source
+# These are TARGET independent. 
 assets:
 	# Canyon BG Map
 	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map -noflip
@@ -92,17 +186,41 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
 	# Intro Logo
 	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
+	# -8, -16 offset is to remove GB hardware sprite offset
+	$(PNG2ASSET) $(RESDIR)/game_over.png -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
 
-romusage:
-	romusage $(NOI_FILE) -g
+carts:
+	${MAKE} CART_TYPE=31k_1kflash
+	${MAKE} CART_TYPE=mbc5
+	${MAKE} CART_TYPE=32k_nosave
+
+
+carts-clean:
+	${MAKE} CART_TYPE=31k_1kflash clean
+	${MAKE} CART_TYPE=mbc5 clean
+	${MAKE} CART_TYPE=32k_nosave clean
+
 
 run:
 	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar $(BINS) &
 
-prepare:
-	mkdir -p $(OBJDIR)
+romusage:
+# Ignores failure if romusage not in path
+	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0
+	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 > romusage.txt
 
 clean:
-#	rm -f  *.gb *.ihx *.cdb *.adb *.noi *.map
-	rm -f  $(OBJDIR)/*.*
+	@echo Cleaning
+	@for target in $(TARGETS); do \
+		$(MAKE) $$target-clean; \
+	done
 
+# Include available build targets
+include Makefile.targets
+
+
+# create necessary directories after Makefile is parsed but before build
+# info prevents the command from being pasted into the makefile
+ifneq ($(strip $(EXT)),)           # Only make the directories if EXT has been set by a target
+$(info $(shell mkdir -p $(MKDIRS)))
+endif

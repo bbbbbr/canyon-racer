@@ -1,0 +1,3283 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           
+     00000000  ___bank_game_over                  game_over
+     00000000  ___bank_map_canyon                 map_canyon
+     00000000  ___bank_splash_logo                splash_logo
+     00000000  ___bank_sprite_obstacles           sprite_obstacles
+     00000000  ___bank_sprite_ship                sprite_ship
+     00000000  ___bank_tiles_font_nums            tiles_font_nums
+     00000000  _rRAMG                             
+     00000000  l__BASE                         
+     00000000  l__BSS                          
+     00000000  l__CABS                         
+     00000000  l__CODE_0                       
+     00000000  l__DABS                         
+     00000000  l__HEADER                       
+     00000000  l__HEAP                         
+     00000000  l__HEAP_END                     
+     00000000  l__HRAM                         
+     00000000  l__LIT                          
+     00000000  s__CABS                         
+     00000000  s__CABS0                        
+     00000000  s__DABS                         
+     00000000  s__HEADER                       
+     00000000  s__HEADER0                      
+     00000000  s__HEADER1                      
+     00000000  s__HEADER10                     
+     00000000  s__HEADER11                     
+     00000000  s__HEADER2                      
+     00000000  s__HEADER3                      
+     00000000  s__HEADER4                      
+     00000000  s__HEADER5                      
+     00000000  s__HEADER6                      
+     00000000  s__HEADER7                      
+     00000000  s__HEADER8                      
+     00000000  s__HEADER9                      
+     00000000  s__HEADERa                      
+     00000000  s__HEADERb                      
+     00000000  s__HEADERc                      
+     00000000  s__HEADERd                      
+     00000000  s__HEADERe                      
+     00000000  s__HEADERf                      
+     00000000  s__HRAM                         
+     00000000  s__HRAM12                       
+     00000001  l__GSFINAL                      
+     00000001  l__HEADER0                      
+     00000001  l__HEADER11                     
+     00000001  l__HEADER9                      
+     00000001  l__HEADERa                      
+     00000001  l__HEADERb                      
+     00000001  l__HEADERd                      
+     00000001  l__HEADERe                      
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000002  l__HEADER5                      
+     00000002  l__HEADERc                      
+     00000002  l__HEADERf                      
+     00000003  l__CABS0                        
+     00000003  l__HEADER8                      
+     00000003  l__HRAM12                       
+     00000005  l__HEADER1                      
+     00000006  l__HEADER7                      
+     00000007  l__HEADER2                      
+     00000008  l__HEADER3                      
+     00000009  l__INITIALIZED                  
+     00000009  l__INITIALIZER                  
+     0000000C  l__GSINIT                       
+     00000030  l__HEADER6                      
+     00000047  l__DATA                         
+     0000004C  l__HEADER4                      
+     00000084  l__HEADER10                     
+     00000200  s__CODE                         
+     000002A1  l__HOME                         
+     00002000  _rROMB0                            
+     00002DB4  l__CODE                         
+     00002FB4  s__HOME                         
+     00003000  _rROMB1                            
+     00003255  s__BASE                         
+     00003255  s__CODE_0                       
+     00003255  s__INITIALIZER                  
+     00003255  s__LIT                          
+     0000325E  s__GSINIT                       
+     0000326A  s__GSFINAL                      
+     00004000  _rRAMB                             
+     00008000  __VRAM                             
+     00008000  __VRAM8000                         
+     00008800  __VRAM8800                         
+     00009000  __VRAM9000                         
+     00009800  __SCRN0                            
+     00009C00  __SCRN1                            
+     0000A000  __SRAM                             
+     0000C000  __RAM                              
+     0000C000  _shadow_OAM                     
+     0000C0A0  s__DATA                         
+     0000C0E7  s__BSS                          
+     0000C0E7  s__INITIALIZED                  
+     0000C0F0  s__HEAP                         
+     0000C0F0  s__HEAP_END                     
+     0000D000  __RAMBANK                          
+     0000E000  .STACK                          
+     0000FE00  __OAMRAM                           
+     0000FF00  _P1_REG                            
+     0000FF00  __IO                               
+     0000FF01  _SB_REG                            
+     0000FF02  _SC_REG                            
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000FF04  _DIV_REG                           
+     0000FF05  _TIMA_REG                          
+     0000FF06  _TMA_REG                           
+     0000FF07  _TAC_REG                           
+     0000FF0F  _IF_REG                            
+     0000FF10  _NR10_REG                          
+     0000FF11  _NR11_REG                          
+     0000FF12  _NR12_REG                          
+     0000FF13  _NR13_REG                          
+     0000FF14  _NR14_REG                          
+     0000FF16  _NR21_REG                          
+     0000FF17  _NR22_REG                          
+     0000FF18  _NR23_REG                          
+     0000FF19  _NR24_REG                          
+     0000FF1A  _NR30_REG                          
+     0000FF1B  _NR31_REG                          
+     0000FF1C  _NR32_REG                          
+     0000FF1D  _NR33_REG                          
+     0000FF1E  _NR34_REG                          
+     0000FF20  _NR41_REG                          
+     0000FF21  _NR42_REG                          
+     0000FF22  _NR43_REG                          
+     0000FF23  _NR44_REG                          
+     0000FF24  _NR50_REG                          
+     0000FF25  _NR51_REG                          
+     0000FF26  _NR52_REG                          
+     0000FF30  _AUD3WAVE                          
+     0000FF30  _PCM_SAMPLE                        
+     0000FF30  __AUD3WAVERAM                      
+     0000FF40  _LCDC_REG                          
+     0000FF41  _STAT_REG                          
+     0000FF42  _SCY_REG                           
+     0000FF43  _SCX_REG                           
+     0000FF44  _LY_REG                            
+     0000FF45  _LYC_REG                           
+     0000FF46  _DMA_REG                           
+     0000FF47  _BGP_REG                           
+     0000FF48  _OBP0_REG                          
+     0000FF49  _OBP1_REG                          
+     0000FF4A  _WY_REG                            
+     0000FF4B  _WX_REG                            
+     0000FF4D  _KEY1_REG                          
+     0000FF4F  _VBK_REG                           
+     0000FF51  _HDMA1_REG                         
+     0000FF52  _HDMA2_REG                         
+     0000FF53  _HDMA3_REG                         
+     0000FF54  _HDMA4_REG                         
+     0000FF55  _HDMA5_REG                         
+     0000FF56  _RP_REG                            
+     0000FF68  _BCPS_REG                          
+     0000FF69  _BCPD_REG                          
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000FF6A  _OCPS_REG                          
+     0000FF6B  _OCPD_REG                          
+     0000FF70  _SVBK_REG                          
+     0000FF76  _PCM12_REG                         
+     0000FF77  _PCM34_REG                         
+     0000FF80  .refresh_OAM                    
+     0000FF80  __HRAM                             
+     0000FFFF  _IE_REG                            
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000200  A$entity_collisions$52             entity_collisions
+     00000200  C$entity_collisions.c$24$0_0$130   entity_collisions
+     00000200  G$check_collisions$0$0             entity_collisions
+     00000200  _check_collisions                  entity_collisions
+     00000202  A$entity_collisions$56             entity_collisions
+     00000202  C$entity_collisions.c$34$1_0$130   entity_collisions
+     00000205  A$entity_collisions$57             entity_collisions
+     00000207  A$entity_collisions$58             entity_collisions
+     00000208  A$entity_collisions$59             entity_collisions
+     0000020B  A$entity_collisions$60             entity_collisions
+     0000020C  A$entity_collisions$61             entity_collisions
+     0000020D  A$entity_collisions$62             entity_collisions
+     0000020E  A$entity_collisions$63             entity_collisions
+     00000210  A$entity_collisions$64             entity_collisions
+     00000211  A$entity_collisions$65             entity_collisions
+     00000213  A$entity_collisions$66             entity_collisions
+     00000214  A$entity_collisions$67             entity_collisions
+     00000215  A$entity_collisions$68             entity_collisions
+     00000216  A$entity_collisions$69             entity_collisions
+     00000217  A$entity_collisions$70             entity_collisions
+     00000218  A$entity_collisions$71             entity_collisions
+     0000021A  A$entity_collisions$72             entity_collisions
+     0000021B  A$entity_collisions$73             entity_collisions
+     0000021D  A$entity_collisions$74             entity_collisions
+     0000021E  A$entity_collisions$78             entity_collisions
+     0000021E  C$entity_collisions.c$36$1_0$130   entity_collisions
+     00000221  A$entity_collisions$79             entity_collisions
+     00000223  A$entity_collisions$80             entity_collisions
+     00000224  A$entity_collisions$81             entity_collisions
+     00000225  A$entity_collisions$82             entity_collisions
+     00000228  A$entity_collisions$83             entity_collisions
+     00000229  A$entity_collisions$84             entity_collisions
+     0000022A  A$entity_collisions$85             entity_collisions
+     0000022B  A$entity_collisions$86             entity_collisions
+     0000022C  A$entity_collisions$87             entity_collisions
+     0000022E  A$entity_collisions$88             entity_collisions
+     0000022F  A$entity_collisions$89             entity_collisions
+     00000230  A$entity_collisions$90             entity_collisions
+     00000231  A$entity_collisions$91             entity_collisions
+     00000233  A$entity_collisions$92             entity_collisions
+     00000234  A$entity_collisions$93             entity_collisions
+     00000236  A$entity_collisions$94             entity_collisions
+     00000237  A$entity_collisions$95             entity_collisions
+     00000239  A$entity_collisions$96             entity_collisions
+     0000023B  A$entity_collisions$97             entity_collisions
+     0000023C  A$entity_collisions$98             entity_collisions
+     0000023D  A$entity_collisions$99             entity_collisions
+     0000023E  A$entity_collisions$100            entity_collisions
+     0000023F  A$entity_collisions$101            entity_collisions
+     00000241  A$entity_collisions$105            entity_collisions
+ASxxxx Linker V03.00 + NoICE + sdld,  page 6.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000241  C$entity_collisions.c$38$2_0$131   entity_collisions
+     00000243  A$entity_collisions$106            entity_collisions
+     00000246  A$entity_collisions$111            entity_collisions
+     00000246  C$entity_collisions.c$40$1_0$130   entity_collisions
+     00000249  A$entity_collisions$112            entity_collisions
+     0000024A  A$entity_collisions$113            entity_collisions
+     0000024B  A$entity_collisions$114            entity_collisions
+     0000024C  A$entity_collisions$115            entity_collisions
+     0000024E  A$entity_collisions$116            entity_collisions
+     0000024F  A$entity_collisions$117            entity_collisions
+     00000250  A$entity_collisions$118            entity_collisions
+     00000251  A$entity_collisions$119            entity_collisions
+     00000253  A$entity_collisions$120            entity_collisions
+     00000254  A$entity_collisions$121            entity_collisions
+     00000256  A$entity_collisions$122            entity_collisions
+     00000257  A$entity_collisions$123            entity_collisions
+     00000259  A$entity_collisions$124            entity_collisions
+     0000025C  A$entity_collisions$125            entity_collisions
+     0000025D  A$entity_collisions$126            entity_collisions
+     0000025E  A$entity_collisions$127            entity_collisions
+     0000025F  A$entity_collisions$128            entity_collisions
+     00000261  A$entity_collisions$129            entity_collisions
+     00000262  A$entity_collisions$130            entity_collisions
+     00000263  A$entity_collisions$131            entity_collisions
+     00000264  A$entity_collisions$132            entity_collisions
+     00000265  A$entity_collisions$133            entity_collisions
+     00000266  A$entity_collisions$134            entity_collisions
+     00000268  A$entity_collisions$138            entity_collisions
+     00000268  C$entity_collisions.c$42$2_0$132   entity_collisions
+     0000026A  A$entity_collisions$139            entity_collisions
+     0000026D  A$entity_collisions$144            entity_collisions
+     0000026D  C$entity_collisions.c$49$2_0$133   entity_collisions
+     00000270  A$entity_collisions$145            entity_collisions
+     00000271  A$entity_collisions$149            entity_collisions
+     00000271  C$entity_collisions.c$51$3_1$134   entity_collisions
+     00000274  A$entity_collisions$150            entity_collisions
+     00000276  A$entity_collisions$151            entity_collisions
+     00000277  A$entity_collisions$153            entity_collisions
+     00000279  A$entity_collisions$154            entity_collisions
+     0000027A  A$entity_collisions$155            entity_collisions
+     0000027B  A$entity_collisions$156            entity_collisions
+     0000027E  A$entity_collisions$160            entity_collisions
+     0000027E  C$entity_collisions.c$54$3_1$135   entity_collisions
+     00000280  A$entity_collisions$161            entity_collisions
+     00000281  A$entity_collisions$162            entity_collisions
+     00000282  A$entity_collisions$163            entity_collisions
+     00000283  A$entity_collisions$164            entity_collisions
+     00000284  A$entity_collisions$165            entity_collisions
+     00000287  A$entity_collisions$166            entity_collisions
+     00000288  A$entity_collisions$167            entity_collisions
+     00000289  A$entity_collisions$168            entity_collisions
+ASxxxx Linker V03.00 + NoICE + sdld,  page 7.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000028A  A$entity_collisions$169            entity_collisions
+     0000028B  A$entity_collisions$170            entity_collisions
+     0000028C  A$entity_collisions$171            entity_collisions
+     0000028D  A$entity_collisions$172            entity_collisions
+     0000028F  A$entity_collisions$173            entity_collisions
+     00000290  A$entity_collisions$174            entity_collisions
+     00000291  A$entity_collisions$178            entity_collisions
+     00000291  C$entity_collisions.c$55$3_1$135   entity_collisions
+     00000292  A$entity_collisions$179            entity_collisions
+     00000293  A$entity_collisions$180            entity_collisions
+     00000294  A$entity_collisions$181            entity_collisions
+     00000296  A$entity_collisions$182            entity_collisions
+     00000297  A$entity_collisions$186            entity_collisions
+     00000297  C$entity_collisions.c$58$3_1$135   entity_collisions
+     00000299  A$entity_collisions$187            entity_collisions
+     0000029A  A$entity_collisions$188            entity_collisions
+     0000029B  A$entity_collisions$189            entity_collisions
+     0000029C  A$entity_collisions$190            entity_collisions
+     0000029E  A$entity_collisions$191            entity_collisions
+     0000029F  A$entity_collisions$192            entity_collisions
+     000002A0  A$entity_collisions$193            entity_collisions
+     000002A1  A$entity_collisions$194            entity_collisions
+     000002A2  A$entity_collisions$195            entity_collisions
+     000002A3  A$entity_collisions$196            entity_collisions
+     000002A4  A$entity_collisions$197            entity_collisions
+     000002A5  A$entity_collisions$198            entity_collisions
+     000002A8  A$entity_collisions$199            entity_collisions
+     000002A9  A$entity_collisions$200            entity_collisions
+     000002AA  A$entity_collisions$201            entity_collisions
+     000002AB  A$entity_collisions$202            entity_collisions
+     000002AD  A$entity_collisions$203            entity_collisions
+     000002AE  A$entity_collisions$204            entity_collisions
+     000002AF  A$entity_collisions$205            entity_collisions
+     000002B0  A$entity_collisions$206            entity_collisions
+     000002B2  A$entity_collisions$207            entity_collisions
+     000002B3  A$entity_collisions$208            entity_collisions
+     000002B5  A$entity_collisions$209            entity_collisions
+     000002B6  A$entity_collisions$210            entity_collisions
+     000002B8  A$entity_collisions$211            entity_collisions
+     000002BA  A$entity_collisions$212            entity_collisions
+     000002BB  A$entity_collisions$213            entity_collisions
+     000002BC  A$entity_collisions$214            entity_collisions
+     000002BD  A$entity_collisions$215            entity_collisions
+     000002BE  A$entity_collisions$216            entity_collisions
+     000002BF  A$entity_collisions$217            entity_collisions
+     000002C0  A$entity_collisions$218            entity_collisions
+     000002C1  A$entity_collisions$219            entity_collisions
+     000002C4  A$entity_collisions$220            entity_collisions
+     000002C5  A$entity_collisions$221            entity_collisions
+     000002C6  A$entity_collisions$222            entity_collisions
+     000002C7  A$entity_collisions$223            entity_collisions
+ASxxxx Linker V03.00 + NoICE + sdld,  page 8.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000002C9  A$entity_collisions$224            entity_collisions
+     000002CA  A$entity_collisions$225            entity_collisions
+     000002CB  A$entity_collisions$226            entity_collisions
+     000002CC  A$entity_collisions$227            entity_collisions
+     000002CD  A$entity_collisions$228            entity_collisions
+     000002CF  A$entity_collisions$232            entity_collisions
+     000002CF  C$entity_collisions.c$61$4_1$136   entity_collisions
+     000002D0  A$entity_collisions$233            entity_collisions
+     000002D3  A$entity_collisions$238            entity_collisions
+     000002D3  C$entity_collisions.c$68$3_1$135   entity_collisions
+     000002D5  A$entity_collisions$239            entity_collisions
+     000002D6  A$entity_collisions$240            entity_collisions
+     000002D7  A$entity_collisions$241            entity_collisions
+     000002D8  A$entity_collisions$242            entity_collisions
+     000002DB  A$entity_collisions$243            entity_collisions
+     000002DC  A$entity_collisions$244            entity_collisions
+     000002DD  A$entity_collisions$245            entity_collisions
+     000002DE  A$entity_collisions$246            entity_collisions
+     000002E0  A$entity_collisions$247            entity_collisions
+     000002E1  A$entity_collisions$248            entity_collisions
+     000002E2  A$entity_collisions$249            entity_collisions
+     000002E3  A$entity_collisions$250            entity_collisions
+     000002E5  A$entity_collisions$251            entity_collisions
+     000002E6  A$entity_collisions$252            entity_collisions
+     000002E7  A$entity_collisions$253            entity_collisions
+     000002E8  A$entity_collisions$254            entity_collisions
+     000002E9  A$entity_collisions$255            entity_collisions
+     000002EA  A$entity_collisions$256            entity_collisions
+     000002EB  A$entity_collisions$257            entity_collisions
+     000002EE  A$entity_collisions$258            entity_collisions
+     000002EF  A$entity_collisions$259            entity_collisions
+     000002F0  A$entity_collisions$260            entity_collisions
+     000002F1  A$entity_collisions$261            entity_collisions
+     000002F3  A$entity_collisions$262            entity_collisions
+     000002F4  A$entity_collisions$263            entity_collisions
+     000002F5  A$entity_collisions$264            entity_collisions
+     000002F6  A$entity_collisions$265            entity_collisions
+     000002F7  A$entity_collisions$266            entity_collisions
+     000002F8  A$entity_collisions$267            entity_collisions
+     000002FA  A$entity_collisions$271            entity_collisions
+     000002FA  C$entity_collisions.c$71$4_1$137   entity_collisions
+     000002FD  A$entity_collisions$272            entity_collisions
+     000002FE  A$entity_collisions$273            entity_collisions
+     000002FF  A$entity_collisions$274            entity_collisions
+     00000300  A$entity_collisions$275            entity_collisions
+     00000302  A$entity_collisions$276            entity_collisions
+     00000303  A$entity_collisions$277            entity_collisions
+     00000305  A$entity_collisions$278            entity_collisions
+     00000306  A$entity_collisions$279            entity_collisions
+     00000307  A$entity_collisions$280            entity_collisions
+     00000308  A$entity_collisions$281            entity_collisions
+ASxxxx Linker V03.00 + NoICE + sdld,  page 9.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000309  A$entity_collisions$282            entity_collisions
+     0000030A  A$entity_collisions$283            entity_collisions
+     0000030C  A$entity_collisions$284            entity_collisions
+     0000030D  A$entity_collisions$285            entity_collisions
+     0000030E  A$entity_collisions$289            entity_collisions
+     0000030E  C$entity_collisions.c$73$4_1$137   entity_collisions
+     00000311  A$entity_collisions$290            entity_collisions
+     00000313  A$entity_collisions$291            entity_collisions
+     00000314  A$entity_collisions$292            entity_collisions
+     00000316  A$entity_collisions$293            entity_collisions
+     00000317  A$entity_collisions$294            entity_collisions
+     00000318  A$entity_collisions$295            entity_collisions
+     00000319  A$entity_collisions$296            entity_collisions
+     0000031A  A$entity_collisions$297            entity_collisions
+     0000031B  A$entity_collisions$298            entity_collisions
+     0000031D  A$entity_collisions$299            entity_collisions
+     0000031E  A$entity_collisions$303            entity_collisions
+     0000031E  C$entity_collisions.c$74$4_1$137   entity_collisions
+     00000321  A$entity_collisions$304            entity_collisions
+     00000323  A$entity_collisions$305            entity_collisions
+     00000324  A$entity_collisions$306            entity_collisions
+     00000326  A$entity_collisions$307            entity_collisions
+     00000327  A$entity_collisions$308            entity_collisions
+     00000328  A$entity_collisions$309            entity_collisions
+     00000329  A$entity_collisions$310            entity_collisions
+     0000032A  A$entity_collisions$311            entity_collisions
+     0000032B  A$entity_collisions$312            entity_collisions
+     0000032C  A$entity_collisions$316            entity_collisions
+     0000032C  C$entity_collisions.c$78$4_1$137   entity_collisions
+     0000032E  A$entity_collisions$317            entity_collisions
+     0000032F  A$entity_collisions$318            entity_collisions
+     00000331  A$entity_collisions$319            entity_collisions
+     00000333  A$entity_collisions$320            entity_collisions
+     00000334  A$entity_collisions$321            entity_collisions
+     00000335  A$entity_collisions$322            entity_collisions
+     00000336  A$entity_collisions$323            entity_collisions
+     00000337  A$entity_collisions$324            entity_collisions
+     00000339  A$entity_collisions$328            entity_collisions
+     00000339  C$entity_collisions.c$79$4_1$137   entity_collisions
+     0000033B  A$entity_collisions$329            entity_collisions
+     0000033D  A$entity_collisions$330            entity_collisions
+     0000033E  A$entity_collisions$331            entity_collisions
+     0000033F  A$entity_collisions$332            entity_collisions
+     00000340  A$entity_collisions$333            entity_collisions
+     00000341  A$entity_collisions$334            entity_collisions
+     00000342  A$entity_collisions$335            entity_collisions
+     00000344  A$entity_collisions$339            entity_collisions
+     00000344  C$entity_collisions.c$81$5_1$138   entity_collisions
+     00000346  A$entity_collisions$340            entity_collisions
+     00000348  A$entity_collisions$345            entity_collisions
+     00000348  C$entity_collisions.c$86$3_1$135   entity_collisions
+ASxxxx Linker V03.00 + NoICE + sdld,  page 10.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000349  A$entity_collisions$349            entity_collisions
+     00000349  C$entity_collisions.c$87$3_1$135   entity_collisions
+     0000034A  A$entity_collisions$353            entity_collisions
+     0000034A  C$entity_collisions.c$88$3_1$135   entity_collisions
+     0000034C  A$entity_collisions$354            entity_collisions
+     0000034E  A$entity_collisions$355            entity_collisions
+     0000034F  A$entity_collisions$360            entity_collisions
+     0000034F  C$entity_collisions.c$51$2_1$134   entity_collisions
+     00000351  A$entity_collisions$361            entity_collisions
+     00000352  A$entity_collisions$362            entity_collisions
+     00000355  A$entity_collisions$367            entity_collisions
+     00000355  C$entity_collisions.c$91$1_1$133   entity_collisions
+     00000356  A$entity_collisions$372            entity_collisions
+     00000358  A$entity_collisions$377            entity_collisions
+     00000358  C$entity_collisions.c$92$1_1$130   entity_collisions
+     00000358  XG$check_collisions$0$0            entity_collisions
+     00000359  A$entity_obstacles$89              entity_obstacles
+     00000359  C$entity_obstacles.c$42$0_0$138    entity_obstacles
+     00000359  C$entity_obstacles.c$48$1_0$138    entity_obstacles
+     00000359  Fentity_obstacles$queue_next$0$0   entity_obstacles
+     0000035C  A$entity_obstacles$93              entity_obstacles
+     0000035C  C$entity_obstacles.c$49$1_0$138    entity_obstacles
+     0000035D  A$entity_obstacles$94              entity_obstacles
+     0000035F  A$entity_obstacles$95              entity_obstacles
+     00000362  A$entity_obstacles$99              entity_obstacles
+     00000362  C$entity_obstacles.c$52$1_0$138    entity_obstacles
+     00000364  A$entity_obstacles$100             entity_obstacles
+     00000366  A$entity_obstacles$101             entity_obstacles
+     00000369  A$entity_obstacles$102             entity_obstacles
+     0000036A  A$entity_obstacles$103             entity_obstacles
+     0000036C  A$entity_obstacles$107             entity_obstacles
+     0000036C  C$entity_obstacles.c$53$2_0$139    entity_obstacles
+     0000036F  A$entity_obstacles$108             entity_obstacles
+     00000371  A$entity_obstacles$112             entity_obstacles
+     00000371  C$entity_obstacles.c$54$2_0$139    entity_obstacles
+     00000374  A$entity_obstacles$113             entity_obstacles
+     00000376  A$entity_obstacles$114             entity_obstacles
+     00000377  A$entity_obstacles$119             entity_obstacles
+     00000377  C$entity_obstacles.c$57$2_0$140    entity_obstacles
+     0000037A  A$entity_obstacles$120             entity_obstacles
+     0000037B  A$entity_obstacles$121             entity_obstacles
+     0000037D  A$entity_obstacles$122             entity_obstacles
+     0000037F  A$entity_obstacles$123             entity_obstacles
+     00000382  A$entity_obstacles$127             entity_obstacles
+     00000382  C$entity_obstacles.c$58$2_0$140    entity_obstacles
+     00000385  A$entity_obstacles$128             entity_obstacles
+     00000387  A$entity_obstacles$136             entity_obstacles
+     00000387  C$entity_obstacles.c$60$1_0$138    entity_obstacles
+     00000387  XFentity_obstacles$queue_next$0$   entity_obstacles
+     00000388  G$obstacles_x_hitbox_left$0_0$0    entity_obstacles
+     00000388  _obstacles_x_hitbox_left           entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 11.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000038C  G$obstacles_x_hitbox_right$0_0$0   entity_obstacles
+     0000038C  _obstacles_x_hitbox_right          entity_obstacles
+     00000390  A$entity_obstacles$161             entity_obstacles
+     00000390  C$entity_obstacles.c$63$1_0$142    entity_obstacles
+     00000390  C$entity_obstacles.c$64$1_0$142    entity_obstacles
+     00000390  G$entity_obstacles_init$0$0        entity_obstacles
+     00000390  _entity_obstacles_init             entity_obstacles
+     00000393  A$entity_obstacles$162             entity_obstacles
+     00000395  A$entity_obstacles$166             entity_obstacles
+     00000395  C$entity_obstacles.c$65$1_0$142    entity_obstacles
+     00000398  A$entity_obstacles$167             entity_obstacles
+     0000039A  A$entity_obstacles$171             entity_obstacles
+     0000039A  C$entity_obstacles.c$66$1_0$142    entity_obstacles
+     0000039D  A$entity_obstacles$172             entity_obstacles
+     0000039F  A$entity_obstacles$176             entity_obstacles
+     0000039F  C$entity_obstacles.c$67$1_0$142    entity_obstacles
+     000003A2  A$entity_obstacles$177             entity_obstacles
+     000003A4  A$entity_obstacles$179             entity_obstacles
+     000003A7  A$entity_obstacles$181             entity_obstacles
+     000003A8  A$entity_obstacles$182             entity_obstacles
+     000003AA  A$entity_obstacles$183             entity_obstacles
+     000003AD  A$entity_obstacles$185             entity_obstacles
+     000003AF  A$entity_obstacles$186             entity_obstacles
+     000003B1  A$entity_obstacles$187             entity_obstacles
+     000003B4  A$entity_obstacles$188             entity_obstacles
+     000003B5  A$entity_obstacles$189             entity_obstacles
+     000003B7  A$entity_obstacles$191             entity_obstacles
+     000003BA  A$entity_obstacles$192             entity_obstacles
+     000003BC  A$entity_obstacles$194             entity_obstacles
+     000003BF  A$entity_obstacles$195             entity_obstacles
+     000003C1  A$entity_obstacles$196             entity_obstacles
+     000003C2  A$entity_obstacles$199             entity_obstacles
+     000003C5  A$entity_obstacles$200             entity_obstacles
+     000003C6  A$entity_obstacles$201             entity_obstacles
+     000003C8  A$entity_obstacles$202             entity_obstacles
+     000003CA  A$entity_obstacles$203             entity_obstacles
+     000003CD  A$entity_obstacles$205             entity_obstacles
+     000003D0  A$entity_obstacles$206             entity_obstacles
+     000003D2  A$entity_obstacles$217             entity_obstacles
+     000003D2  C$entity_obstacles.c$68$3_0$142    entity_obstacles
+     000003D2  C$entity_obstacles.c$69$3_0$142    entity_obstacles
+     000003D2  XG$entity_obstacles_init$0$0       entity_obstacles
+     000003D3  A$entity_obstacles$227             entity_obstacles
+     000003D3  C$entity_obstacles.c$74$3_0$149    entity_obstacles
+     000003D3  G$entity_obstacles_update$0$0      entity_obstacles
+     000003D3  _entity_obstacles_update           entity_obstacles
+     000003D5  A$entity_obstacles$228             entity_obstacles
+     000003D7  A$entity_obstacles$229             entity_obstacles
+     000003D8  A$entity_obstacles$233             entity_obstacles
+     000003D8  C$entity_obstacles.c$80$2_0$149    entity_obstacles
+     000003DB  A$entity_obstacles$234             entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 12.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000003DD  A$entity_obstacles$235             entity_obstacles
+     000003DE  A$entity_obstacles$239             entity_obstacles
+     000003DE  C$entity_obstacles.c$81$3_0$150    entity_obstacles
+     000003E1  A$entity_obstacles$240             entity_obstacles
+     000003E3  A$entity_obstacles$241             entity_obstacles
+     000003E4  A$entity_obstacles$243             entity_obstacles
+     000003E6  A$entity_obstacles$244             entity_obstacles
+     000003E7  A$entity_obstacles$245             entity_obstacles
+     000003E8  A$entity_obstacles$246             entity_obstacles
+     000003EB  A$entity_obstacles$250             entity_obstacles
+     000003EB  C$entity_obstacles.c$83$3_0$151    entity_obstacles
+     000003EC  A$entity_obstacles$251             entity_obstacles
+     000003ED  A$entity_obstacles$252             entity_obstacles
+     000003EF  A$entity_obstacles$253             entity_obstacles
+     000003F0  A$entity_obstacles$254             entity_obstacles
+     000003F1  A$entity_obstacles$255             entity_obstacles
+     000003F2  A$entity_obstacles$256             entity_obstacles
+     000003F3  A$entity_obstacles$257             entity_obstacles
+     000003F4  A$entity_obstacles$258             entity_obstacles
+     000003F5  A$entity_obstacles$259             entity_obstacles
+     000003F6  A$entity_obstacles$260             entity_obstacles
+     000003F7  A$entity_obstacles$261             entity_obstacles
+     000003F8  A$entity_obstacles$262             entity_obstacles
+     000003FB  A$entity_obstacles$263             entity_obstacles
+     000003FC  A$entity_obstacles$264             entity_obstacles
+     000003FD  A$entity_obstacles$265             entity_obstacles
+     000003FE  A$entity_obstacles$266             entity_obstacles
+     00000400  A$entity_obstacles$267             entity_obstacles
+     00000401  A$entity_obstacles$268             entity_obstacles
+     00000402  A$entity_obstacles$269             entity_obstacles
+     00000403  A$entity_obstacles$270             entity_obstacles
+     00000405  A$entity_obstacles$271             entity_obstacles
+     00000406  A$entity_obstacles$272             entity_obstacles
+     00000407  A$entity_obstacles$273             entity_obstacles
+     00000408  A$entity_obstacles$274             entity_obstacles
+     00000409  A$entity_obstacles$275             entity_obstacles
+     0000040A  A$entity_obstacles$276             entity_obstacles
+     0000040B  A$entity_obstacles$277             entity_obstacles
+     0000040C  A$entity_obstacles$278             entity_obstacles
+     0000040D  A$entity_obstacles$279             entity_obstacles
+     0000040E  A$entity_obstacles$280             entity_obstacles
+     00000411  A$entity_obstacles$281             entity_obstacles
+     00000412  A$entity_obstacles$282             entity_obstacles
+     00000413  A$entity_obstacles$283             entity_obstacles
+     00000414  A$entity_obstacles$284             entity_obstacles
+     00000416  A$entity_obstacles$285             entity_obstacles
+     00000417  A$entity_obstacles$286             entity_obstacles
+     00000418  A$entity_obstacles$287             entity_obstacles
+     00000419  A$entity_obstacles$288             entity_obstacles
+     0000041A  A$entity_obstacles$289             entity_obstacles
+     0000041B  A$entity_obstacles$290             entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 13.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000041C  A$entity_obstacles$294             entity_obstacles
+     0000041C  C$entity_obstacles.c$84$3_1$152    entity_obstacles
+     0000041E  A$entity_obstacles$295             entity_obstacles
+     0000041F  A$entity_obstacles$296             entity_obstacles
+     00000420  A$entity_obstacles$300             entity_obstacles
+     00000420  C$entity_obstacles.c$85$3_1$152    entity_obstacles
+     00000421  A$entity_obstacles$301             entity_obstacles
+     00000422  A$entity_obstacles$302             entity_obstacles
+     00000423  A$entity_obstacles$303             entity_obstacles
+     00000424  A$entity_obstacles$304             entity_obstacles
+     00000425  A$entity_obstacles$305             entity_obstacles
+     00000426  A$entity_obstacles$306             entity_obstacles
+     00000427  A$entity_obstacles$307             entity_obstacles
+     00000428  A$entity_obstacles$308             entity_obstacles
+     00000429  A$entity_obstacles$309             entity_obstacles
+     0000042A  A$entity_obstacles$310             entity_obstacles
+     0000042B  A$entity_obstacles$311             entity_obstacles
+     0000042C  A$entity_obstacles$312             entity_obstacles
+     0000042D  A$entity_obstacles$316             entity_obstacles
+     0000042D  C$entity_obstacles.c$87$3_1$152    entity_obstacles
+     0000042F  A$entity_obstacles$317             entity_obstacles
+     00000430  A$entity_obstacles$318             entity_obstacles
+     00000432  A$entity_obstacles$322             entity_obstacles
+     00000432  C$entity_obstacles.c$91$4_1$153    entity_obstacles
+     00000435  A$entity_obstacles$323             entity_obstacles
+     00000436  A$entity_obstacles$327             entity_obstacles
+     00000436  C$entity_obstacles.c$98$4_1$153    entity_obstacles
+     00000439  A$entity_obstacles$328             entity_obstacles
+     0000043B  A$entity_obstacles$329             entity_obstacles
+     0000043D  A$entity_obstacles$330             entity_obstacles
+     0000043F  A$entity_obstacles$331             entity_obstacles
+     00000441  A$entity_obstacles$336             entity_obstacles
+     00000441  C$entity_obstacles.c$99$5_1$154    entity_obstacles
+     00000444  A$entity_obstacles$337             entity_obstacles
+     00000445  A$entity_obstacles$338             entity_obstacles
+     00000448  A$entity_obstacles$339             entity_obstacles
+     00000449  A$entity_obstacles$340             entity_obstacles
+     0000044C  A$entity_obstacles$341             entity_obstacles
+     0000044E  A$entity_obstacles$345             entity_obstacles
+     0000044E  C$entity_obstacles.c$100$5_1$154   entity_obstacles
+     00000451  A$entity_obstacles$350             entity_obstacles
+     00000451  C$entity_obstacles.c$104$4_1$153   entity_obstacles
+     00000454  A$entity_obstacles$351             entity_obstacles
+     00000455  A$entity_obstacles$355             entity_obstacles
+     00000455  C$entity_obstacles.c$105$4_1$153   entity_obstacles
+     00000456  A$entity_obstacles$356             entity_obstacles
+     00000458  A$entity_obstacles$357             entity_obstacles
+     0000045A  A$entity_obstacles$361             entity_obstacles
+     0000045A  C$entity_obstacles.c$106$4_1$153   entity_obstacles
+     0000045D  A$entity_obstacles$362             entity_obstacles
+     0000045F  A$entity_obstacles$363             entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 14.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000461  A$entity_obstacles$366             entity_obstacles
+     00000464  A$entity_obstacles$367             entity_obstacles
+     00000465  A$entity_obstacles$368             entity_obstacles
+     00000466  A$entity_obstacles$369             entity_obstacles
+     00000467  A$entity_obstacles$370             entity_obstacles
+     00000468  A$entity_obstacles$371             entity_obstacles
+     0000046A  A$entity_obstacles$372             entity_obstacles
+     0000046B  A$entity_obstacles$373             entity_obstacles
+     0000046C  A$entity_obstacles$374             entity_obstacles
+     0000046D  A$entity_obstacles$375             entity_obstacles
+     0000046F  A$entity_obstacles$376             entity_obstacles
+     00000470  A$entity_obstacles$377             entity_obstacles
+     00000472  A$entity_obstacles$379             entity_obstacles
+     00000473  A$entity_obstacles$380             entity_obstacles
+     00000474  A$entity_obstacles$381             entity_obstacles
+     00000476  A$entity_obstacles$382             entity_obstacles
+     00000477  A$entity_obstacles$383             entity_obstacles
+     0000047A  A$entity_obstacles$384             entity_obstacles
+     0000047B  A$entity_obstacles$385             entity_obstacles
+     0000047C  A$entity_obstacles$386             entity_obstacles
+     0000047D  A$entity_obstacles$391             entity_obstacles
+     0000047E  A$entity_obstacles$392             entity_obstacles
+     0000047F  A$entity_obstacles$393             entity_obstacles
+     00000482  A$entity_obstacles$394             entity_obstacles
+     00000483  A$entity_obstacles$395             entity_obstacles
+     00000484  A$entity_obstacles$396             entity_obstacles
+     00000485  A$entity_obstacles$398             entity_obstacles
+     00000488  A$entity_obstacles$399             entity_obstacles
+     0000048A  A$entity_obstacles$401             entity_obstacles
+     0000048B  A$entity_obstacles$402             entity_obstacles
+     0000048C  A$entity_obstacles$403             entity_obstacles
+     0000048D  A$entity_obstacles$404             entity_obstacles
+     0000048F  A$entity_obstacles$405             entity_obstacles
+     00000490  A$entity_obstacles$406             entity_obstacles
+     00000491  A$entity_obstacles$407             entity_obstacles
+     00000492  A$entity_obstacles$408             entity_obstacles
+     00000493  A$entity_obstacles$409             entity_obstacles
+     00000496  A$entity_obstacles$410             entity_obstacles
+     00000498  A$entity_obstacles$411             entity_obstacles
+     00000499  A$entity_obstacles$415             entity_obstacles
+     00000499  C$entity_obstacles.c$117$6_1$159   entity_obstacles
+     0000049B  A$entity_obstacles$416             entity_obstacles
+     0000049C  A$entity_obstacles$417             entity_obstacles
+     0000049D  A$entity_obstacles$422             entity_obstacles
+     0000049D  C$entity_obstacles.c$124$3_1$152   entity_obstacles
+     0000049F  A$entity_obstacles$423             entity_obstacles
+     000004A0  A$entity_obstacles$424             entity_obstacles
+     000004A1  A$entity_obstacles$425             entity_obstacles
+     000004A3  A$entity_obstacles$429             entity_obstacles
+     000004A3  C$entity_obstacles.c$125$3_1$152   entity_obstacles
+     000004A5  A$entity_obstacles$430             entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 15.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000004A7  A$entity_obstacles$435             entity_obstacles
+     000004A7  C$entity_obstacles.c$127$3_1$152   entity_obstacles
+     000004A9  A$entity_obstacles$436             entity_obstacles
+     000004AA  A$entity_obstacles$441             entity_obstacles
+     000004AA  C$entity_obstacles.c$81$2_0$150    entity_obstacles
+     000004AC  A$entity_obstacles$442             entity_obstacles
+     000004AD  A$entity_obstacles$443             entity_obstacles
+     000004B0  A$entity_obstacles$448             entity_obstacles
+     000004B0  C$entity_obstacles.c$133$1_0$149   entity_obstacles
+     000004B3  A$entity_obstacles$449             entity_obstacles
+     000004B5  A$entity_obstacles$450             entity_obstacles
+     000004B8  A$entity_obstacles$454             entity_obstacles
+     000004B8  C$entity_obstacles.c$136$2_0$156   entity_obstacles
+     000004BB  A$entity_obstacles$455             entity_obstacles
+     000004BC  A$entity_obstacles$456             entity_obstacles
+     000004BD  A$entity_obstacles$457             entity_obstacles
+     000004BF  A$entity_obstacles$461             entity_obstacles
+     000004BF  C$entity_obstacles.c$138$2_0$156   entity_obstacles
+     000004C0  A$entity_obstacles$462             entity_obstacles
+     000004C2  A$entity_obstacles$467             entity_obstacles
+     000004C2  C$entity_obstacles.c$141$3_0$157   entity_obstacles
+     000004C5  A$entity_obstacles$468             entity_obstacles
+     000004C6  A$entity_obstacles$472             entity_obstacles
+     000004C6  C$entity_obstacles.c$144$3_0$157   entity_obstacles
+     000004C9  A$entity_obstacles$473             entity_obstacles
+     000004CA  A$entity_obstacles$477             entity_obstacles
+     000004CA  C$entity_obstacles.c$145$3_0$157   entity_obstacles
+     000004CB  A$entity_obstacles$478             entity_obstacles
+     000004CD  A$entity_obstacles$479             entity_obstacles
+     000004CF  A$entity_obstacles$483             entity_obstacles
+     000004CF  C$entity_obstacles.c$146$3_0$157   entity_obstacles
+     000004D2  A$entity_obstacles$484             entity_obstacles
+     000004D4  A$entity_obstacles$489             entity_obstacles
+     000004D4  C$entity_obstacles.c$149$3_0$157   entity_obstacles
+     000004D7  A$entity_obstacles$490             entity_obstacles
+     000004D8  A$entity_obstacles$491             entity_obstacles
+     000004DA  A$entity_obstacles$492             entity_obstacles
+     000004DB  A$entity_obstacles$493             entity_obstacles
+     000004DC  A$entity_obstacles$494             entity_obstacles
+     000004DD  A$entity_obstacles$495             entity_obstacles
+     000004DE  A$entity_obstacles$496             entity_obstacles
+     000004E1  A$entity_obstacles$497             entity_obstacles
+     000004E2  A$entity_obstacles$498             entity_obstacles
+     000004E3  A$entity_obstacles$499             entity_obstacles
+     000004E4  A$entity_obstacles$500             entity_obstacles
+     000004E5  A$entity_obstacles$504             entity_obstacles
+     000004E5  C$entity_obstacles.c$150$3_0$157   entity_obstacles
+     000004E8  A$entity_obstacles$505             entity_obstacles
+     000004E9  A$entity_obstacles$506             entity_obstacles
+     000004EB  A$entity_obstacles$507             entity_obstacles
+     000004EC  A$entity_obstacles$508             entity_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 16.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000004ED  A$entity_obstacles$509             entity_obstacles
+     000004EE  A$entity_obstacles$510             entity_obstacles
+     000004EF  A$entity_obstacles$511             entity_obstacles
+     000004F2  A$entity_obstacles$512             entity_obstacles
+     000004F3  A$entity_obstacles$513             entity_obstacles
+     000004F4  A$entity_obstacles$514             entity_obstacles
+     000004F5  A$entity_obstacles$515             entity_obstacles
+     000004F6  A$entity_obstacles$516             entity_obstacles
+     000004F7  A$entity_obstacles$517             entity_obstacles
+     000004FA  A$entity_obstacles$518             entity_obstacles
+     000004FB  A$entity_obstacles$522             entity_obstacles
+     000004FB  C$entity_obstacles.c$153$3_0$157   entity_obstacles
+     000004FE  A$entity_obstacles$523             entity_obstacles
+     000004FF  A$entity_obstacles$524             entity_obstacles
+     00000501  A$entity_obstacles$528             entity_obstacles
+     00000501  C$entity_obstacles.c$154$3_0$157   entity_obstacles
+     00000504  A$entity_obstacles$529             entity_obstacles
+     00000507  A$entity_obstacles$532             entity_obstacles
+     0000050A  A$entity_obstacles$534             entity_obstacles
+     0000050B  A$entity_obstacles$535             entity_obstacles
+     0000050D  A$entity_obstacles$536             entity_obstacles
+     00000510  A$entity_obstacles$538             entity_obstacles
+     00000512  A$entity_obstacles$539             entity_obstacles
+     00000514  A$entity_obstacles$540             entity_obstacles
+     00000517  A$entity_obstacles$541             entity_obstacles
+     00000518  A$entity_obstacles$542             entity_obstacles
+     0000051A  A$entity_obstacles$544             entity_obstacles
+     0000051D  A$entity_obstacles$545             entity_obstacles
+     0000051F  A$entity_obstacles$547             entity_obstacles
+     00000522  A$entity_obstacles$548             entity_obstacles
+     00000524  A$entity_obstacles$549             entity_obstacles
+     00000526  A$entity_obstacles$552             entity_obstacles
+     00000529  A$entity_obstacles$553             entity_obstacles
+     0000052A  A$entity_obstacles$554             entity_obstacles
+     0000052C  A$entity_obstacles$555             entity_obstacles
+     0000052E  A$entity_obstacles$556             entity_obstacles
+     00000531  A$entity_obstacles$558             entity_obstacles
+     00000534  A$entity_obstacles$559             entity_obstacles
+     00000536  A$entity_obstacles$567             entity_obstacles
+     00000536  C$entity_obstacles.c$157$1_0$149   entity_obstacles
+     00000536  C$entity_obstacles.c$161$1_0$149   entity_obstacles
+     00000538  A$entity_obstacles$568             entity_obstacles
+     00000539  A$entity_obstacles$572             entity_obstacles
+     0000053B  A$entity_obstacles$577             entity_obstacles
+     0000053B  C$entity_obstacles.c$162$1_0$149   entity_obstacles
+     0000053B  XG$entity_obstacles_update$0$0     entity_obstacles
+     0000053C  A$main$78                          main
+     0000053C  C$main.c$23$0_0$136                main
+     0000053C  C$main.c$25$1_0$136                main
+     0000053C  G$init_gfx$0$0                     main
+     0000053C  _init_gfx                          main
+ASxxxx Linker V03.00 + NoICE + sdld,  page 17.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000053E  A$main$79                          main
+     00000541  A$main$83                          main
+     00000541  C$main.c$27$1_0$136                main
+     00000544  A$main$84                          main
+     00000546  A$main$88                          main
+     00000546  C$main.c$28$1_0$136                main
+     00000549  A$main$89                          main
+     0000054B  A$main$93                          main
+     0000054B  C$main.c$30$1_0$136                main
+     0000054C  A$main$94                          main
+     0000054F  A$main$95                          main
+     00000552  A$main$99                          main
+     00000552  C$main.c$32$1_0$136                main
+     00000554  A$main$100                         main
+     00000556  A$main$101                         main
+     00000558  A$main$105                         main
+     00000558  C$main.c$33$1_0$136                main
+     0000055A  A$main$106                         main
+     0000055C  A$main$107                         main
+     0000055E  A$main$111                         main
+     0000055E  C$main.c$34$1_0$136                main
+     00000560  A$main$112                         main
+     00000562  A$main$113                         main
+     00000564  A$main$117                         main
+     00000564  C$main.c$36$1_0$136                main
+     00000566  A$main$118                         main
+     00000568  A$main$119                         main
+     0000056A  A$main$127                         main
+     0000056A  C$main.c$37$1_0$136                main
+     0000056A  XG$init_gfx$0$0                    main
+     0000056B  A$main$140                         main
+     0000056B  C$main.c$40$1_0$138                main
+     0000056B  C$main.c$48$1_0$138                main
+     0000056B  G$init$0$0                         main
+     0000056B  _init                              main
+     0000056E  A$main$144                         main
+     0000056E  C$main.c$50$1_0$138                main
+     00000571  A$main$155                         main
+     00000571  C$main.c$51$1_0$138                main
+     00000571  C$main.c$52$1_0$138                main
+     00000571  XG$init$0$0                        main
+     00000574  A$main$168                         main
+     00000574  C$main.c$56$1_0$139                main
+     00000574  C$main.c$58$1_0$139                main
+     00000574  G$main$0$0                         main
+     00000574  _main                              main
+     00000577  A$main$172                         main
+     00000577  C$main.c$59$1_0$139                main
+     0000057A  A$main$173                         main
+     0000057C  A$main$181                         main
+     0000057C  C$main.c$61$1_0$139                main
+ASxxxx Linker V03.00 + NoICE + sdld,  page 18.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000057C  C$main.c$63$2_0$140                main
+     0000057F  A$main$182                         main
+     00000580  A$main$183                         main
+     00000582  A$main$184                         main
+     00000585  A$main$185                         main
+     00000586  A$main$186                         main
+     00000588  A$main$187                         main
+     0000058B  A$main$188                         main
+     0000058D  A$main$189                         main
+     0000058F  A$main$190                         main
+     00000592  A$main$191                         main
+     00000594  A$main$192                         main
+     00000596  A$main$193                         main
+     00000598  A$main$201                         main
+     00000598  C$main.c$65$3_0$141                main
+     00000598  C$main.c$66$3_0$141                main
+     0000059A  A$main$202                         main
+     0000059C  A$main$203                         main
+     0000059E  A$main$207                         main
+     0000059E  C$main.c$68$3_0$141                main
+     000005A1  A$main$208                         main
+     000005A4  A$main$212                         main
+     000005A4  C$main.c$69$3_0$141                main
+     000005A7  A$main$213                         main
+     000005A9  A$main$217                         main
+     000005A9  C$main.c$70$3_0$141                main
+     000005AB  A$main$225                         main
+     000005AB  C$main.c$72$3_0$141                main
+     000005AB  C$main.c$74$3_0$141                main
+     000005AE  A$main$226                         main
+     000005B0  A$main$230                         main
+     000005B0  C$main.c$75$3_0$141                main
+     000005B1  A$main$231                         main
+     000005B4  A$main$232                         main
+     000005B7  A$main$236                         main
+     000005B7  C$main.c$76$3_0$141                main
+     000005B9  A$main$237                         main
+     000005BB  A$main$238                         main
+     000005BD  A$main$242                         main
+     000005BD  C$main.c$77$3_0$141                main
+     000005C0  A$main$246                         main
+     000005C0  C$main.c$78$3_0$141                main
+     000005C3  A$main$247                         main
+     000005C5  A$main$251                         main
+     000005C5  C$main.c$79$3_0$141                main
+     000005C7  A$main$259                         main
+     000005C7  C$main.c$81$3_0$141                main
+     000005C7  C$main.c$82$3_0$141                main
+     000005CA  A$main$263                         main
+     000005CA  C$main.c$83$3_0$141                main
+     000005CD  A$main$264                         main
+ASxxxx Linker V03.00 + NoICE + sdld,  page 19.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000005CF  A$main$268                         main
+     000005CF  C$main.c$84$3_0$141                main
+     000005D1  A$main$276                         main
+     000005D1  C$main.c$86$3_0$141                main
+     000005D1  C$main.c$87$3_0$141                main
+     000005D4  A$main$277                         main
+     000005D7  A$main$281                         main
+     000005D7  C$main.c$88$3_0$141                main
+     000005DA  A$main$282                         main
+     000005DC  A$main$293                         main
+     000005DC  C$main.c$90$1_0$139                main
+     000005DC  C$main.c$92$1_0$139                main
+     000005DC  XG$main$0$0                        main
+     000005DE  G$scx_table_1$0_0$0                lookup_tables
+     000005DE  _scx_table_1                       lookup_tables
+     00000C17  G$scx_table_straight$0_0$0         lookup_tables
+     00000C17  _scx_table_straight                lookup_tables
+     00000D38  G$scx_table_1_SZ$0_0$0             lookup_tables
+     00000D38  _scx_table_1_SZ                    lookup_tables
+     00000D3A  G$scx_table_straight_SZ$0_0$0      lookup_tables
+     00000D3A  _scx_table_straight_SZ             lookup_tables
+     00000D3C  A$entity_ship$85                   entity_ship
+     00000D3C  C$entity_ship.c$30$0_0$137         entity_ship
+     00000D3C  C$entity_ship.c$31$1_0$137         entity_ship
+     00000D3C  G$entity_ship_init$0$0             entity_ship
+     00000D3C  _entity_ship_init                  entity_ship
+     00000D3F  A$entity_ship$86                   entity_ship
+     00000D40  A$entity_ship$87                   entity_ship
+     00000D41  A$entity_ship$88                   entity_ship
+     00000D43  A$entity_ship$92                   entity_ship
+     00000D43  C$entity_ship.c$32$1_0$137         entity_ship
+     00000D46  A$entity_ship$93                   entity_ship
+     00000D47  A$entity_ship$94                   entity_ship
+     00000D48  A$entity_ship$95                   entity_ship
+     00000D4A  A$entity_ship$99                   entity_ship
+     00000D4A  C$entity_ship.c$33$1_0$137         entity_ship
+     00000D4D  A$entity_ship$100                  entity_ship
+     00000D4E  A$entity_ship$101                  entity_ship
+     00000D4F  A$entity_ship$102                  entity_ship
+     00000D50  A$entity_ship$106                  entity_ship
+     00000D50  C$entity_ship.c$34$1_0$137         entity_ship
+     00000D53  A$entity_ship$107                  entity_ship
+     00000D55  A$entity_ship$111                  entity_ship
+     00000D55  C$entity_ship.c$35$1_0$137         entity_ship
+     00000D58  A$entity_ship$112                  entity_ship
+     00000D5A  A$entity_ship$116                  entity_ship
+     00000D5A  C$entity_ship.c$36$1_0$137         entity_ship
+     00000D5B  A$entity_ship$117                  entity_ship
+     00000D5E  A$entity_ship$118                  entity_ship
+     00000D5F  A$entity_ship$119                  entity_ship
+     00000D60  A$entity_ship$127                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 20.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000D60  C$entity_ship.c$37$1_0$137         entity_ship
+     00000D60  XG$entity_ship_init$0$0            entity_ship
+     00000D61  A$entity_ship$140                  entity_ship
+     00000D61  C$entity_ship.c$45$1_0$139         entity_ship
+     00000D61  C$entity_ship.c$47$1_0$139         entity_ship
+     00000D61  Fentity_ship$ship_handle_input$0   entity_ship
+     00000D64  A$entity_ship$141                  entity_ship
+     00000D66  A$entity_ship$142                  entity_ship
+     00000D67  A$entity_ship$143                  entity_ship
+     00000D69  A$entity_ship$144                  entity_ship
+     00000D6A  A$entity_ship$145                  entity_ship
+     00000D6B  A$entity_ship$146                  entity_ship
+     00000D6C  A$entity_ship$147                  entity_ship
+     00000D6E  A$entity_ship$148                  entity_ship
+     00000D6F  A$entity_ship$149                  entity_ship
+     00000D71  A$entity_ship$150                  entity_ship
+     00000D72  A$entity_ship$151                  entity_ship
+     00000D74  A$entity_ship$155                  entity_ship
+     00000D74  C$entity_ship.c$50$2_0$140         entity_ship
+     00000D77  A$entity_ship$156                  entity_ship
+     00000D78  A$entity_ship$157                  entity_ship
+     00000D79  A$entity_ship$158                  entity_ship
+     00000D7A  A$entity_ship$159                  entity_ship
+     00000D7B  A$entity_ship$160                  entity_ship
+     00000D7C  A$entity_ship$162                  entity_ship
+     00000D7D  A$entity_ship$163                  entity_ship
+     00000D7F  A$entity_ship$167                  entity_ship
+     00000D7F  C$entity_ship.c$51$3_0$141         entity_ship
+     00000D80  A$entity_ship$168                  entity_ship
+     00000D81  A$entity_ship$169                  entity_ship
+     00000D82  A$entity_ship$170                  entity_ship
+     00000D83  A$entity_ship$174                  entity_ship
+     00000D85  A$entity_ship$175                  entity_ship
+     00000D86  A$entity_ship$176                  entity_ship
+     00000D87  A$entity_ship$177                  entity_ship
+     00000D89  A$entity_ship$178                  entity_ship
+     00000D8A  A$entity_ship$179                  entity_ship
+     00000D8B  A$entity_ship$180                  entity_ship
+     00000D8C  A$entity_ship$181                  entity_ship
+     00000D8D  A$entity_ship$182                  entity_ship
+     00000D8E  A$entity_ship$183                  entity_ship
+     00000D8F  A$entity_ship$188                  entity_ship
+     00000D8F  C$entity_ship.c$53$2_0$140         entity_ship
+     00000D92  A$entity_ship$189                  entity_ship
+     00000D94  A$entity_ship$193                  entity_ship
+     00000D94  C$entity_ship.c$54$2_0$140         entity_ship
+     00000D96  A$entity_ship$201                  entity_ship
+     00000D96  C$entity_ship.c$56$2_0$140         entity_ship
+     00000D96  C$entity_ship.c$57$2_0$140         entity_ship
+     00000D99  A$entity_ship$202                  entity_ship
+     00000D9A  A$entity_ship$203                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 21.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000D9B  A$entity_ship$204                  entity_ship
+     00000D9D  A$entity_ship$205                  entity_ship
+     00000D9F  A$entity_ship$209                  entity_ship
+     00000D9F  C$entity_ship.c$58$3_0$142         entity_ship
+     00000DA2  A$entity_ship$210                  entity_ship
+     00000DA3  A$entity_ship$211                  entity_ship
+     00000DA4  A$entity_ship$212                  entity_ship
+     00000DA5  A$entity_ship$213                  entity_ship
+     00000DA8  A$entity_ship$214                  entity_ship
+     00000DA9  A$entity_ship$215                  entity_ship
+     00000DAA  A$entity_ship$216                  entity_ship
+     00000DAB  A$entity_ship$217                  entity_ship
+     00000DAE  A$entity_ship$218                  entity_ship
+     00000DAF  A$entity_ship$219                  entity_ship
+     00000DB0  A$entity_ship$220                  entity_ship
+     00000DB1  A$entity_ship$225                  entity_ship
+     00000DB1  C$entity_ship.c$60$2_0$140         entity_ship
+     00000DB4  A$entity_ship$226                  entity_ship
+     00000DB6  A$entity_ship$234                  entity_ship
+     00000DB6  C$entity_ship.c$62$1_0$139         entity_ship
+     00000DB6  C$entity_ship.c$65$1_0$139         entity_ship
+     00000DB9  A$entity_ship$235                  entity_ship
+     00000DBB  A$entity_ship$236                  entity_ship
+     00000DBC  A$entity_ship$237                  entity_ship
+     00000DBE  A$entity_ship$238                  entity_ship
+     00000DBF  A$entity_ship$239                  entity_ship
+     00000DC1  A$entity_ship$240                  entity_ship
+     00000DC2  A$entity_ship$241                  entity_ship
+     00000DC4  A$entity_ship$242                  entity_ship
+     00000DC5  A$entity_ship$243                  entity_ship
+     00000DC7  A$entity_ship$244                  entity_ship
+     00000DC8  A$entity_ship$245                  entity_ship
+     00000DCA  A$entity_ship$246                  entity_ship
+     00000DCC  A$entity_ship$254                  entity_ship
+     00000DCC  C$entity_ship.c$67$2_0$143         entity_ship
+     00000DCC  C$entity_ship.c$68$2_0$143         entity_ship
+     00000DCF  A$entity_ship$255                  entity_ship
+     00000DD0  A$entity_ship$256                  entity_ship
+     00000DD1  A$entity_ship$257                  entity_ship
+     00000DD2  A$entity_ship$258                  entity_ship
+     00000DD3  A$entity_ship$259                  entity_ship
+     00000DD4  A$entity_ship$260                  entity_ship
+     00000DD6  A$entity_ship$261                  entity_ship
+     00000DD7  A$entity_ship$262                  entity_ship
+     00000DD9  A$entity_ship$266                  entity_ship
+     00000DD9  C$entity_ship.c$69$3_0$144         entity_ship
+     00000DDC  A$entity_ship$267                  entity_ship
+     00000DDD  A$entity_ship$268                  entity_ship
+     00000DDE  A$entity_ship$269                  entity_ship
+     00000DDF  A$entity_ship$270                  entity_ship
+     00000DE0  A$entity_ship$271                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000DE2  A$entity_ship$272                  entity_ship
+     00000DE3  A$entity_ship$273                  entity_ship
+     00000DE4  A$entity_ship$274                  entity_ship
+     00000DE6  A$entity_ship$275                  entity_ship
+     00000DE7  A$entity_ship$276                  entity_ship
+     00000DEA  A$entity_ship$277                  entity_ship
+     00000DEB  A$entity_ship$278                  entity_ship
+     00000DEC  A$entity_ship$279                  entity_ship
+     00000DED  A$entity_ship$283                  entity_ship
+     00000DED  C$entity_ship.c$71$2_0$143         entity_ship
+     00000DEF  A$entity_ship$291                  entity_ship
+     00000DEF  C$entity_ship.c$73$2_0$143         entity_ship
+     00000DEF  C$entity_ship.c$74$2_0$143         entity_ship
+     00000DF2  A$entity_ship$292                  entity_ship
+     00000DF3  A$entity_ship$293                  entity_ship
+     00000DF4  A$entity_ship$294                  entity_ship
+     00000DF6  A$entity_ship$295                  entity_ship
+     00000DF8  A$entity_ship$299                  entity_ship
+     00000DF8  C$entity_ship.c$75$3_0$145         entity_ship
+     00000DFB  A$entity_ship$300                  entity_ship
+     00000DFC  A$entity_ship$301                  entity_ship
+     00000DFD  A$entity_ship$302                  entity_ship
+     00000DFE  A$entity_ship$303                  entity_ship
+     00000E01  A$entity_ship$304                  entity_ship
+     00000E02  A$entity_ship$305                  entity_ship
+     00000E03  A$entity_ship$306                  entity_ship
+     00000E04  A$entity_ship$307                  entity_ship
+     00000E07  A$entity_ship$308                  entity_ship
+     00000E08  A$entity_ship$309                  entity_ship
+     00000E09  A$entity_ship$310                  entity_ship
+     00000E0A  A$entity_ship$318                  entity_ship
+     00000E0A  C$entity_ship.c$78$1_0$139         entity_ship
+     00000E0A  C$entity_ship.c$81$1_0$139         entity_ship
+     00000E0D  A$entity_ship$319                  entity_ship
+     00000E0F  A$entity_ship$320                  entity_ship
+     00000E10  A$entity_ship$321                  entity_ship
+     00000E13  A$entity_ship$322                  entity_ship
+     00000E15  A$entity_ship$323                  entity_ship
+     00000E16  A$entity_ship$327                  entity_ship
+     00000E16  C$entity_ship.c$82$2_0$146         entity_ship
+     00000E19  A$entity_ship$328                  entity_ship
+     00000E1B  A$entity_ship$329                  entity_ship
+     00000E1C  A$entity_ship$333                  entity_ship
+     00000E1C  C$entity_ship.c$84$3_0$147         entity_ship
+     00000E1F  A$entity_ship$334                  entity_ship
+     00000E21  A$entity_ship$338                  entity_ship
+     00000E21  C$entity_ship.c$86$3_0$147         entity_ship
+     00000E24  A$entity_ship$339                  entity_ship
+     00000E25  A$entity_ship$340                  entity_ship
+     00000E26  A$entity_ship$341                  entity_ship
+     00000E28  A$entity_ship$345                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 23.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000E28  C$entity_ship.c$87$3_0$147         entity_ship
+     00000E2B  A$entity_ship$346                  entity_ship
+     00000E2D  A$entity_ship$354                  entity_ship
+     00000E2D  C$entity_ship.c$92$1_0$139         entity_ship
+     00000E2D  XFentity_ship$ship_handle_input$   entity_ship
+     00000E2E  A$entity_ship$364                  entity_ship
+     00000E2E  C$entity_ship.c$96$1_0$149         entity_ship
+     00000E2E  G$entity_ship_update$0$0           entity_ship
+     00000E2E  _entity_ship_update                entity_ship
+     00000E2F  A$entity_ship$365                  entity_ship
+     00000E31  A$entity_ship$366                  entity_ship
+     00000E32  A$entity_ship$370                  entity_ship
+     00000E32  C$entity_ship.c$98$1_0$149         entity_ship
+     00000E35  A$entity_ship$371                  entity_ship
+     00000E37  A$entity_ship$375                  entity_ship
+     00000E37  C$entity_ship.c$104$1_0$149        entity_ship
+     00000E3A  A$entity_ship$376                  entity_ship
+     00000E3B  A$entity_ship$377                  entity_ship
+     00000E3C  A$entity_ship$381                  entity_ship
+     00000E3C  C$entity_ship.c$100$1_0$149        entity_ship
+     00000E3F  A$entity_ship$382                  entity_ship
+     00000E40  A$entity_ship$383                  entity_ship
+     00000E42  A$entity_ship$384                  entity_ship
+     00000E45  A$entity_ship$385                  entity_ship
+     00000E47  A$entity_ship$386                  entity_ship
+     00000E4A  A$entity_ship$387                  entity_ship
+     00000E4D  A$entity_ship$388                  entity_ship
+     00000E4F  A$entity_ship$389                  entity_ship
+     00000E51  A$entity_ship$390                  entity_ship
+     00000E54  A$entity_ship$391                  entity_ship
+     00000E56  A$entity_ship$392                  entity_ship
+     00000E58  A$entity_ship$393                  entity_ship
+     00000E5B  A$entity_ship$401                  entity_ship
+     00000E5B  C$entity_ship.c$102$2_0$150        entity_ship
+     00000E5B  C$entity_ship.c$103$2_0$150        entity_ship
+     00000E5E  A$entity_ship$402                  entity_ship
+     00000E5F  A$entity_ship$403                  entity_ship
+     00000E60  A$entity_ship$404                  entity_ship
+     00000E62  A$entity_ship$408                  entity_ship
+     00000E62  C$entity_ship.c$104$2_0$150        entity_ship
+     00000E63  A$entity_ship$409                  entity_ship
+     00000E65  A$entity_ship$414                  entity_ship
+     00000E65  C$entity_ship.c$106$2_0$150        entity_ship
+     00000E68  A$entity_ship$415                  entity_ship
+     00000E6A  A$entity_ship$420                  entity_ship
+     00000E6A  C$entity_ship.c$109$2_0$150        entity_ship
+     00000E6D  A$entity_ship$421                  entity_ship
+     00000E6F  A$entity_ship$422                  entity_ship
+     00000E71  A$entity_ship$426                  entity_ship
+     00000E71  C$entity_ship.c$110$2_0$150        entity_ship
+     00000E74  A$entity_ship$427                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 24.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000E76  A$entity_ship$428                  entity_ship
+     00000E78  A$entity_ship$433                  entity_ship
+     00000E78  C$entity_ship.c$112$2_0$150        entity_ship
+     00000E7B  A$entity_ship$434                  entity_ship
+     00000E7D  A$entity_ship$439                  entity_ship
+     00000E7D  C$entity_ship.c$115$2_1$151        entity_ship
+     00000E80  A$entity_ship$440                  entity_ship
+     00000E81  A$entity_ship$441                  entity_ship
+     00000E84  A$entity_ship$442                  entity_ship
+     00000E85  A$entity_ship$443                  entity_ship
+     00000E86  A$entity_ship$444                  entity_ship
+     00000E87  A$entity_ship$445                  entity_ship
+     00000E88  A$entity_ship$446                  entity_ship
+     00000E8A  A$entity_ship$447                  entity_ship
+     00000E8B  A$entity_ship$448                  entity_ship
+     00000E8C  A$entity_ship$449                  entity_ship
+     00000E8D  A$entity_ship$450                  entity_ship
+     00000E8F  A$entity_ship$451                  entity_ship
+     00000E90  A$entity_ship$452                  entity_ship
+     00000E91  A$entity_ship$456                  entity_ship
+     00000E91  C$entity_ship.c$116$2_1$151        entity_ship
+     00000E93  A$entity_ship$457                  entity_ship
+     00000E94  A$entity_ship$458                  entity_ship
+     00000E95  A$entity_ship$459                  entity_ship
+     00000E96  A$entity_ship$460                  entity_ship
+     00000E97  A$entity_ship$461                  entity_ship
+     00000E98  A$entity_ship$462                  entity_ship
+     00000E9B  A$entity_ship$463                  entity_ship
+     00000E9C  A$entity_ship$464                  entity_ship
+     00000E9D  A$entity_ship$468                  entity_ship
+     00000E9D  C$entity_ship.c$117$2_1$151        entity_ship
+     00000EA0  A$entity_ship$476                  entity_ship
+     00000EA0  C$entity_ship.c$119$2_1$151        entity_ship
+     00000EA0  C$entity_ship.c$121$2_1$151        entity_ship
+     00000EA3  A$entity_ship$477                  entity_ship
+     00000EA4  A$entity_ship$478                  entity_ship
+     00000EA5  A$entity_ship$479                  entity_ship
+     00000EA7  A$entity_ship$483                  entity_ship
+     00000EA7  C$entity_ship.c$122$3_1$152        entity_ship
+     00000EA8  A$entity_ship$487                  entity_ship
+     00000EA8  C$entity_ship.c$124$3_1$152        entity_ship
+     00000EA9  A$entity_ship$488                  entity_ship
+     00000EAB  A$entity_ship$489                  entity_ship
+     00000EAD  A$entity_ship$490                  entity_ship
+     00000EAF  A$entity_ship$491                  entity_ship
+     00000EB2  A$entity_ship$492                  entity_ship
+     00000EB5  A$entity_ship$497                  entity_ship
+     00000EB5  C$entity_ship.c$128$3_1$153        entity_ship
+     00000EB8  A$entity_ship$498                  entity_ship
+     00000EBA  A$entity_ship$502                  entity_ship
+     00000EBA  C$entity_ship.c$129$3_1$153        entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 25.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000EBD  A$entity_ship$503                  entity_ship
+     00000EBF  A$entity_ship$507                  entity_ship
+     00000EBF  C$entity_ship.c$132$2_1$151        entity_ship
+     00000EC2  A$entity_ship$515                  entity_ship
+     00000EC2  C$entity_ship.c$134$2_1$151        entity_ship
+     00000EC2  C$entity_ship.c$137$2_1$151        entity_ship
+     00000EC5  A$entity_ship$519                  entity_ship
+     00000EC5  C$entity_ship.c$139$2_1$151        entity_ship
+     00000EC8  A$entity_ship$520                  entity_ship
+     00000EC9  A$entity_ship$521                  entity_ship
+     00000ECA  A$entity_ship$522                  entity_ship
+     00000ECB  A$entity_ship$523                  entity_ship
+     00000ECE  A$entity_ship$524                  entity_ship
+     00000ECF  A$entity_ship$527                  entity_ship
+     00000ED2  A$entity_ship$528                  entity_ship
+     00000ED3  A$entity_ship$531                  entity_ship
+     00000ED4  A$entity_ship$532                  entity_ship
+     00000ED5  A$entity_ship$533                  entity_ship
+     00000ED6  A$entity_ship$534                  entity_ship
+     00000ED9  A$entity_ship$535                  entity_ship
+     00000EDA  A$entity_ship$536                  entity_ship
+     00000EDB  A$entity_ship$537                  entity_ship
+     00000EDC  A$entity_ship$541                  entity_ship
+     00000EDC  C$entity_ship.c$140$2_1$151        entity_ship
+     00000EDF  A$entity_ship$542                  entity_ship
+     00000EE0  A$entity_ship$543                  entity_ship
+     00000EE1  A$entity_ship$544                  entity_ship
+     00000EE2  A$entity_ship$545                  entity_ship
+     00000EE3  A$entity_ship$546                  entity_ship
+     00000EE4  A$entity_ship$547                  entity_ship
+     00000EE6  A$entity_ship$548                  entity_ship
+     00000EE7  A$entity_ship$549                  entity_ship
+     00000EE9  A$entity_ship$553                  entity_ship
+     00000EE9  C$entity_ship.c$142$3_1$154        entity_ship
+     00000EEC  A$entity_ship$554                  entity_ship
+     00000EED  A$entity_ship$555                  entity_ship
+     00000EEE  A$entity_ship$556                  entity_ship
+     00000EEF  A$entity_ship$560                  entity_ship
+     00000EEF  C$entity_ship.c$143$3_1$154        entity_ship
+     00000EF2  A$entity_ship$561                  entity_ship
+     00000EF4  A$entity_ship$562                  entity_ship
+     00000EF6  A$entity_ship$567                  entity_ship
+     00000EF6  C$entity_ship.c$147$3_1$155        entity_ship
+     00000EF9  A$entity_ship$568                  entity_ship
+     00000EFA  A$entity_ship$569                  entity_ship
+     00000EFB  A$entity_ship$570                  entity_ship
+     00000EFC  A$entity_ship$571                  entity_ship
+     00000EFE  A$entity_ship$572                  entity_ship
+     00000EFF  A$entity_ship$573                  entity_ship
+     00000F00  A$entity_ship$574                  entity_ship
+     00000F02  A$entity_ship$575                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 26.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000F03  A$entity_ship$576                  entity_ship
+     00000F04  A$entity_ship$580                  entity_ship
+     00000F04  C$entity_ship.c$148$3_1$155        entity_ship
+     00000F05  A$entity_ship$581                  entity_ship
+     00000F06  A$entity_ship$582                  entity_ship
+     00000F07  A$entity_ship$583                  entity_ship
+     00000F09  A$entity_ship$584                  entity_ship
+     00000F0B  A$entity_ship$585                  entity_ship
+     00000F0D  A$entity_ship$589                  entity_ship
+     00000F0D  C$entity_ship.c$149$3_1$155        entity_ship
+     00000F0E  A$entity_ship$590                  entity_ship
+     00000F0F  A$entity_ship$591                  entity_ship
+     00000F10  A$entity_ship$592                  entity_ship
+     00000F12  A$entity_ship$597                  entity_ship
+     00000F12  C$entity_ship.c$154$2_1$151        entity_ship
+     00000F15  A$entity_ship$598                  entity_ship
+     00000F17  A$entity_ship$600                  entity_ship
+     00000F1A  A$entity_ship$601                  entity_ship
+     00000F1B  A$entity_ship$602                  entity_ship
+     00000F1E  A$entity_ship$603                  entity_ship
+     00000F1F  A$entity_ship$604                  entity_ship
+     00000F20  A$entity_ship$605                  entity_ship
+     00000F21  A$entity_ship$606                  entity_ship
+     00000F22  A$entity_ship$607                  entity_ship
+     00000F25  A$entity_ship$608                  entity_ship
+     00000F26  A$entity_ship$610                  entity_ship
+     00000F29  A$entity_ship$611                  entity_ship
+     00000F2A  A$entity_ship$612                  entity_ship
+     00000F2B  A$entity_ship$617                  entity_ship
+     00000F2C  A$entity_ship$618                  entity_ship
+     00000F2D  A$entity_ship$619                  entity_ship
+     00000F30  A$entity_ship$620                  entity_ship
+     00000F31  A$entity_ship$621                  entity_ship
+     00000F32  A$entity_ship$622                  entity_ship
+     00000F33  A$entity_ship$624                  entity_ship
+     00000F36  A$entity_ship$625                  entity_ship
+     00000F38  A$entity_ship$627                  entity_ship
+     00000F39  A$entity_ship$628                  entity_ship
+     00000F3A  A$entity_ship$629                  entity_ship
+     00000F3B  A$entity_ship$630                  entity_ship
+     00000F3C  A$entity_ship$631                  entity_ship
+     00000F3D  A$entity_ship$632                  entity_ship
+     00000F3F  A$entity_ship$633                  entity_ship
+     00000F40  A$entity_ship$634                  entity_ship
+     00000F41  A$entity_ship$635                  entity_ship
+     00000F42  A$entity_ship$636                  entity_ship
+     00000F45  A$entity_ship$637                  entity_ship
+     00000F47  A$entity_ship$638                  entity_ship
+     00000F48  A$entity_ship$642                  entity_ship
+     00000F48  C$entity_ship.c$159$4_1$158        entity_ship
+     00000F4A  A$entity_ship$643                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 27.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000F4B  A$entity_ship$644                  entity_ship
+     00000F4C  A$entity_ship$648                  entity_ship
+     00000F4C  C$entity_ship.c$160$2_1$151        entity_ship
+     00000F4E  A$entity_ship$656                  entity_ship
+     00000F4E  C$entity_ship.c$162$2_1$151        entity_ship
+     00000F4E  C$entity_ship.c$164$2_1$151        entity_ship
+     00000F51  A$entity_ship$660                  entity_ship
+     00000F51  C$entity_ship.c$166$2_1$151        entity_ship
+     00000F54  A$entity_ship$661                  entity_ship
+     00000F56  A$entity_ship$662                  entity_ship
+     00000F58  A$entity_ship$666                  entity_ship
+     00000F58  C$entity_ship.c$168$3_1$156        entity_ship
+     00000F5B  A$entity_ship$667                  entity_ship
+     00000F5D  A$entity_ship$671                  entity_ship
+     00000F5D  C$entity_ship.c$169$3_1$156        entity_ship
+     00000F60  A$entity_ship$672                  entity_ship
+     00000F62  A$entity_ship$680                  entity_ship
+     00000F62  C$entity_ship.c$172$1_0$149        entity_ship
+     00000F62  C$entity_ship.c$180$1_0$149        entity_ship
+     00000F65  A$entity_ship$681                  entity_ship
+     00000F66  A$entity_ship$682                  entity_ship
+     00000F68  A$entity_ship$684                  entity_ship
+     00000F6B  A$entity_ship$685                  entity_ship
+     00000F6C  A$entity_ship$686                  entity_ship
+     00000F6F  A$entity_ship$687                  entity_ship
+     00000F70  A$entity_ship$689                  entity_ship
+     00000F73  A$entity_ship$690                  entity_ship
+     00000F74  A$entity_ship$693                  entity_ship
+     00000F76  A$entity_ship$696                  entity_ship
+     00000F77  A$entity_ship$697                  entity_ship
+     00000F7A  A$entity_ship$698                  entity_ship
+     00000F7B  A$entity_ship$699                  entity_ship
+     00000F7C  A$entity_ship$700                  entity_ship
+     00000F7D  A$entity_ship$705                  entity_ship
+     00000F7E  A$entity_ship$706                  entity_ship
+     00000F7F  A$entity_ship$707                  entity_ship
+     00000F82  A$entity_ship$708                  entity_ship
+     00000F83  A$entity_ship$709                  entity_ship
+     00000F84  A$entity_ship$710                  entity_ship
+     00000F85  A$entity_ship$712                  entity_ship
+     00000F88  A$entity_ship$713                  entity_ship
+     00000F8A  A$entity_ship$715                  entity_ship
+     00000F8B  A$entity_ship$716                  entity_ship
+     00000F8C  A$entity_ship$717                  entity_ship
+     00000F8D  A$entity_ship$718                  entity_ship
+     00000F8E  A$entity_ship$719                  entity_ship
+     00000F8F  A$entity_ship$720                  entity_ship
+     00000F91  A$entity_ship$721                  entity_ship
+     00000F92  A$entity_ship$722                  entity_ship
+     00000F93  A$entity_ship$723                  entity_ship
+     00000F94  A$entity_ship$724                  entity_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 28.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000F97  A$entity_ship$725                  entity_ship
+     00000F99  A$entity_ship$726                  entity_ship
+     00000F9A  A$entity_ship$730                  entity_ship
+     00000F9A  C$entity_ship.c$183$3_0$161        entity_ship
+     00000F9C  A$entity_ship$731                  entity_ship
+     00000F9D  A$entity_ship$732                  entity_ship
+     00000F9E  A$entity_ship$737                  entity_ship
+     00000F9E  C$entity_ship.c$185$1_0$149        entity_ship
+     00000FA0  A$entity_ship$738                  entity_ship
+     00000FA1  A$entity_ship$742                  entity_ship
+     00000FA2  A$entity_ship$747                  entity_ship
+     00000FA2  C$entity_ship.c$186$1_0$149        entity_ship
+     00000FA2  XG$entity_ship_update$0$0          entity_ship
+     00000FA3  A$gfx$56                           gfx
+     00000FA3  C$gfx.c$19$0_0$133                 gfx
+     00000FA3  G$init_gfx_bg_mapfx$0$0            gfx
+     00000FA3  _init_gfx_bg_mapfx                 gfx
+     00000FA4  A$gfx$60                           gfx
+     00000FA4  C$gfx.c$21$1_0$133                 gfx
+     00000FA7  A$gfx$61                           gfx
+     00000FA8  A$gfx$62                           gfx
+     00000FAB  A$gfx$63                           gfx
+     00000FAC  A$gfx$64                           gfx
+     00000FAF  A$gfx$65                           gfx
+     00000FB1  A$gfx$69                           gfx
+     00000FB1  C$gfx.c$30$1_0$133                 gfx
+     00000FB4  A$gfx$70                           gfx
+     00000FB5  A$gfx$71                           gfx
+     00000FB8  A$gfx$72                           gfx
+     00000FB9  A$gfx$73                           gfx
+     00000FBA  A$gfx$74                           gfx
+     00000FBB  A$gfx$75                           gfx
+     00000FBC  A$gfx$76                           gfx
+     00000FBF  A$gfx$77                           gfx
+     00000FC1  A$gfx$81                           gfx
+     00000FC1  C$gfx.c$31$1_0$133                 gfx
+     00000FC2  A$gfx$82                           gfx
+     00000FC4  A$gfx$93                           gfx
+     00000FC4  C$gfx.c$33$1_0$133                 gfx
+     00000FC4  C$gfx.c$34$1_0$133                 gfx
+     00000FC4  XG$init_gfx_bg_mapfx$0$0           gfx
+     00000FC5  A$gfx$103                          gfx
+     00000FC5  C$gfx.c$37$1_0$135                 gfx
+     00000FC5  G$init_gfx_sprites_gameplay$0$0    gfx
+     00000FC5  _init_gfx_sprites_gameplay         gfx
+     00000FC6  A$gfx$104                          gfx
+     00000FC7  A$gfx$108                          gfx
+     00000FC7  C$gfx.c$41$1_0$135                 gfx
+     00000FCA  A$gfx$109                          gfx
+     00000FCB  A$gfx$110                          gfx
+     00000FCE  A$gfx$111                          gfx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 29.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000FCF  A$gfx$112                          gfx
+     00000FD2  A$gfx$113                          gfx
+     00000FD4  A$gfx$117                          gfx
+     00000FD4  C$gfx.c$42$1_0$135                 gfx
+     00000FD7  A$gfx$118                          gfx
+     00000FD8  A$gfx$119                          gfx
+     00000FDB  A$gfx$120                          gfx
+     00000FDC  A$gfx$121                          gfx
+     00000FDF  A$gfx$122                          gfx
+     00000FE1  A$gfx$126                          gfx
+     00000FE1  C$gfx.c$43$1_0$135                 gfx
+     00000FE4  A$gfx$127                          gfx
+     00000FE5  A$gfx$128                          gfx
+     00000FE8  A$gfx$129                          gfx
+     00000FE9  A$gfx$130                          gfx
+     00000FEC  A$gfx$131                          gfx
+     00000FEE  A$gfx$135                          gfx
+     00000FEE  C$gfx.c$44$1_0$135                 gfx
+     00000FEF  A$gfx$136                          gfx
+     00000FF1  A$gfx$137                          gfx
+     00000FF3  A$gfx$138                          gfx
+     00000FF4  A$gfx$142                          gfx
+     00000FF4  C$gfx.c$48$1_0$135                 gfx
+     00000FF7  A$gfx$144                          gfx
+     00000FF8  A$gfx$145                          gfx
+     00000FF9  A$gfx$146                          gfx
+     00000FFA  A$gfx$147                          gfx
+     00000FFC  A$gfx$148                          gfx
+     00000FFD  A$gfx$149                          gfx
+     00000FFF  A$gfx$150                          gfx
+     00001001  A$gfx$152                          gfx
+     00001002  A$gfx$153                          gfx
+     00001003  A$gfx$155                          gfx
+     00001005  A$gfx$158                          gfx
+     00001006  A$gfx$159                          gfx
+     00001007  A$gfx$160                          gfx
+     00001008  A$gfx$161                          gfx
+     00001009  A$gfx$162                          gfx
+     0000100C  A$gfx$163                          gfx
+     0000100D  A$gfx$164                          gfx
+     0000100E  A$gfx$165                          gfx
+     0000100F  A$gfx$166                          gfx
+     00001010  A$gfx$167                          gfx
+     00001012  A$gfx$169                          gfx
+     00001013  A$gfx$170                          gfx
+     00001014  A$gfx$171                          gfx
+     00001015  A$gfx$172                          gfx
+     00001016  A$gfx$173                          gfx
+     00001018  A$gfx$174                          gfx
+     00001019  A$gfx$176                          gfx
+     0000101B  A$gfx$179                          gfx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 30.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000101C  A$gfx$180                          gfx
+     0000101D  A$gfx$181                          gfx
+     0000101E  A$gfx$182                          gfx
+     0000101F  A$gfx$183                          gfx
+     00001022  A$gfx$184                          gfx
+     00001023  A$gfx$185                          gfx
+     00001024  A$gfx$187                          gfx
+     00001026  A$gfx$188                          gfx
+     00001027  A$gfx$189                          gfx
+     00001028  A$gfx$193                          gfx
+     00001028  C$gfx.c$48$2_0$136                 gfx
+     00001029  A$gfx$194                          gfx
+     0000102B  A$gfx$199                          gfx
+     0000102B  C$gfx.c$53$1_0$135                 gfx
+     0000102D  A$gfx$200                          gfx
+     0000102E  A$gfx$204                          gfx
+     0000102F  A$gfx$209                          gfx
+     0000102F  C$gfx.c$54$1_0$135                 gfx
+     0000102F  XG$init_gfx_sprites_gameplay$0$0   gfx
+     00001030  A$input$66                         input
+     00001030  C$input.c$14$0_0$104               input
+     00001030  G$waitpadticked_lowcpu$0$0         input
+     00001030  _waitpadticked_lowcpu              input
+     00001031  A$input$74                         input
+     00001031  C$input.c$16$1_0$104               input
+     00001031  C$input.c$18$2_0$105               input
+     00001034  A$input$78                         input
+     00001034  C$input.c$19$2_0$105               input
+     00001037  A$input$79                         input
+     0000103A  A$input$80                         input
+     0000103D  A$input$84                         input
+     0000103D  C$input.c$20$2_0$105               input
+     00001040  A$input$85                         input
+     00001041  A$input$86                         input
+     00001043  A$input$87                         input
+     00001046  A$input$88                         input
+     00001047  A$input$89                         input
+     00001049  A$input$93                         input
+     00001049  C$input.c$26$1_0$104               input
+     0000104C  A$input$94                         input
+     0000104F  A$input$95                         input
+     00001052  A$input$96                         input
+     00001055  A$input$104                        input
+     00001055  C$input.c$27$1_0$104               input
+     00001055  XG$waitpadticked_lowcpu$0$0        input
+     00001056  A$gameplay$98                      gameplay
+     00001056  C$gameplay.c$31$0_0$144            gameplay
+     00001056  C$gameplay.c$33$1_0$144            gameplay
+     00001056  G$gameplay_prestart$0$0            gameplay
+     00001056  _gameplay_prestart                 gameplay
+     00001059  A$gameplay$102                     gameplay
+ASxxxx Linker V03.00 + NoICE + sdld,  page 31.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001059  C$gameplay.c$37$1_0$144            gameplay
+     0000105C  A$gameplay$103                     gameplay
+     0000105D  A$gameplay$104                     gameplay
+     00001060  A$gameplay$105                     gameplay
+     00001061  A$gameplay$109                     gameplay
+     00001061  C$gameplay.c$39$1_0$144            gameplay
+     00001064  A$gameplay$110                     gameplay
+     00001066  A$gameplay$114                     gameplay
+     00001066  C$gameplay.c$40$1_0$144            gameplay
+     00001069  A$gameplay$118                     gameplay
+     00001069  C$gameplay.c$41$1_0$144            gameplay
+     0000106C  A$gameplay$122                     gameplay
+     0000106C  C$gameplay.c$43$1_0$144            gameplay
+     0000106F  A$gameplay$126                     gameplay
+     0000106F  C$gameplay.c$44$1_0$144            gameplay
+     00001072  A$gameplay$130                     gameplay
+     00001072  C$gameplay.c$46$1_0$144            gameplay
+     00001075  A$gameplay$131                     gameplay
+     00001078  A$gameplay$135                     gameplay
+     00001078  C$gameplay.c$47$1_0$144            gameplay
+     0000107A  A$gameplay$143                     gameplay
+     0000107A  C$gameplay.c$48$1_0$144            gameplay
+     0000107A  XG$gameplay_prestart$0$0           gameplay
+     0000107D  A$gameplay$160                     gameplay
+     0000107D  C$gameplay.c$53$1_0$146            gameplay
+     0000107D  C$gameplay.c$55$1_0$146            gameplay
+     0000107D  C$gameplay.c$56$2_0$147            gameplay
+     0000107D  G$gameplay_run$0$0                 gameplay
+     0000107D  _gameplay_run                      gameplay
+     00001080  A$gameplay$164                     gameplay
+     00001080  C$gameplay.c$59$2_0$147            gameplay
+     00001083  A$gameplay$168                     gameplay
+     00001083  C$gameplay.c$61$2_0$147            gameplay
+     00001085  A$gameplay$169                     gameplay
+     00001086  A$gameplay$170                     gameplay
+     00001089  A$gameplay$174                     gameplay
+     00001089  C$gameplay.c$62$2_0$147            gameplay
+     0000108C  A$gameplay$175                     gameplay
+     0000108F  A$gameplay$179                     gameplay
+     0000108F  C$gameplay.c$67$2_0$147            gameplay
+     00001092  A$gameplay$180                     gameplay
+     00001095  A$gameplay$181                     gameplay
+     00001096  A$gameplay$182                     gameplay
+     00001098  A$gameplay$186                     gameplay
+     00001098  C$gameplay.c$72$3_0$148            gameplay
+     00001099  A$gameplay$187                     gameplay
+     0000109A  A$gameplay$188                     gameplay
+     0000109B  A$gameplay$189                     gameplay
+     0000109C  A$gameplay$190                     gameplay
+     0000109F  A$gameplay$191                     gameplay
+     000010A0  A$gameplay$192                     gameplay
+ASxxxx Linker V03.00 + NoICE + sdld,  page 32.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000010A1  A$gameplay$193                     gameplay
+     000010A4  A$gameplay$194                     gameplay
+     000010A5  A$gameplay$199                     gameplay
+     000010A5  C$gameplay.c$74$2_0$147            gameplay
+     000010A8  A$gameplay$200                     gameplay
+     000010AB  A$gameplay$204                     gameplay
+     000010AB  C$gameplay.c$76$2_0$147            gameplay
+     000010AE  A$gameplay$205                     gameplay
+     000010B1  A$gameplay$206                     gameplay
+     000010B4  A$gameplay$207                     gameplay
+     000010B7  A$gameplay$211                     gameplay
+     000010B7  C$gameplay.c$79$2_0$147            gameplay
+     000010BA  A$gameplay$212                     gameplay
+     000010BB  A$gameplay$213                     gameplay
+     000010BD  A$gameplay$224                     gameplay
+     000010BD  C$gameplay.c$80$1_0$146            gameplay
+     000010BD  C$gameplay.c$87$1_0$146            gameplay
+     000010BD  XG$gameplay_run$0$0                gameplay
+     000010BE  A$gameplay$234                     gameplay
+     000010BE  C$gameplay.c$105$1_0$152           gameplay
+     000010BE  G$gameplay_show_gameover$0$0       gameplay
+     000010BE  _gameplay_show_gameover            gameplay
+     000010BF  A$gameplay$238                     gameplay
+     000010BF  C$gameplay.c$109$1_0$152           gameplay
+     000010C2  A$gameplay$239                     gameplay
+     000010C4  A$gameplay$243                     gameplay
+     000010C4  C$gameplay.c$121$1_0$152           gameplay
+     000010C7  A$gameplay$244                     gameplay
+     000010C8  A$gameplay$245                     gameplay
+     000010CA  A$gameplay$246                     gameplay
+     000010CB  A$gameplay$247                     gameplay
+     000010CC  A$gameplay$248                     gameplay
+     000010CD  A$gameplay$249                     gameplay
+     000010CE  A$gameplay$250                     gameplay
+     000010D1  A$gameplay$251                     gameplay
+     000010D3  A$gameplay$253                     gameplay
+     000010D6  A$gameplay$254                     gameplay
+     000010D7  A$gameplay$256                     gameplay
+     000010DA  A$gameplay$257                     gameplay
+     000010DB  A$gameplay$258                     gameplay
+     000010DC  A$gameplay$261                     gameplay
+     000010DD  A$gameplay$262                     gameplay
+     000010DE  A$gameplay$263                     gameplay
+     000010E1  A$gameplay$264                     gameplay
+     000010E2  A$gameplay$265                     gameplay
+     000010E3  A$gameplay$266                     gameplay
+     000010E4  A$gameplay$268                     gameplay
+     000010E7  A$gameplay$269                     gameplay
+     000010E8  A$gameplay$271                     gameplay
+     000010E9  A$gameplay$272                     gameplay
+     000010EB  A$gameplay$273                     gameplay
+ASxxxx Linker V03.00 + NoICE + sdld,  page 33.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000010EC  A$gameplay$274                     gameplay
+     000010EE  A$gameplay$275                     gameplay
+     000010EF  A$gameplay$276                     gameplay
+     000010F0  A$gameplay$277                     gameplay
+     000010F3  A$gameplay$278                     gameplay
+     000010F5  A$gameplay$279                     gameplay
+     000010F6  A$gameplay$283                     gameplay
+     000010F6  C$gameplay.c$132$3_1$161           gameplay
+     000010F8  A$gameplay$287                     gameplay
+     000010F8  C$gameplay.c$134$1_1$153           gameplay
+     000010FA  A$gameplay$290                     gameplay
+     000010FB  A$gameplay$291                     gameplay
+     000010FC  A$gameplay$292                     gameplay
+     000010FD  A$gameplay$293                     gameplay
+     000010FE  A$gameplay$294                     gameplay
+     00001101  A$gameplay$295                     gameplay
+     00001102  A$gameplay$299                     gameplay
+     00001102  C$gameplay.c$147$1_2$154           gameplay
+     00001105  A$gameplay$300                     gameplay
+     00001107  A$gameplay$304                     gameplay
+     00001107  C$gameplay.c$148$1_2$154           gameplay
+     0000110A  A$gameplay$305                     gameplay
+     0000110C  A$gameplay$313                     gameplay
+     0000110C  C$gameplay.c$149$3_2$156           gameplay
+     0000110C  C$gameplay.c$151$2_2$155           gameplay
+     0000110F  A$gameplay$317                     gameplay
+     0000110F  C$gameplay.c$156$2_2$155           gameplay
+     00001112  A$gameplay$318                     gameplay
+     00001113  A$gameplay$319                     gameplay
+     00001114  A$gameplay$320                     gameplay
+     00001116  A$gameplay$321                     gameplay
+     00001117  A$gameplay$322                     gameplay
+     00001119  A$gameplay$326                     gameplay
+     00001119  C$gameplay.c$157$3_2$156           gameplay
+     0000111B  A$gameplay$330                     gameplay
+     0000111B  C$gameplay.c$158$3_2$156           gameplay
+     0000111E  A$gameplay$331                     gameplay
+     0000111F  A$gameplay$335                     gameplay
+     0000111F  C$gameplay.c$160$3_2$156           gameplay
+     00001120  A$gameplay$336                     gameplay
+     00001122  A$gameplay$337                     gameplay
+     00001123  A$gameplay$338                     gameplay
+     00001125  A$gameplay$339                     gameplay
+     00001128  A$gameplay$340                     gameplay
+     00001129  A$gameplay$341                     gameplay
+     0000112A  A$gameplay$342                     gameplay
+     0000112B  A$gameplay$343                     gameplay
+     0000112E  A$gameplay$344                     gameplay
+     0000112F  A$gameplay$345                     gameplay
+     00001130  A$gameplay$346                     gameplay
+     00001131  A$gameplay$350                     gameplay
+ASxxxx Linker V03.00 + NoICE + sdld,  page 34.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001131  C$gameplay.c$162$3_2$156           gameplay
+     00001133  A$gameplay$351                     gameplay
+     00001136  A$gameplay$352                     gameplay
+     00001137  A$gameplay$353                     gameplay
+     00001139  A$gameplay$354                     gameplay
+     0000113A  A$gameplay$355                     gameplay
+     0000113C  A$gameplay$356                     gameplay
+     0000113E  A$gameplay$361                     gameplay
+     0000113E  C$gameplay.c$163$3_2$156           gameplay
+     00001141  A$gameplay$362                     gameplay
+     00001142  A$gameplay$363                     gameplay
+     00001144  A$gameplay$364                     gameplay
+     00001145  A$gameplay$365                     gameplay
+     00001146  A$gameplay$366                     gameplay
+     00001148  A$gameplay$367                     gameplay
+     00001149  A$gameplay$368                     gameplay
+     0000114A  A$gameplay$369                     gameplay
+     0000114B  A$gameplay$370                     gameplay
+     0000114C  A$gameplay$371                     gameplay
+     0000114F  A$gameplay$372                     gameplay
+     00001150  A$gameplay$373                     gameplay
+     00001151  A$gameplay$378                     gameplay
+     00001154  A$gameplay$379                     gameplay
+     00001156  A$gameplay$384                     gameplay
+     00001156  C$gameplay.c$173$4_3$159           gameplay
+     00001159  A$gameplay$385                     gameplay
+     0000115C  A$gameplay$386                     gameplay
+     0000115D  A$gameplay$389                     gameplay
+     0000115F  A$gameplay$392                     gameplay
+     00001160  A$gameplay$393                     gameplay
+     00001161  A$gameplay$394                     gameplay
+     00001162  A$gameplay$395                     gameplay
+     00001163  A$gameplay$396                     gameplay
+     00001164  A$gameplay$397                     gameplay
+     00001167  A$gameplay$398                     gameplay
+     00001169  A$gameplay$399                     gameplay
+     0000116B  A$gameplay$400                     gameplay
+     0000116C  A$gameplay$401                     gameplay
+     0000116E  A$gameplay$402                     gameplay
+     0000116F  A$gameplay$403                     gameplay
+     00001170  A$gameplay$404                     gameplay
+     00001171  A$gameplay$405                     gameplay
+     00001172  A$gameplay$406                     gameplay
+     00001173  A$gameplay$407                     gameplay
+     00001174  A$gameplay$408                     gameplay
+     00001177  A$gameplay$409                     gameplay
+     00001178  A$gameplay$410                     gameplay
+     00001179  A$gameplay$411                     gameplay
+     0000117A  A$gameplay$412                     gameplay
+     0000117B  A$gameplay$413                     gameplay
+     0000117C  A$gameplay$414                     gameplay
+ASxxxx Linker V03.00 + NoICE + sdld,  page 35.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000117D  A$gameplay$415                     gameplay
+     0000117E  A$gameplay$416                     gameplay
+     00001181  A$gameplay$417                     gameplay
+     00001182  A$gameplay$418                     gameplay
+     00001183  A$gameplay$422                     gameplay
+     00001183  C$gameplay.c$168$3_3$158           gameplay
+     00001186  A$gameplay$423                     gameplay
+     00001187  A$gameplay$424                     gameplay
+     00001188  A$gameplay$425                     gameplay
+     0000118A  A$gameplay$426                     gameplay
+     0000118C  A$gameplay$430                     gameplay
+     0000118C  C$gameplay.c$176$2_3$157           gameplay
+     0000118F  A$gameplay$431                     gameplay
+     00001192  A$gameplay$432                     gameplay
+     00001195  A$gameplay$433                     gameplay
+     00001198  A$gameplay$434                     gameplay
+     00001199  A$gameplay$438                     gameplay
+     00001199  C$gameplay.c$177$2_3$157           gameplay
+     0000119A  A$gameplay$439                     gameplay
+     0000119B  A$gameplay$440                     gameplay
+     0000119E  A$gameplay$441                     gameplay
+     000011A1  A$gameplay$442                     gameplay
+     000011A2  A$gameplay$443                     gameplay
+     000011A5  A$gameplay$447                     gameplay
+     000011A5  C$gameplay.c$184$1_2$154           gameplay
+     000011A7  A$gameplay$448                     gameplay
+     000011AA  A$gameplay$452                     gameplay
+     000011AA  C$gameplay.c$187$1_2$154           gameplay
+     000011AC  A$gameplay$453                     gameplay
+     000011AD  A$gameplay$454                     gameplay
+     000011AE  A$gameplay$455                     gameplay
+     000011AF  A$gameplay$456                     gameplay
+     000011B0  A$gameplay$457                     gameplay
+     000011B1  A$gameplay$458                     gameplay
+     000011B4  A$gameplay$459                     gameplay
+     000011B5  A$gameplay$467                     gameplay
+     000011B5  C$gameplay.c$188$1_2$152           gameplay
+     000011B5  XG$gameplay_show_gameover$0$0      gameplay
+     000011B6  G$spr_waves_tbl$0_0$0              gameplay
+     000011B6  _spr_waves_tbl                     gameplay
+     000011C6  G$spr_waves_tbl_16$0_0$0           gameplay
+     000011C6  _spr_waves_tbl_16                  gameplay
+     000011E6  A$score$61                         score
+     000011E6  C$score.c$13$0_0$126               score
+     000011E6  C$score.c$14$1_0$126               score
+     000011E6  G$score_reset$0$0                  score
+     000011E6  _score_reset                       score
+     000011E7  A$score$62                         score
+     000011EA  A$score$63                         score
+     000011EB  A$score$64                         score
+     000011EC  A$score$65                         score
+ASxxxx Linker V03.00 + NoICE + sdld,  page 36.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000011ED  A$score$66                         score
+     000011EE  A$score$74                         score
+     000011EE  C$score.c$15$1_0$126               score
+     000011EE  XG$score_reset$0$0                 score
+     000011EF  G$score_increment$0_0$0            score
+     000011EF  _score_increment                   score
+     000011F3  A$score$90                         score
+     000011F3  C$score.c$18$1_0$128               score
+     000011F3  C$score.c$21$1_0$128               score
+     000011F3  G$score_update$0$0                 score
+     000011F3  _score_update                      score
+     000011F6  A$score$94                         score
+     000011F6  C$score.c$22$1_0$128               score
+     000011F8  A$score$99                         score
+     000011F8  C$score.c$23$1_0$128               score
+     000011F9  A$score$100                        score
+     000011FA  A$score$101                        score
+     000011FB  A$score$103                        score
+     000011FC  A$score$104                        score
+     000011FE  A$score$105                        score
+     000011FF  A$score$106                        score
+     00001201  A$score$107                        score
+     00001202  A$score$108                        score
+     00001203  A$score$110                        score
+     00001204  A$score$113                        score
+     00001206  A$score$116                        score
+     00001207  A$score$117                        score
+     00001208  A$score$118                        score
+     00001209  A$score$119                        score
+     0000120C  A$score$120                        score
+     0000120D  A$score$121                        score
+     0000120E  A$score$122                        score
+     0000120F  A$score$123                        score
+     00001210  A$score$124                        score
+     00001211  A$score$126                        score
+     00001212  A$score$127                        score
+     00001214  A$score$128                        score
+     00001215  A$score$129                        score
+     00001217  A$score$130                        score
+     00001219  A$score$131                        score
+     0000121A  A$score$132                        score
+     0000121B  A$score$134                        score
+     0000121C  A$score$137                        score
+     0000121E  A$score$140                        score
+     0000121F  A$score$141                        score
+     00001220  A$score$142                        score
+     00001221  A$score$143                        score
+     00001224  A$score$144                        score
+     00001225  A$score$145                        score
+     00001226  A$score$146                        score
+     00001227  A$score$147                        score
+ASxxxx Linker V03.00 + NoICE + sdld,  page 37.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001228  A$score$148                        score
+     00001229  A$score$152                        score
+     00001229  C$score.c$32$2_0$129               score
+     0000122A  A$score$160                        score
+     0000122A  C$score.c$34$1_0$128               score
+     0000122A  XG$score_update$0$0                score
+     0000122C  A$fade$58                          fade
+     0000122C  C$fade.c$37$0_0$135                fade
+     0000122C  G$fade_out$0$0                     fade
+     0000122C  _fade_out                          fade
+     0000122D  A$fade$62                          fade
+     0000122D  C$fade.c$38$3_0$136                fade
+     0000122F  A$fade$64                          fade
+     00001230  A$fade$65                          fade
+     00001232  A$fade$66                          fade
+     00001233  A$fade$70                          fade
+     00001233  C$fade.c$39$3_0$136                fade
+     00001236  A$fade$74                          fade
+     00001236  C$fade.c$40$3_0$136                fade
+     00001239  A$fade$75                          fade
+     0000123B  A$fade$76                          fade
+     0000123C  A$fade$77                          fade
+     0000123D  A$fade$78                          fade
+     0000123F  A$fade$82                          fade
+     0000123F  C$fade.c$41$3_0$136                fade
+     00001242  A$fade$83                          fade
+     00001244  A$fade$84                          fade
+     00001245  A$fade$85                          fade
+     00001246  A$fade$86                          fade
+     00001248  A$fade$90                          fade
+     00001248  C$fade.c$42$3_0$136                fade
+     0000124B  A$fade$91                          fade
+     0000124D  A$fade$92                          fade
+     0000124E  A$fade$93                          fade
+     0000124F  A$fade$94                          fade
+     00001251  A$fade$98                          fade
+     00001251  C$fade.c$43$3_0$136                fade
+     00001252  A$fade$99                          fade
+     00001253  A$fade$100                         fade
+     00001255  A$fade$101                         fade
+     00001256  A$fade$102                         fade
+     00001258  A$fade$103                         fade
+     00001259  A$fade$104                         fade
+     0000125A  A$fade$105                         fade
+     0000125B  A$fade$106                         fade
+     0000125E  A$fade$107                         fade
+     0000125F  A$fade$108                         fade
+     00001260  A$fade$113                         fade
+     00001260  C$fade.c$38$2_0$135                fade
+     00001261  A$fade$121                         fade
+     00001261  C$fade.c$45$2_0$135                fade
+ASxxxx Linker V03.00 + NoICE + sdld,  page 38.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001261  XG$fade_out$0$0                    fade
+     00001263  G$fade_steps_dmg_BGP$0_0$0         fade
+     00001263  _fade_steps_dmg_BGP                fade
+     00001267  G$fade_steps_dmg_OBP0$0_0$0        fade
+     00001267  _fade_steps_dmg_OBP0               fade
+     0000126B  G$fade_steps_dmg_OBP1$0_0$0        fade
+     0000126B  _fade_steps_dmg_OBP1               fade
+     0000126F  A$fade$149                         fade
+     0000126F  C$fade.c$48$2_0$139                fade
+     0000126F  G$fade_in$0$0                      fade
+     0000126F  _fade_in                           fade
+     00001270  A$fade$153                         fade
+     00001270  C$fade.c$50$3_0$140                fade
+     00001272  A$fade$155                         fade
+     00001273  A$fade$156                         fade
+     00001275  A$fade$157                         fade
+     00001276  A$fade$161                         fade
+     00001276  C$fade.c$51$3_0$140                fade
+     00001279  A$fade$165                         fade
+     00001279  C$fade.c$52$3_0$140                fade
+     0000127A  A$fade$166                         fade
+     0000127C  A$fade$167                         fade
+     0000127D  A$fade$168                         fade
+     0000127E  A$fade$169                         fade
+     0000127F  A$fade$170                         fade
+     00001280  A$fade$171                         fade
+     00001281  A$fade$172                         fade
+     00001284  A$fade$173                         fade
+     00001285  A$fade$174                         fade
+     00001286  A$fade$175                         fade
+     00001288  A$fade$179                         fade
+     00001288  C$fade.c$53$3_0$140                fade
+     0000128B  A$fade$180                         fade
+     0000128C  A$fade$181                         fade
+     0000128D  A$fade$182                         fade
+     0000128F  A$fade$186                         fade
+     0000128F  C$fade.c$54$3_0$140                fade
+     00001292  A$fade$187                         fade
+     00001293  A$fade$188                         fade
+     00001294  A$fade$189                         fade
+     00001296  A$fade$193                         fade
+     00001296  C$fade.c$55$3_0$140                fade
+     00001297  A$fade$194                         fade
+     00001298  A$fade$195                         fade
+     0000129A  A$fade$196                         fade
+     0000129B  A$fade$197                         fade
+     0000129D  A$fade$198                         fade
+     0000129E  A$fade$199                         fade
+     000012A1  A$fade$200                         fade
+     000012A2  A$fade$205                         fade
+     000012A2  C$fade.c$50$2_0$139                fade
+ASxxxx Linker V03.00 + NoICE + sdld,  page 39.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000012A3  A$fade$213                         fade
+     000012A3  C$fade.c$57$2_0$139                fade
+     000012A3  XG$fade_in$0$0                     fade
+     000012A5  A$splash_screen$60                 splash_screen
+     000012A5  C$splash_screen.c$25$0_0$128       splash_screen
+     000012A5  Fsplash_screen$splash_init$0$0     splash_screen
+     000012A6  A$splash_screen$64                 splash_screen
+     000012A6  C$splash_screen.c$27$1_0$128       splash_screen
+     000012A7  A$splash_screen$65                 splash_screen
+     000012AA  A$splash_screen$66                 splash_screen
+     000012AB  A$splash_screen$70                 splash_screen
+     000012AB  C$splash_screen.c$28$1_0$128       splash_screen
+     000012AE  A$splash_screen$71                 splash_screen
+     000012AF  A$splash_screen$72                 splash_screen
+     000012B1  A$splash_screen$73                 splash_screen
+     000012B2  A$splash_screen$74                 splash_screen
+     000012B3  A$splash_screen$75                 splash_screen
+     000012B4  A$splash_screen$76                 splash_screen
+     000012B5  A$splash_screen$77                 splash_screen
+     000012B8  A$splash_screen$78                 splash_screen
+     000012BA  A$splash_screen$81                 splash_screen
+     000012BD  A$splash_screen$82                 splash_screen
+     000012BE  A$splash_screen$84                 splash_screen
+     000012C1  A$splash_screen$85                 splash_screen
+     000012C2  A$splash_screen$86                 splash_screen
+     000012C5  A$splash_screen$87                 splash_screen
+     000012C6  A$splash_screen$88                 splash_screen
+     000012C7  A$splash_screen$89                 splash_screen
+     000012C8  A$splash_screen$90                 splash_screen
+     000012C9  A$splash_screen$91                 splash_screen
+     000012CC  A$splash_screen$92                 splash_screen
+     000012CE  A$splash_screen$94                 splash_screen
+     000012D1  A$splash_screen$95                 splash_screen
+     000012D3  A$splash_screen$99                 splash_screen
+     000012D3  C$splash_screen.c$37$1_0$128       splash_screen
+     000012D5  A$splash_screen$100                splash_screen
+     000012D7  A$splash_screen$104                splash_screen
+     000012D7  C$splash_screen.c$38$1_0$128       splash_screen
+     000012D8  A$splash_screen$105                splash_screen
+     000012DA  A$splash_screen$109                splash_screen
+     000012DA  C$splash_screen.c$39$1_0$128       splash_screen
+     000012DC  A$splash_screen$110                splash_screen
+     000012DE  A$splash_screen$111                splash_screen
+     000012E0  A$splash_screen$119                splash_screen
+     000012E0  C$splash_screen.c$40$1_0$128       splash_screen
+     000012E0  XFsplash_screen$splash_init$0$0    splash_screen
+     000012E1  A$splash_screen$129                splash_screen
+     000012E1  C$splash_screen.c$47$1_0$133       splash_screen
+     000012E1  Fsplash_screen$window_move_with_   splash_screen
+     000012E2  A$splash_screen$130                splash_screen
+     000012E3  A$splash_screen$131                splash_screen
+ASxxxx Linker V03.00 + NoICE + sdld,  page 40.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000012E4  A$splash_screen$135                splash_screen
+     000012E4  C$splash_screen.c$54$2_0$134       splash_screen
+     000012E5  A$splash_screen$136                splash_screen
+     000012E7  A$splash_screen$137                splash_screen
+     000012E9  A$splash_screen$138                splash_screen
+     000012EA  A$splash_screen$140                splash_screen
+     000012EC  A$splash_screen$141                splash_screen
+     000012ED  A$splash_screen$146                splash_screen
+     000012ED  C$splash_screen.c$55$2_0$134       splash_screen
+     000012EF  A$splash_screen$147                splash_screen
+     000012F0  A$splash_screen$148                splash_screen
+     000012F1  A$splash_screen$152                splash_screen
+     000012F1  C$splash_screen.c$57$2_0$134       splash_screen
+     000012F3  A$splash_screen$153                splash_screen
+     000012F4  A$splash_screen$154                splash_screen
+     000012F6  A$splash_screen$158                splash_screen
+     000012F6  C$splash_screen.c$58$2_0$134       splash_screen
+     000012F8  A$splash_screen$159                splash_screen
+     000012FA  A$splash_screen$164                splash_screen
+     000012FA  C$splash_screen.c$59$2_0$134       splash_screen
+     000012FC  A$splash_screen$165                splash_screen
+     000012FD  A$splash_screen$166                splash_screen
+     000012FF  A$splash_screen$170                splash_screen
+     000012FF  C$splash_screen.c$60$2_0$134       splash_screen
+     00001301  A$splash_screen$171                splash_screen
+     00001303  A$splash_screen$176                splash_screen
+     00001303  C$splash_screen.c$62$2_0$134       splash_screen
+     00001305  A$splash_screen$181                splash_screen
+     00001305  C$splash_screen.c$64$2_0$134       splash_screen
+     00001307  A$splash_screen$182                splash_screen
+     00001308  A$splash_screen$183                splash_screen
+     00001309  A$splash_screen$184                splash_screen
+     0000130B  A$splash_screen$188                splash_screen
+     0000130B  C$splash_screen.c$74$3_0$135       splash_screen
+     0000130D  A$splash_screen$189                splash_screen
+     0000130F  A$splash_screen$190                splash_screen
+     00001311  A$splash_screen$191                splash_screen
+     00001312  A$splash_screen$192                splash_screen
+     00001313  A$splash_screen$193                splash_screen
+     00001315  A$splash_screen$194                splash_screen
+     00001316  A$splash_screen$195                splash_screen
+     00001318  A$splash_screen$196                splash_screen
+     00001319  A$splash_screen$197                splash_screen
+     0000131A  A$splash_screen$198                splash_screen
+     0000131B  A$splash_screen$199                splash_screen
+     0000131D  A$splash_screen$202                splash_screen
+     0000131E  A$splash_screen$203                splash_screen
+     00001320  A$splash_screen$205                splash_screen
+     00001322  A$splash_screen$207                splash_screen
+     00001323  A$splash_screen$208                splash_screen
+     00001325  A$splash_screen$209                splash_screen
+ASxxxx Linker V03.00 + NoICE + sdld,  page 41.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001326  A$splash_screen$210                splash_screen
+     00001328  A$splash_screen$211                splash_screen
+     0000132A  A$splash_screen$212                splash_screen
+     0000132B  A$splash_screen$213                splash_screen
+     0000132E  A$splash_screen$214                splash_screen
+     00001330  A$splash_screen$215                splash_screen
+     00001331  A$splash_screen$216                splash_screen
+     00001332  A$splash_screen$217                splash_screen
+     00001334  A$splash_screen$218                splash_screen
+     00001335  A$splash_screen$219                splash_screen
+     00001336  A$splash_screen$220                splash_screen
+     00001338  A$splash_screen$224                splash_screen
+     00001338  C$splash_screen.c$75$3_0$135       splash_screen
+     0000133A  A$splash_screen$225                splash_screen
+     0000133B  A$splash_screen$226                splash_screen
+     0000133D  A$splash_screen$230                splash_screen
+     0000133D  C$splash_screen.c$76$3_0$135       splash_screen
+     0000133F  A$splash_screen$231                splash_screen
+     00001340  A$splash_screen$232                splash_screen
+     00001341  A$splash_screen$233                splash_screen
+     00001342  A$splash_screen$234                splash_screen
+     00001344  A$splash_screen$235                splash_screen
+     00001346  A$splash_screen$240                splash_screen
+     00001346  C$splash_screen.c$80$3_0$136       splash_screen
+     00001348  A$splash_screen$241                splash_screen
+     00001349  A$splash_screen$242                splash_screen
+     0000134B  A$splash_screen$246                splash_screen
+     0000134B  C$splash_screen.c$81$3_0$136       splash_screen
+     0000134D  A$splash_screen$247                splash_screen
+     0000134E  A$splash_screen$248                splash_screen
+     00001350  A$splash_screen$253                splash_screen
+     00001350  C$splash_screen.c$83$2_0$134       splash_screen
+     00001353  A$splash_screen$254                splash_screen
+     00001355  A$splash_screen$259                splash_screen
+     00001355  C$splash_screen.c$86$1_0$133       splash_screen
+     00001356  A$splash_screen$260                splash_screen
+     00001358  A$splash_screen$264                splash_screen
+     00001359  A$splash_screen$265                splash_screen
+     0000135A  A$splash_screen$270                splash_screen
+     0000135A  C$splash_screen.c$87$1_0$133       splash_screen
+     0000135A  XFsplash_screen$window_move_with   splash_screen
+     0000135B  G$scx_shake_offset$0_0$0           splash_screen
+     0000135B  _scx_shake_offset                  splash_screen
+     00001361  A$splash_screen$291                splash_screen
+     00001361  C$splash_screen.c$92$1_0$138       splash_screen
+     00001361  C$splash_screen.c$94$1_0$138       splash_screen
+     00001361  G$splash_intro_run$0$0             splash_screen
+     00001361  _splash_intro_run                  splash_screen
+     00001364  A$splash_screen$295                splash_screen
+     00001364  C$splash_screen.c$96$1_0$138       splash_screen
+     00001366  A$splash_screen$296                splash_screen
+ASxxxx Linker V03.00 + NoICE + sdld,  page 42.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001369  A$splash_screen$300                splash_screen
+     00001369  C$splash_screen.c$97$1_0$138       splash_screen
+     0000136B  A$splash_screen$301                splash_screen
+     0000136D  A$splash_screen$302                splash_screen
+     00001370  A$splash_screen$306                splash_screen
+     00001370  C$splash_screen.c$101$1_0$138      splash_screen
+     00001372  A$splash_screen$307                splash_screen
+     00001375  A$splash_screen$311                splash_screen
+     00001375  C$splash_screen.c$103$1_0$138      splash_screen
+     00001377  A$splash_screen$312                splash_screen
+     00001379  A$splash_screen$313                splash_screen
+     0000137C  A$splash_screen$317                splash_screen
+     0000137C  C$splash_screen.c$104$1_0$138      splash_screen
+     0000137E  A$splash_screen$318                splash_screen
+     00001381  A$splash_screen$322                splash_screen
+     00001381  C$splash_screen.c$106$1_0$138      splash_screen
+     00001383  A$splash_screen$323                splash_screen
+     00001385  A$splash_screen$324                splash_screen
+     00001387  A$splash_screen$332                splash_screen
+     00001387  C$splash_screen.c$107$1_0$138      splash_screen
+     00001387  XG$splash_intro_run$0$0            splash_screen
+     00001388  A$map_fx$88                        map_fx
+     00001388  C$map_fx.c$138$1_0$137             map_fx
+     00001388  C$map_fx.c$60$0_0$137              map_fx
+     00001388  G$map_fx_stat_isr$0$0              map_fx
+     00001388  _map_fx_stat_isr                   map_fx
+     00001389  A$map_fx$89                        map_fx
+     0000138A  A$map_fx$90                        map_fx
+     0000138B  A$map_fx$91                        map_fx
+     0000138E  A$map_fx$95                        map_fx
+     0000138F  A$map_fx$96                        map_fx
+     00001391  A$map_fx$97                        map_fx
+     00001392  A$map_fx$98                        map_fx
+     00001394  A$map_fx$99                        map_fx
+     00001395  A$map_fx$100                       map_fx
+     00001397  A$map_fx$101                       map_fx
+     0000139B  A$map_fx$105                       map_fx
+     0000139C  A$map_fx$106                       map_fx
+     0000139E  A$map_fx$107                       map_fx
+     0000139F  A$map_fx$108                       map_fx
+     000013A1  A$map_fx$109                       map_fx
+     000013A2  A$map_fx$110                       map_fx
+     000013A4  A$map_fx$111                       map_fx
+     000013A5  A$map_fx$112                       map_fx
+     000013A6  A$map_fx$113                       map_fx
+     000013A7  A$map_fx$114                       map_fx
+     000013A8  A$map_fx$115                       map_fx
+     000013A9  A$map_fx$116                       map_fx
+     000013AA  A$map_fx$117                       map_fx
+     000013AC  A$map_fx$118                       map_fx
+     000013AD  A$map_fx$119                       map_fx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 43.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000013AE  A$map_fx$121                       map_fx
+     000013AF  A$map_fx$122                       map_fx
+     000013B0  A$map_fx$123                       map_fx
+     000013B2  A$map_fx$124                       map_fx
+     000013B3  A$map_fx$125                       map_fx
+     000013B4  A$map_fx$141                       map_fx
+     000013B4  C$map_fx.c$139$1_0$137             map_fx
+     000013B4  C$map_fx.c$159$1_0$139             map_fx
+     000013B4  C$map_fx.c$168$1_0$139             map_fx
+     000013B4  G$vblank_isr_map_reset$0$0         map_fx
+     000013B4  _vblank_isr_map_reset              map_fx
+     000013B6  A$map_fx$142                       map_fx
+     000013B9  A$map_fx$143                       map_fx
+     000013BA  A$map_fx$144                       map_fx
+     000013BC  A$map_fx$148                       map_fx
+     000013BC  C$map_fx.c$172$1_0$139             map_fx
+     000013BE  A$map_fx$149                       map_fx
+     000013C1  A$map_fx$150                       map_fx
+     000013C2  A$map_fx$151                       map_fx
+     000013C3  A$map_fx$152                       map_fx
+     000013C4  A$map_fx$153                       map_fx
+     000013C6  A$map_fx$154                       map_fx
+     000013C7  A$map_fx$155                       map_fx
+     000013C8  A$map_fx$156                       map_fx
+     000013CB  A$map_fx$157                       map_fx
+     000013CC  A$map_fx$158                       map_fx
+     000013CD  A$map_fx$159                       map_fx
+     000013CE  A$map_fx$160                       map_fx
+     000013D1  A$map_fx$161                       map_fx
+     000013D2  A$map_fx$162                       map_fx
+     000013D3  A$map_fx$163                       map_fx
+     000013D4  A$map_fx$167                       map_fx
+     000013D4  C$map_fx.c$174$1_0$139             map_fx
+     000013D7  A$map_fx$168                       map_fx
+     000013D8  A$map_fx$169                       map_fx
+     000013D9  A$map_fx$170                       map_fx
+     000013DA  A$map_fx$171                       map_fx
+     000013DB  A$map_fx$172                       map_fx
+     000013DC  A$map_fx$173                       map_fx
+     000013DE  A$map_fx$174                       map_fx
+     000013DF  A$map_fx$175                       map_fx
+     000013E1  A$map_fx$176                       map_fx
+     000013E2  A$map_fx$177                       map_fx
+     000013E3  A$map_fx$182                       map_fx
+     000013E3  C$map_fx.c$179$1_0$139             map_fx
+     000013E6  A$map_fx$183                       map_fx
+     000013E7  A$map_fx$184                       map_fx
+     000013E8  A$map_fx$185                       map_fx
+     000013E9  A$map_fx$186                       map_fx
+     000013EA  A$map_fx$190                       map_fx
+     000013EA  C$map_fx.c$182$2_0$140             map_fx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 44.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000013ED  A$map_fx$191                       map_fx
+     000013EE  A$map_fx$192                       map_fx
+     000013F0  A$map_fx$193                       map_fx
+     000013F3  A$map_fx$194                       map_fx
+     000013F4  A$map_fx$195                       map_fx
+     000013F5  A$map_fx$196                       map_fx
+     000013F6  A$map_fx$197                       map_fx
+     000013F7  A$map_fx$198                       map_fx
+     000013F8  A$map_fx$199                       map_fx
+     000013F9  A$map_fx$200                       map_fx
+     000013FA  A$map_fx$201                       map_fx
+     000013FB  A$map_fx$202                       map_fx
+     000013FC  A$map_fx$203                       map_fx
+     000013FD  A$map_fx$207                       map_fx
+     000013FD  C$map_fx.c$184$2_0$140             map_fx
+     000013FE  A$map_fx$208                       map_fx
+     000013FF  A$map_fx$209                       map_fx
+     00001400  A$map_fx$213                       map_fx
+     00001400  C$map_fx.c$186$3_0$141             map_fx
+     00001403  A$map_fx$214                       map_fx
+     00001404  A$map_fx$215                       map_fx
+     00001405  A$map_fx$216                       map_fx
+     00001407  A$map_fx$217                       map_fx
+     00001408  A$map_fx$218                       map_fx
+     00001409  A$map_fx$219                       map_fx
+     0000140B  A$map_fx$220                       map_fx
+     0000140E  A$map_fx$221                       map_fx
+     0000140F  A$map_fx$222                       map_fx
+     00001410  A$map_fx$223                       map_fx
+     00001411  A$map_fx$231                       map_fx
+     00001411  C$map_fx.c$196$1_0$139             map_fx
+     00001411  XG$vblank_isr_map_reset$0$0        map_fx
+     00001412  A$map_fx$244                       map_fx
+     00001412  C$map_fx.c$201$1_0$143             map_fx
+     00001412  C$map_fx.c$203$1_0$143             map_fx
+     00001412  G$mapfx_set_intro$0$0              map_fx
+     00001412  _mapfx_set_intro                   map_fx
+     00001415  A$map_fx$245                       map_fx
+     00001417  A$map_fx$249                       map_fx
+     00001417  C$map_fx.c$204$1_0$143             map_fx
+     0000141A  A$map_fx$250                       map_fx
+     0000141C  A$map_fx$261                       map_fx
+     0000141C  C$map_fx.c$206$1_0$143             map_fx
+     0000141C  C$map_fx.c$207$1_0$143             map_fx
+     0000141C  XG$mapfx_set_intro$0$0             map_fx
+     0000141F  A$map_fx$274                       map_fx
+     0000141F  C$map_fx.c$211$1_0$145             map_fx
+     0000141F  C$map_fx.c$213$1_0$145             map_fx
+     0000141F  G$mapfx_set_gameplay$0$0           map_fx
+     0000141F  _mapfx_set_gameplay                map_fx
+     00001422  A$map_fx$275                       map_fx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 45.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00001424  A$map_fx$279                       map_fx
+     00001424  C$map_fx.c$214$1_0$145             map_fx
+     00001427  A$map_fx$280                       map_fx
+     00001429  A$map_fx$291                       map_fx
+     00001429  C$map_fx.c$216$1_0$145             map_fx
+     00001429  C$map_fx.c$217$1_0$145             map_fx
+     00001429  XG$mapfx_set_gameplay$0$0          map_fx
+     0000142C  A$map_fx$304                       map_fx
+     0000142C  C$map_fx.c$220$1_0$147             map_fx
+     0000142C  C$map_fx.c$222$1_0$147             map_fx
+     0000142C  G$mapfx_scx_table_reset$0$0        map_fx
+     0000142C  _mapfx_scx_table_reset             map_fx
+     0000142F  A$map_fx$305                       map_fx
+     00001431  A$map_fx$309                       map_fx
+     00001431  C$map_fx.c$223$1_0$147             map_fx
+     00001434  A$map_fx$310                       map_fx
+     00001435  A$map_fx$311                       map_fx
+     00001436  A$map_fx$312                       map_fx
+     00001438  A$map_fx$313                       map_fx
+     00001439  A$map_fx$314                       map_fx
+     0000143A  A$map_fx$315                       map_fx
+     0000143C  A$map_fx$316                       map_fx
+     0000143F  A$map_fx$317                       map_fx
+     00001440  A$map_fx$318                       map_fx
+     00001441  A$map_fx$322                       map_fx
+     00001441  C$map_fx.c$224$1_0$147             map_fx
+     00001442  A$map_fx$323                       map_fx
+     00001444  A$map_fx$324                       map_fx
+     00001445  A$map_fx$325                       map_fx
+     00001446  A$map_fx$326                       map_fx
+     00001447  A$map_fx$327                       map_fx
+     00001449  A$map_fx$328                       map_fx
+     0000144A  A$map_fx$329                       map_fx
+     0000144B  A$map_fx$330                       map_fx
+     0000144E  A$map_fx$331                       map_fx
+     0000144F  A$map_fx$332                       map_fx
+     00001450  A$map_fx$333                       map_fx
+     00001451  A$map_fx$341                       map_fx
+     00001451  C$map_fx.c$226$1_0$147             map_fx
+     00001451  XG$mapfx_scx_table_reset$0$0       map_fx
+     00001452  A$map_fx$354                       map_fx
+     00001452  C$map_fx.c$231$1_0$149             map_fx
+     00001452  C$map_fx.c$237$1_0$149             map_fx
+     00001452  G$mapfx_isr_enable$0$0             map_fx
+     00001452  _mapfx_isr_enable                  map_fx
+     00001453  A$map_fx$358                       map_fx
+     00001453  C$map_fx.c$235$2_0$150             map_fx
+     00001455  A$map_fx$359                       map_fx
+     00001457  A$map_fx$363                       map_fx
+     00001457  C$map_fx.c$236$2_0$150             map_fx
+     0000145A  A$map_fx$364                       map_fx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 46.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000145B  A$map_fx$365                       map_fx
+     0000145E  A$map_fx$366                       map_fx
+     0000145F  A$map_fx$367                       map_fx
+     00001460  A$map_fx$371                       map_fx
+     00001460  C$map_fx.c$240$1_0$149             map_fx
+     00001463  A$map_fx$375                       map_fx
+     00001463  C$map_fx.c$244$1_0$149             map_fx
+     00001465  A$map_fx$376                       map_fx
+     00001467  A$map_fx$377                       map_fx
+     00001468  A$map_fx$378                       map_fx
+     00001469  A$map_fx$379                       map_fx
+     0000146C  A$map_fx$380                       map_fx
+     0000146D  A$map_fx$388                       map_fx
+     0000146D  C$map_fx.c$245$1_0$149             map_fx
+     0000146D  XG$mapfx_isr_enable$0$0            map_fx
+     0000146E  A$map_fx$401                       map_fx
+     0000146E  C$map_fx.c$248$1_0$152             map_fx
+     0000146E  C$map_fx.c$254$1_0$152             map_fx
+     0000146E  G$mapfx_isr_disable$0$0            map_fx
+     0000146E  _mapfx_isr_disable                 map_fx
+     0000146F  A$map_fx$405                       map_fx
+     0000146F  C$map_fx.c$252$2_0$153             map_fx
+     00001471  A$map_fx$406                       map_fx
+     00001473  A$map_fx$407                       map_fx
+     00001474  A$map_fx$408                       map_fx
+     00001475  A$map_fx$409                       map_fx
+     00001478  A$map_fx$410                       map_fx
+     00001479  A$map_fx$414                       map_fx
+     00001479  C$map_fx.c$253$2_0$153             map_fx
+     0000147C  A$map_fx$415                       map_fx
+     0000147D  A$map_fx$416                       map_fx
+     00001480  A$map_fx$417                       map_fx
+     00001481  A$map_fx$418                       map_fx
+     00001482  A$map_fx$426                       map_fx
+     00001482  C$map_fx.c$255$2_0$152             map_fx
+     00001482  XG$mapfx_isr_disable$0$0           map_fx
+     00001483  C$sprite_ship.c$7$0_0$119          sprite_ship
+     00001483  G$__func_sprite_ship$0$0           sprite_ship
+     00001483  G$sprite_ship_palettes$0_0$0       sprite_ship
+     00001483  ___func_sprite_ship                sprite_ship
+     00001483  _sprite_ship_palettes              sprite_ship
+     0000148B  G$sprite_ship_tiles$0_0$0          sprite_ship
+     0000148B  _sprite_ship_tiles                 sprite_ship
+     0000188B  G$sprite_ship_metasprite0$0_0$0    sprite_ship
+     0000188B  _sprite_ship_metasprite0           sprite_ship
+     000018A7  G$sprite_ship_metasprite1$0_0$0    sprite_ship
+     000018A7  _sprite_ship_metasprite1           sprite_ship
+     000018C3  G$sprite_ship_metasprite2$0_0$0    sprite_ship
+     000018C3  _sprite_ship_metasprite2           sprite_ship
+     000018DF  G$sprite_ship_metasprite3$0_0$0    sprite_ship
+     000018DF  _sprite_ship_metasprite3           sprite_ship
+ASxxxx Linker V03.00 + NoICE + sdld,  page 47.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     000018E3  G$sprite_ship_metasprite4$0_0$0    sprite_ship
+     000018E3  _sprite_ship_metasprite4           sprite_ship
+     000018FF  G$sprite_ship_metasprite5$0_0$0    sprite_ship
+     000018FF  _sprite_ship_metasprite5           sprite_ship
+     0000191B  G$sprite_ship_metasprite6$0_0$0    sprite_ship
+     0000191B  _sprite_ship_metasprite6           sprite_ship
+     00001937  G$sprite_ship_metasprite7$0_0$0    sprite_ship
+     00001937  _sprite_ship_metasprite7           sprite_ship
+     00001953  G$sprite_ship_metasprites$0_0$0    sprite_ship
+     00001953  _sprite_ship_metasprites           sprite_ship
+     00001963  C$game_over.c$7$0_0$119            game_over
+     00001963  G$__func_game_over$0$0             game_over
+     00001963  G$game_over_palettes$0_0$0         game_over
+     00001963  ___func_game_over                  game_over
+     00001963  _game_over_palettes                game_over
+     0000196B  G$game_over_tiles$0_0$0            game_over
+     0000196B  _game_over_tiles                   game_over
+     00001AAB  G$game_over_metasprite0$0_0$0      game_over
+     00001AAB  _game_over_metasprite0             game_over
+     00001AD7  G$game_over_metasprites$0_0$0      game_over
+     00001AD7  _game_over_metasprites             game_over
+     00001AD9  C$map_canyon.c$7$0_0$119           map_canyon
+     00001AD9  G$__func_map_canyon$0$0            map_canyon
+     00001AD9  G$map_canyon_palettes$0_0$0        map_canyon
+     00001AD9  ___func_map_canyon                 map_canyon
+     00001AD9  _map_canyon_palettes               map_canyon
+     00001AE1  G$map_canyon_tiles$0_0$0           map_canyon
+     00001AE1  _map_canyon_tiles                  map_canyon
+     00001DE1  G$map_canyon_map$0_0$0             map_canyon
+     00001DE1  _map_canyon_map                    map_canyon
+     00002061  C$tiles_font_nums.c$7$0_0$119      tiles_font_nums
+     00002061  G$__func_tiles_font_nums$0$0       tiles_font_nums
+     00002061  G$tiles_font_nums_palettes$0_0$0   tiles_font_nums
+     00002061  ___func_tiles_font_nums            tiles_font_nums
+     00002061  _tiles_font_nums_palettes          tiles_font_nums
+     00002069  G$tiles_font_nums_tiles$0_0$0      tiles_font_nums
+     00002069  _tiles_font_nums_tiles             tiles_font_nums
+     000021A9  C$sprite_obstacles.c$7$0_0$119     sprite_obstacles
+     000021A9  G$__func_sprite_obstacles$0$0      sprite_obstacles
+     000021A9  G$sprite_obstacles_palettes$0_0$   sprite_obstacles
+     000021A9  ___func_sprite_obstacles           sprite_obstacles
+     000021A9  _sprite_obstacles_palettes         sprite_obstacles
+     000021B1  G$sprite_obstacles_tiles$0_0$0     sprite_obstacles
+     000021B1  _sprite_obstacles_tiles            sprite_obstacles
+     000022F1  G$sprite_obstacles_metasprite0$0   sprite_obstacles
+     000022F1  _sprite_obstacles_metasprite0      sprite_obstacles
+     000022F9  G$sprite_obstacles_metasprite1$0   sprite_obstacles
+     000022F9  _sprite_obstacles_metasprite1      sprite_obstacles
+     00002301  G$sprite_obstacles_metasprite2$0   sprite_obstacles
+     00002301  _sprite_obstacles_metasprite2      sprite_obstacles
+     0000230D  G$sprite_obstacles_metasprite3$0   sprite_obstacles
+ASxxxx Linker V03.00 + NoICE + sdld,  page 48.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00000200    00002DB4 =       11700. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000230D  _sprite_obstacles_metasprite3      sprite_obstacles
+     00002321  G$sprite_obstacles_metasprite4$0   sprite_obstacles
+     00002321  _sprite_obstacles_metasprite4      sprite_obstacles
+     00002329  G$sprite_obstacles_metasprite5$0   sprite_obstacles
+     00002329  _sprite_obstacles_metasprite5      sprite_obstacles
+     00002331  G$sprite_obstacles_metasprite6$0   sprite_obstacles
+     00002331  _sprite_obstacles_metasprite6      sprite_obstacles
+     0000233D  G$sprite_obstacles_metasprite7$0   sprite_obstacles
+     0000233D  _sprite_obstacles_metasprite7      sprite_obstacles
+     00002351  G$sprite_obstacles_metasprites$0   sprite_obstacles
+     00002351  _sprite_obstacles_metasprites      sprite_obstacles
+     00002361  C$splash_logo.c$7$0_0$119          splash_logo
+     00002361  G$__func_splash_logo$0$0           splash_logo
+     00002361  G$splash_logo_palettes$0_0$0       splash_logo
+     00002361  ___func_splash_logo                splash_logo
+     00002361  _splash_logo_palettes              splash_logo
+     00002369  G$splash_logo_tiles$0_0$0          splash_logo
+     00002369  _splash_logo_tiles                 splash_logo
+     00002E39  G$splash_logo_map$0_0$0            splash_logo
+     00002E39  _splash_logo_map                   splash_logo
+     00002F35  A$cartsave$56                      cartsave
+     00002F35  C$cartsave.c$12$0_0$116            cartsave
+     00002F35  C$cartsave.c$14$1_0$116            cartsave
+     00002F35  G$cartsave_restore_data$0$0        cartsave
+     00002F35  _cartsave_restore_data             cartsave
+     00002F38  A$cartsave$57                      cartsave
+     00002F3A  A$cartsave$61                      cartsave
+     00002F3A  C$cartsave.c$17$1_0$116            cartsave
+     00002F3C  A$cartsave$69                      cartsave
+     00002F3C  C$cartsave.c$18$1_0$116            cartsave
+     00002F3C  XG$cartsave_restore_data$0$0       cartsave
+     00002F3D  A$cartsave$82                      cartsave
+     00002F3D  C$cartsave.c$22$1_0$118            cartsave
+     00002F3D  C$cartsave.c$24$1_0$118            cartsave
+     00002F3D  G$cartsave_save_data$0$0           cartsave
+     00002F3D  _cartsave_save_data                cartsave
+     00002F40  A$cartsave$83                      cartsave
+     00002F42  A$cartsave$87                      cartsave
+     00002F42  C$cartsave.c$27$1_0$118            cartsave
+     00002F44  A$cartsave$95                      cartsave
+     00002F44  C$cartsave.c$28$1_0$118            cartsave
+     00002F44  XG$cartsave_save_data$0$0          cartsave
+     00002F45  _hide_sprites_range                Metasprites
+     00002F75  ___move_metasprite                 Metasprites
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 49.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER0                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000020  .call_hl                           Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 50.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER1                            00000000    00000005 =           5. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000028  .MemsetSmall                       Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 51.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER2                            00000000    00000007 =           7. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000030  .MemcpySmall                       Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 52.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER3                            00000000    00000008 =           8. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 53.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER4                            00000000    0000004C =          76. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000080  .int                               Runtime
+     0000008F  _wait_int_handler                  Runtime
+     0000009C  __standard_VBL_handler             Runtime
+     000000AC  _refresh_OAM                       Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 54.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER5                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 55.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER6                            00000000    00000030 =          48. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 56.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER7                            00000000    00000006 =           6. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 57.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER8                            00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 58.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER9                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 59.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERa                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 60.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERb                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 61.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERc                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 62.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERd                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 63.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERe                            00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 64.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADERf                            00000000    00000002 =           2. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 65.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER10                           00000000    00000084 =         132. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000150  .reset                             Runtime
+     00000150  _reset                             Runtime
+     00000157  .code_start                        Runtime
+     000001B9  _exit                              Runtime
+     000001BD  _set_interrupts                    Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 66.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HEADER11                           00000000    00000001 =           1. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 67.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HOME                               00002FB4    000002A1 =         673. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00002FB4  .memset_simple                     Runtime
+     00002FBD  .memcpy_simple                     Runtime
+     00002FDA  .remove_VBL                        Runtime
+     00002FDD  .remove_int                        Runtime
+     00002FFA  .add_VBL                           Runtime
+     00002FFD  .add_int                           Runtime
+     00003008  .wait_vbl_done                     Runtime
+     00003008  _wait_vbl_done                     Runtime
+     00003018  .display_off                       Runtime
+     00003018  _display_off                       Runtime
+     00003030  _remove_VBL                        Runtime
+     0000303B  _add_VBL                           Runtime
+     00003046  _rand                              
+     00003046  _randw                             
+     00003071  _initrand                          
+     00003073  .initrand                          
+     0000307C  _uint2bcd                          bcd
+     000030A7  _bcd_add                           bcd
+     000030C5  _bcd_sub                           bcd
+     000030E6  _bcd2text                          bcd
+     0000312A  _set_win_tiles                     
+     0000313E  _set_tile_data                     
+     00003143  _set_bkg_data                      
+     00003143  _set_win_data                      
+     0000314B  _set_sprite_data                   
+     0000317B  .padup                             
+     0000317B  _waitpadup                         
+     0000318B  .jpad                              
+     0000318B  _joypad                            
+     000031B3  _waitpad                           
+     000031B4  .wait_pad                          
+     000031BB  .delay                             
+     000031BB  _delay                             
+     000031E7  .set_xy_wtt                        SetTileMap
+     000031F0  .set_xy_btt                        SetTileMap
+     000031FF  .set_xy_tt                         SetTileMap
+     00003241  _set_bkg_tiles                     
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 68.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_INITIALIZER                        00003255    00000009 =           9. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00003255  Finput$__xinit_keys$0_0$0          input
+     00003256  Finput$__xinit_previous_keys$0_0   input
+     00003257  Finput$__xinit_key_repeat_count$   input
+     00003258  Fgameplay$__xinit_spr_waves_offs   gameplay
+     0000325A  Fmap_fx$__xinit_mapfx_y_parallax   map_fx
+     0000325B  Fmap_fx$__xinit_mapfx_scx_table_   map_fx
+ASxxxx Linker V03.00 + NoICE + sdld,  page 69.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSINIT                             0000325E    0000000C =          12. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000325E  gsinit                             Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 70.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_GSFINAL                            0000326A    00000001 =           1. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 71.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               0000C0A0    00000047 =          71. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000C0A0  __cpu                              Runtime
+     0000C0A1  __is_GBA                           Runtime
+     0000C0A2  .mode                              Runtime
+     0000C0A3  .sys_time                          Runtime
+     0000C0A3  _sys_time                          Runtime
+     0000C0A5  .int_0x40                          Runtime
+     0000C0B1  G$obstacles$0_0$0                  entity_obstacles
+     0000C0B1  _obstacles                         entity_obstacles
+     0000C0BD  G$obstacles_active_first$0_0$0     entity_obstacles
+     0000C0BD  _obstacles_active_first            entity_obstacles
+     0000C0BE  G$obstacles_active_last$0_0$0      entity_obstacles
+     0000C0BE  _obstacles_active_last             entity_obstacles
+     0000C0BF  G$obstacles_active_count$0_0$0     entity_obstacles
+     0000C0BF  _obstacles_active_count            entity_obstacles
+     0000C0C0  G$obstacles_next_countdown$0_0$0   entity_obstacles
+     0000C0C0  _obstacles_next_countdown          entity_obstacles
+     0000C0C1  G$obstacles_next_type$0_0$0        entity_obstacles
+     0000C0C1  _obstacles_next_type               entity_obstacles
+     0000C0C2  G$obstacles_next_isdouble$0_0$0    entity_obstacles
+     0000C0C2  _obstacles_next_isdouble           entity_obstacles
+     0000C0C3  G$bg_next_free_tile$0_0$0          main
+     0000C0C3  _bg_next_free_tile                 main
+     0000C0C4  G$spr_next_free_tile$0_0$0         main
+     0000C0C4  _spr_next_free_tile                main
+     0000C0C5  G$game_state$0_0$0                 main
+     0000C0C5  _game_state                        main
+     0000C0C6  G$ship_x$0_0$0                     entity_ship
+     0000C0C6  _ship_x                            entity_ship
+     0000C0C8  G$ship_y$0_0$0                     entity_ship
+     0000C0C8  _ship_y                            entity_ship
+     0000C0CA  G$ship_z$0_0$0                     entity_ship
+     0000C0CA  _ship_z                            entity_ship
+     0000C0CC  G$ship_state$0_0$0                 entity_ship
+     0000C0CC  _ship_state                        entity_ship
+     0000C0CD  G$ship_counter$0_0$0               entity_ship
+     0000C0CD  _ship_counter                      entity_ship
+     0000C0CE  G$ship_sprite_sel$0_0$0            entity_ship
+     0000C0CE  _ship_sprite_sel                   entity_ship
+     0000C0CF  G$ship_velocity$0_0$0              entity_ship
+     0000C0CF  _ship_velocity                     entity_ship
+     0000C0D1  G$oam_high_water$0_0$0             gameplay
+     0000C0D1  _oam_high_water                    gameplay
+     0000C0D2  G$oam_high_water_prev$0_0$0        gameplay
+     0000C0D2  _oam_high_water_prev               gameplay
+     0000C0D3  Lgameplay.gameplay_show_gameover   gameplay
+     0000C0D4  Lgameplay.gameplay_show_gameover   gameplay
+     0000C0D5  Lgameplay.gameplay_show_gameover   gameplay
+     0000C0D6  Lgameplay.gameplay_show_gameover   gameplay
+     0000C0D7  G$score$0_0$0                      score
+     0000C0D7  _score                             score
+ASxxxx Linker V03.00 + NoICE + sdld,  page 72.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               0000C0A0    00000047 =          71. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000C0DB  Fmap_fx$mapfx_scx_table_is_inc$0   map_fx
+     0000C0DC  G$mapfx_scx_table_start$0_0$0      map_fx
+     0000C0DC  _mapfx_scx_table_start             map_fx
+     0000C0DE  G$p_scx_table$0_0$0                map_fx
+     0000C0DE  _p_scx_table                       map_fx
+     0000C0E0  G$p_scx_table_base$0_0$0           map_fx
+     0000C0E0  _p_scx_table_base                  map_fx
+     0000C0E2  ___rand_seed                       
+     0000C0E4  ___current_metasprite              Metasprites
+     0000C0E6  ___current_base_tile               Metasprites
+ASxxxx Linker V03.00 + NoICE + sdld,  page 73.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_INITIALIZED                        0000C0E7    00000009 =           9. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000C0E7  G$keys$0_0$0                       input
+     0000C0E7  _keys                              input
+     0000C0E8  G$previous_keys$0_0$0              input
+     0000C0E8  _previous_keys                     input
+     0000C0E9  G$key_repeat_count$0_0$0           input
+     0000C0E9  _key_repeat_count                  input
+     0000C0EA  G$spr_waves_offsets$0_0$0          gameplay
+     0000C0EA  _spr_waves_offsets                 gameplay
+     0000C0EC  G$mapfx_y_parallax_speed$0_0$0     map_fx
+     0000C0EC  _mapfx_y_parallax_speed            map_fx
+     0000C0ED  G$mapfx_scx_table_map_speed$0_0$   map_fx
+     0000C0ED  _mapfx_scx_table_map_speed         map_fx
+     0000C0EE  ___render_shadow_OAM               Metasprites
+     0000C0EF  __map_tile_offset                  SetTileMap
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 74.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_HRAM12                             00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     0000FF90  __current_bank                     Runtime
+     0000FF92  __shadow_OAM_base                  Runtime
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 75.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CABS0                              00000000    00000003 =           3. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000048  Fmap_fx$__ISR_VECTOR_STAT$0_0$0    map_fx
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 76.
+
+Files Linked                              [ module(s) ]
+
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/crt0.o
+                                          [ Runtime ]
+obj/gb/mbc5/entity_collisions.o           [ entity_collisions ]
+obj/gb/mbc5/entity_obstacles.o            [ entity_obstacles ]
+obj/gb/mbc5/main.o                        [ main ]
+obj/gb/mbc5/lookup_tables.o               [ lookup_tables ]
+obj/gb/mbc5/entity_ship.o                 [ entity_ship ]
+obj/gb/mbc5/gfx.o                         [ gfx ]
+obj/gb/mbc5/input.o                       [ input ]
+obj/gb/mbc5/gameplay.o                    [ gameplay ]
+obj/gb/mbc5/score.o                       [ score ]
+obj/gb/mbc5/fade.o                        [ fade ]
+obj/gb/mbc5/splash_screen.o               [ splash_screen ]
+obj/gb/mbc5/map_fx.o                      [ map_fx ]
+obj/gb/mbc5/sprite_ship.o                 [ sprite_ship ]
+obj/gb/mbc5/game_over.o                   [ game_over ]
+obj/gb/mbc5/map_canyon.o                  [ map_canyon ]
+obj/gb/mbc5/tiles_font_nums.o             [ tiles_font_nums ]
+obj/gb/mbc5/sprite_obstacles.o            [ sprite_obstacles ]
+obj/gb/mbc5/splash_logo.o                 [ splash_logo ]
+obj/gb/mbc5/cartsave.o                    [ cartsave ]
+
+
+Libraries Linked                          [ object file ]
+
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/sm83/sm83.lib
+                                          [ rand.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ sfr.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ metasprites_hide_spr.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/sm83/sm83.lib
+                                          [ bcd.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ set_wi_t.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ set_data.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ pad.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ metasprites.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ delay.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ set_xy_t.o ]
+../../gbdk2020/gbdk-2020-git/build/gbdk/lib/gb/gb.lib
+                                          [ set_bk_t.o ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 77.
+
+User Base Address Definitions
+
+_DATA=0xC0A0
+_CODE=0x0200
+ASxxxx Linker V03.00 + NoICE + sdld,  page 78.
+
+User Global Definitions
+
+_shadow_OAM=0xC000
+.STACK=0xE000
+.refresh_OAM=0xFF80
+
+
