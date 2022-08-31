@@ -4,18 +4,13 @@
 #include <stdbool.h>
 #include <rand.h>
 
-// Graphics
-// #include "../res/map_canyon.h"
-// #include "../res/sprite_ship.h"
-
 #include "input.h"
 #include "common.h"
 #include "fade.h"
 
-#include "splash_screen.h"
-
 #include "map_fx.h"
 
+#include "stats.h"
 #include "score.h"
 #include "entity_ship.h"
 #include "entity_obstacles.h"
@@ -84,8 +79,14 @@ void gameplay_run(void) {
             LCDC_REG |= 0x08u; // Toggle BG source (VBL int for toggle back on)
         #endif
     }
+
+    // Game Over: Update high score if applicable
+    stats_update(score);
 }
 
+
+
+// TODO: move to separate source file: game_over_screen.c
 
 
 #include "gfx.h"

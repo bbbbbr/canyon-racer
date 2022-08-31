@@ -9,6 +9,7 @@
 #include "common.h"
 #include "gfx.h"
 #include "fade.h"
+#include "stats.h"
 
 #include "splash_screen.h"
 #include "gameplay.h"
@@ -39,12 +40,21 @@ void init_gfx(void) {
 
 void init(void) {
 
+    #if defined(CART_mbc5)
+        // Initialize MBC bank defaults
+        // Upper ROM bank to 1, And SRAM/XRAM bank to 0
+        SWITCH_ROM_MBC5(1);
+        SWITCH_RAM(0);
+        DISABLE_RAM_MBC5;
+    #endif
+
     // if (_cpu == CGB_TYPE) {
         // Don't use CGB 2x mode, it throws off timing (unless an additional ISR is implemented)
         // Use 2x CGB speed if available
         // cpu_fast();
     // }
 
+    stats_load();
     init_gfx();
 
     mapfx_set_intro();

@@ -49,7 +49,7 @@ CFLAGS += -DCART_$(CART_TYPE)
 LCCFLAGS_gb      = # -Wm-yc # No Color support (DMG mode on the CGB)
 LCCFLAGS_pocket  = # -Wm-yc # No Color support (DMG mode on the CGB)
 LCCFLAGS_duck    = # No MBC
-LCCFLAGS_gbc     = 
+LCCFLAGS_gbc     =
 LCCFLAGS_sms     =
 LCCFLAGS_gg      =
 
@@ -186,6 +186,8 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
 	# Intro Logo
 	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
+	# Font Numbers used on BG with Intro Logo
+	$(PNG2ASSET) $(RESDIR)/font_nums_bg.png -keep_palette_order -map -tiles_only -c $(RESDIR)/tiles_font_nums_bg.c
 	# -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/game_over.png -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
 
@@ -202,7 +204,7 @@ carts-clean:
 
 
 run:
-	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar $(BINS) &
+	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar build/gb/$(PROJECTNAME).gb &
 
 romusage:
 # Ignores failure if romusage not in path

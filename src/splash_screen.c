@@ -5,13 +5,16 @@
 
 // Graphics
 #include "../res/splash_logo.h"
+#include "../res/tiles_font_nums_bg.h"
 
 #include "input.h"
 #include "common.h"
 #include "fade.h"
+#include "score.h"
 
 #include "map_fx.h"
 
+#include "splash_screen.h"
 
 #define WIN_X_OFFSET   7u // GameBoy Window hardware X offset
 #define WIN_X_FINAL    0u // Hide almost one column off-screen
@@ -28,8 +31,15 @@ static void splash_init(uint8_t bg_next_free_tile) {
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
 
     // Splash logo goes on the Window so it can overlay on top of the scrolling background
-    set_win_based_tiles(0,0, splash_logo_WIDTH / splash_logo_TILE_W, splash_logo_HEIGHT / splash_logo_TILE_H, splash_logo_map, bg_next_free_tile);
+    set_win_based_tiles(SPLASH_LOGO_WIN_X, SPLASH_LOGO_WIN_Y,
+                        splash_logo_WIDTH / splash_logo_TILE_W, splash_logo_HEIGHT / splash_logo_TILE_H,
+                        splash_logo_map, bg_next_free_tile);
 
+    bg_next_free_tile += splash_logo_TILE_COUNT;
+
+    // Load Splash BG Font Num tiles and render score
+    set_bkg_data(bg_next_free_tile, tiles_font_nums_bg_TILE_COUNT, tiles_font_nums_bg_tiles);
+    hi_score_render(get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y), bg_next_free_tile);
 
     // TODO: Play Intro Splash Music?
 
