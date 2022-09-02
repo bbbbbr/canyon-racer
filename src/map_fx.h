@@ -2,7 +2,7 @@
 #ifndef map_fx_H
 #define map_fx_H
 
-extern const uint8_t * p_scx_table_base;
+extern const uint8_t * p_scx_table_frame_base;
 
 #define SCREEN_H_PLUS_1 (145u)
 

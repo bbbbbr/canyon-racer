@@ -112,7 +112,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 ship_sprite_sel = SHIP_SPR_NONE;
 
             // Run ship along edge of canyon automatically during startup
-            uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
+            uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_frame_base[ship_y.h];
             ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
             break;
 

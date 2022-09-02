@@ -113,7 +113,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_sprite_sel],
                                              (SPR_TILES_START_OBSTACLES),
                                              oam_high_water,
-                                             CANYON_LEFT_X_BASE - p_scx_table_base[y_pos],
+                                             CANYON_LEFT_X_BASE - p_scx_table_frame_base[y_pos],
                                              y_pos);
         }
 

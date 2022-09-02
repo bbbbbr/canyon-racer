@@ -30,8 +30,8 @@ bool check_collisions(void) {
 
     // Use the ship Y position to index into the
     // canyon background X offset table (one row per scanline)
-    // p_scx_table_base gets updated at the start of every frame
-    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_base[ship_y.h];
+    // p_scx_table_frame_base gets updated at the start of every frame
+    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_frame_base[ship_y.h];
 
     if ((ship_x.h + SHIP_HITBOX_X_LEFT) < ship_canyon_left_x) {
         // Collision with wall on left edge
@@ -68,7 +68,7 @@ bool check_collisions(void) {
         if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_TOP) <= (ship_y.h + SHIP_HITBOX_Y_BOTTOM)) {
 
             // // If this is reached then the ship has Y overlap with the obstacle
-            uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - p_scx_table_base[obstacle_y_pos];
+            uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - p_scx_table_frame_base[obstacle_y_pos];
             // TODO: optimize lookups
             uint8_t obstacle_x_hitbox_left  = obstacle_x_pos + obstacles_x_hitbox_left[obstacle_type];
             uint8_t obstacle_x_hitbox_right = obstacle_x_pos + obstacles_x_hitbox_right[obstacle_type];
