@@ -31,6 +31,11 @@
 #define SCX_TABLE_LOW_STR            9
 #define SCX_TABLE_STR_STR           10
 
+#define SCX_TABLE_HI                11
+
+#define SCX_TABLE_MIXED             12
+
+
 typedef struct scx_table_entry {
     uint8_t * start_address;
     uint8_t * end_address;
