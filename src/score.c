@@ -6,16 +6,19 @@
 #include "common.h"
 #include "score.h"
 #include "stats.h"
+#include "level.h"
+
 
 
 BCD score;
-const BCD score_increment = MAKE_BCD(000010);
+const BCD score_increment_amt = MAKE_BCD(000010); // Increment by 10 each time
 
 void score_reset(void) {
     score = MAKE_BCD(000000);
 }
 
 
+// Displays a score during gameplay with sprites
 void score_update(void) {
 
     // BCD type is a uint32_t
@@ -35,6 +38,7 @@ void score_update(void) {
 }
 
 
+// Displays a score on the intro title screen rendered into BG map tiles
 void hi_score_render(uint8_t * p_vram_addr, uint8_t font_base_tile) {
 
     // BCD type is a uint32_t

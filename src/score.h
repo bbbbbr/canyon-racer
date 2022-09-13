@@ -18,10 +18,10 @@
 
 
 extern BCD score;
-extern const BCD score_increment;
+extern const BCD score_increment_amt;
 
 
-#define SCORE_INCREMENT() bcd_add(&score, &score_increment)
+#define SCORE_INCREMENT() bcd_add(&score, &score_increment_amt)
 
 void score_reset(void);
 void score_update(void);
