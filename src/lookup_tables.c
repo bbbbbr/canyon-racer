@@ -159,11 +159,15 @@ const scx_table_entry scx_tables[] = {
 
 };
 
-const scx_table_level_entry scx_table_level[] = {
+
+const scx_table_level_entry scx_table_levels[] = {
     {.mask = 0x03u, .base = 0u},   // 0-3  // Easy
     {.mask = 0x07u, .base = 0u},   // 0-7
     {.mask = 0x03u, .base = 4u},   // 4-7  // Medium
     {.mask = 0x07u, .base = 4u},   // 4-11
     {.mask = 0x03u, .base = 8u},   // 8-11 // Harder
 };
+
+const uint8_t SCX_TABLE_LEVEL_MIN = 0;
+const uint8_t SCX_TABLE_LEVEL_MAX = ARRAY_LEN(scx_table_levels);
 

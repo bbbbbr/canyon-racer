@@ -55,6 +55,10 @@ typedef struct scx_table_level_entry {
 
 
 extern const scx_table_entry       scx_tables[];
-extern const scx_table_level_entry scx_table_level[];
+extern const scx_table_level_entry scx_table_levels[];
+
+extern const uint8_t SCX_TABLE_LEVEL_MIN;
+extern const uint8_t SCX_TABLE_LEVEL_MAX;
+
 
 #endif

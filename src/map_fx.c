@@ -19,6 +19,7 @@ const uint8_t * p_scx_cur_table;
       uint8_t   mapfx_y_parallax_speed = MAPFX_SCY_SPEED_DEFAULT;
       uint8_t   mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_DEFAULT;
 
+      uint8_t   mapfx_level;
 
 // Effect pans up from end of SCX table to start to reveal curves
 
@@ -188,8 +189,7 @@ void vblank_isr_map_reset (void) {
             // End of table reached, transition to next table
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
-            // TODO: use level selector to map a local struct pointer
-            uint8_t next     = (rand() & scx_table_level[0u].mask) + scx_table_level[0u].base;
+            uint8_t next     = (rand() & scx_table_levels[mapfx_level].mask) + scx_table_levels[mapfx_level].base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
         }
@@ -223,6 +223,7 @@ void mapfx_set_gameplay(void) {
     // SCX table: Set to all Straight -> Low
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
+    mapfx_level_set(SCX_TABLE_LEVEL_MIN);
     // mapfx_scx_table_reset();
 }
 
@@ -231,14 +232,15 @@ void mapfx_set_gameplay(void) {
 void mapfx_scx_table_reset(void) {
     // Init control vars
 
-    // These get updated once per vblan, but need a way to be jumpstarted
-    // for the first frame after being turned on since that likely won't not
-    //  align exactly with being right before vblank
+    // These get updated once per vblank, but need a way to be jumpstarted
+    // for the first frame after being turned on since that likely won't
+    // align exactly with being right before vblank
     //
     // Should match what happens in vblank
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
     p_scx_table_frame_base = p_scx_table_scanline = p_scx_cur_table;
+    mapfx_level = SCX_TABLE_LEVEL_MIN;
 }
 
 
