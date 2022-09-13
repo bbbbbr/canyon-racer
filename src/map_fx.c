@@ -84,9 +84,11 @@ void map_fx_stat_isr(void) __interrupt __naked {
             rra
             ldh (_SCY_REG+0), a
 
-                // Rendering Center Water Area  (4 tiles) [CENTER]
                 // Load something useful during idle cycles
+                // Adds up to a useful amount of cycles over the whole frame
                 ld  hl, #_p_scx_table_scanline  // 3
+
+                // Rendering Center Water Area  (4 tiles) [CENTER]
                 // .rept 4
                 .rept 1
                     nop
@@ -186,7 +188,8 @@ void vblank_isr_map_reset (void) {
             // End of table reached, transition to next table
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
-            uint8_t next     = rand() & SCX_TABLES_RAND_MASK;
+            // TODO: use level selector to map a local struct pointer
+            uint8_t next     = (rand() & scx_table_level[0u].mask) + scx_table_level[0u].base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
         }

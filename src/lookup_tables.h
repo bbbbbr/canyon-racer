@@ -17,23 +17,26 @@
 
 // Should match scx_tables[] in lookup_tables.c
 // TODO: rename SCX_TABLE_SEG_* ?
-#define SCX_TABLE_LOW_STR_LOW        0
-#define SCX_TABLE_LOW_LOW            1
+// #define SCX_TABLE_LOW_STR_LOW        0
+// #define SCX_TABLE_LOW_LOW            1
 // #define SCX_TABLE_LOW_LOW         2
-#define SCX_TABLE_LOW_LONGMED_LOW    3
+// #define SCX_TABLE_LOW_LONGMED_LOW    3
 
-#define SCX_TABLE_LOW_MED_LOW        4
+// #define SCX_TABLE_LOW_MED_LOW        4
 // #define SCX_TABLE_LOW_LONGMED_LOW 5
 //#define SCX_TABLE_LOW_LOW          6
 //#define SCX_TABLE_LOW_MED_LOW      7
 
-#define SCX_TABLE_STR_LOW            8
-#define SCX_TABLE_LOW_STR            9
-#define SCX_TABLE_STR_STR           10
+#define SCX_TABLE_STR_LOW            12
+#define SCX_TABLE_LOW_STR            13
+#define SCX_TABLE_STR_STR            14
 
-#define SCX_TABLE_HI                11
+// TODO: cleanup
+// #define SCX_TABLE_HI                11
 
-#define SCX_TABLE_MIXED             12
+// #define SCX_TABLE_LOW_SHORTMED_LOW  12
+
+// #define SCX_TABLE_MIXED             12
 
 
 typedef struct scx_table_entry {
@@ -43,6 +46,15 @@ typedef struct scx_table_entry {
     // uint8_t   end_seg_type;
 } scx_table_entry;
 
-extern const scx_table_entry scx_tables[];
+typedef struct scx_table_level_entry {
+    uint8_t  mask;
+    uint8_t  base;
+    // uint8_t   start_seg_type;
+    // uint8_t   end_seg_type;
+} scx_table_level_entry;
+
+
+extern const scx_table_entry       scx_tables[];
+extern const scx_table_level_entry scx_table_level[];
 
 #endif
