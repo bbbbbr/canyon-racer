@@ -28,10 +28,10 @@ bool check_collisions(void) {
 
     // == Check Wall collision
 
-    // Use the ship Y position to index into the
+    // Use the ship Y position (middle of ship, not top which is ship.y) to index into the
     // canyon background X offset table (one row per scanline)
     // p_scx_table_frame_base gets updated at the start of every frame
-    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_frame_base[ship_y.h];
+    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - p_scx_table_frame_base[ship_y.h  + (sprite_ship_HEIGHT / 2u)];
 
     if ((ship_x.h + SHIP_HITBOX_X_LEFT) < ship_canyon_left_x) {
         // Collision with wall on left edge
