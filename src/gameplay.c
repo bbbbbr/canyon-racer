@@ -12,6 +12,8 @@
 
 #include "stats.h"
 #include "score.h"
+#include "level.h"
+
 #include "entity_ship.h"
 #include "entity_obstacles.h"
 
@@ -24,6 +26,8 @@ uint8_t oam_high_water_prev;
 
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
+
+    level_init();
 
     mapfx_set_gameplay();
 

@@ -57,10 +57,6 @@ void mapfx_isr_enable(void);
 void mapfx_isr_disable(void);
 
 
-extern uint8_t mapfx_level;
-
-inline void mapfx_level_set(uint8_t newlevel) {
-    mapfx_level = newlevel;
-}
+void mapfx_level_set(uint8_t);
 
 #endif

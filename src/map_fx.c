@@ -19,7 +19,8 @@ const uint8_t * p_scx_cur_table;
       uint8_t   mapfx_y_parallax_speed = MAPFX_SCY_SPEED_DEFAULT;
       uint8_t   mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_DEFAULT;
 
-      uint8_t   mapfx_level;
+      uint8_t   mapfx_level_mask;
+      uint8_t   mapfx_level_base;
 
 // Effect pans up from end of SCX table to start to reveal curves
 
@@ -189,7 +190,7 @@ void vblank_isr_map_reset (void) {
             // End of table reached, transition to next table
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
-            uint8_t next     = (rand() & scx_table_levels[mapfx_level].mask) + scx_table_levels[mapfx_level].base;
+            uint8_t next     = (rand() & mapfx_level_mask) + mapfx_level_base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
         }
@@ -199,6 +200,17 @@ void vblank_isr_map_reset (void) {
     #endif
 }
 
+
+
+// Selects which scx table wave segments should be usable
+// based on a level based lookup table
+void mapfx_level_set(uint8_t level) {
+    if (level > SCX_TABLE_LEVEL_MAX)
+        level = SCX_TABLE_LEVEL_MAX;
+
+    mapfx_level_mask = scx_table_levels[level].mask;
+    mapfx_level_base = scx_table_levels[level].base;
+}
 
 
 // Medium Y Parallax, No X Scrolling
@@ -212,7 +224,10 @@ void mapfx_set_intro(void) {
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
     // mapfx_scx_table_reset();
+    // Below can get overridden by calls to mapfx_level_set()
+    mapfx_level_set(SCX_TABLE_LEVEL_MIN);
 }
+
 
 // Medium Y Parallax, Medium X Scrolling
 // TODO: selectable speed param
@@ -223,10 +238,9 @@ void mapfx_set_gameplay(void) {
     // SCX table: Set to all Straight -> Low
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
-    mapfx_level_set(SCX_TABLE_LEVEL_MIN);
+    // mapfx_level_set(SCX_TABLE_LEVEL_MIN);
     // mapfx_scx_table_reset();
 }
-
 
 
 void mapfx_scx_table_reset(void) {
@@ -240,7 +254,8 @@ void mapfx_scx_table_reset(void) {
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
     p_scx_table_frame_base = p_scx_table_scanline = p_scx_cur_table;
-    mapfx_level = SCX_TABLE_LEVEL_MIN;
+    // Below can get overridden by calls to mapfx_level_set()
+    mapfx_level_set(SCX_TABLE_LEVEL_MIN);
 }
 
 

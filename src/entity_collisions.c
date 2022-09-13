@@ -84,7 +84,7 @@ bool check_collisions(void) {
 
         // Obstacles are stored as a circular buffer, wrap around to top if reached bottom
         idx++;
-        if (idx == ENTITY_COUNT_OBSTACLES_WRAP)
+        if (idx == OBSTACLES_COUNT_WRAP)
             idx = 0;
     }
 

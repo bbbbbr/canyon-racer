@@ -8,6 +8,8 @@
 #include "input.h"
 
 #include "score.h"
+#include "level.h"
+
 #include "entity_ship.h"
 
 #include "map_fx.h"
@@ -16,10 +18,22 @@
 #include "../res/sprite_obstacles.h"
 
 
-obs_ent obstacles[ENTITY_COUNT_OBSTACLES_TOTAL];
+
+obs_ent obstacles[OBSTACLES_COUNT_TOTAL];
+
+// == Difficulty level related ==
+uint8_t obstacles_active_max;         // Controls max number of spawned obstacles
+uint8_t obstacles_next_count_min;     // Min distance between next spawned objext -- OBSTACLE_NEXT_COUNT_MIN
+// TODO?
+//  uint8_t obstacles_inc_speed;          // Speed of obstacles incremented per frame -- OBSTACLE_INC_SPEED
+//      uint8_t obstacles_next_count_double;  // Set distance when double objects are spawned - should be: 255 / OBSTACLE_INC_SPEED
+
+
+// == Active entities related
 uint8_t obstacles_active_first;
 uint8_t obstacles_active_last;
 uint8_t obstacles_active_count;
+
 uint8_t obstacles_next_countdown;
 uint8_t obstacles_next_type;
 uint8_t obstacles_next_isdouble;
@@ -54,17 +68,35 @@ static inline void queue_next(void) {
         obstacles_next_isdouble = true;
     }
     else {
-        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + OBSTACLE_NEXT_COUNT_MIN;
+        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + obstacles_next_count_min;
         obstacles_next_isdouble = false;
     }
 }
 
 
+// Updates Difficulty level related control cars for
+// max num of obstacles and their spawn distance spacing
+void obstacles_level_set(uint8_t obst_qty_max, uint8_t obst_dist_min) {
+
+    obstacles_active_max     = obst_qty_max;
+    obstacles_next_count_min = obst_dist_min;
+}
+
+
+
+// Init obstacles, mostly zero out the ring buffer, etc
+// Note: Call after level_update_vars();
 void entity_obstacles_init(void) {
-    obstacles_active_count = 0;
-    obstacles_active_last = 0;
-    obstacles_active_first = 0;
+
+    // Some vars are initialized by level_update_vars();
+
+    obstacles_active_count = 0u;
+    obstacles_active_last  = 0u;
+    obstacles_active_first = 0u;
+
     obstacles_next_isdouble = false;
+
+    // Seed the initial obstacle
     queue_next();
 }
 
@@ -76,7 +108,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
     // Update all active obstacles
     // Process them in order from top of screen (last) down to bottom (first)
-    // TODO: swap this out to using obstacles_active_first for counter?
+    // TODO: Swap this out to using obstacles_active_first for counter? - Why?
     uint8_t idx = obstacles_active_last;
     for (uint8_t c = obstacles_active_count; c != 0; c--) {
 
@@ -84,30 +116,30 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
         uint8_t y_pos = obstacles[idx].y.h;
         uint8_t object_sprite_sel = obstacles[idx].type;
 
+        // Obstacle scrolled off-screen?
         if (y_pos > OBSTACLE_Y_REMOVE) {
             // Obstacles are always in linear order. First in is always
             // first out, so the ones further down can be removed just by
             // reducing the total count.
             obstacles_active_count--;
 
-            // // Record number of obstacles cleared
-            // TODO: obstacles_cleared_count++;
-            // Increment score and update display
+            // Then move head of list to match reduced size (+ handle wraparound)
+            // (Again- since it's FIFO ordering: the one to remove will always be
+            //  the first entry. So it's sufficient to increment that marker var)
+            obstacles_active_first++;
+            if (obstacles_active_first == OBSTACLES_COUNT_WRAP)
+                obstacles_active_first = 0;
 
+            // Record number of obstacles cleared
+            // Only count for score if game is not over
             // TODO: HACK: state test here is temporary
             if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP)) {
                 SCORE_INCREMENT();
                 score_update();
+                LEVEL_INC_AND_CHECK();
             }
-
-            // Move head of list
-            obstacles_active_first++;
-            if (obstacles_active_first == ENTITY_COUNT_OBSTACLES_WRAP)
-                obstacles_active_first = 0;
-
         } else {
-            // Obstacle is active and not getting removed
-            // uint8_t object_sprite_sel = 2u;
+            // Obstacle is active and not getting removed - Draw it
 
             // X position is found in the X scroll effect offset table at the Y position of the obstacle
             oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_sprite_sel],
@@ -121,31 +153,33 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
         //  if (y_pos > (ship.y + ship
 
         // Obstacles are stored as a circular buffer, wrap around to top if reached bottom
-        if (idx == 0)
-            idx = ENTITY_COUNT_OBSTACLES_MAX;
+        if (idx == OBSTACLES_COUNT_MIN)
+            idx = OBSTACLES_COUNT_MAX;
         else
             idx--;
     }
 
 
+    // TODO: move to function is there is overhead for it:
+    // entity_obstacles_check_spawn_new()
 
     // Add more obstacles if needed
-    if (obstacles_active_count != ENTITY_COUNT_OBSTACLES_TOTAL) {
+    if (obstacles_active_count != obstacles_active_max) {
 
         // Is it time to spawn yet?
-        if (obstacles_next_countdown)
+        if (obstacles_next_countdown) {
             //  If not just increment counter
             obstacles_next_countdown--;
-        else {
+        } else {
             // Spawn a new obstacle
             obstacles_active_count++;
 
             // Obstacles are stored as a circular buffer, wrap around to start if maxed
             obstacles_active_last++;
-            if (obstacles_active_last == ENTITY_COUNT_OBSTACLES_WRAP)
+            if (obstacles_active_last == OBSTACLES_COUNT_WRAP)
                 obstacles_active_last = 0;
 
-            // TODO: scroll screen down so starting at zero doesn't pop on-screen?
+            // TODO: scroll screen down so starting at zero doesn't pop on-screen? If so, adjust OBSTACLE_Y_REMOVE
             obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
             obstacles[obstacles_active_last].type = obstacles_next_type;
 

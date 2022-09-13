@@ -2,22 +2,46 @@
 #define ENTITY_OBSTACLES_H
 
 
-#define ENTITY_COUNT_OBSTACLES_TOTAL 4u
-#define ENTITY_COUNT_OBSTACLES_MAX   (ENTITY_COUNT_OBSTACLES_TOTAL - 1u)
-#define ENTITY_COUNT_OBSTACLES_WRAP  (ENTITY_COUNT_OBSTACLES_TOTAL)
+// == Obstacle Spawning Number control ==
+#define OBSTACLES_COUNT_TOTAL 4u                            // Array size for obstacles
+#define OBSTACLES_COUNT_MIN   0u                            // Min array index number
+#define OBSTACLES_COUNT_MAX   (OBSTACLES_COUNT_TOTAL - 1u)  // Max array index number
+#define OBSTACLES_COUNT_WRAP  (OBSTACLES_COUNT_TOTAL)       // Wrap around to zero when (array index == this num)
 
-// TODO: make spawn count min a function of obstacle speed so it's always correct
-// #define OBSTACLE_NEXT_COUNT_MIN     45u // for speed ~128u  // min frames between spawning
-        // #define OBSTACLE_NEXT_COUNT_MIN     42u // for speed ~255u   // min frames between spawning
-        #define OBSTACLE_NEXT_COUNT_MIN     25u // for speed ~255u   // min frames between spawning
-#define OBSTACLE_NEXT_COUNT_BITMASK 0x3Fu  // bitmask to select range + min
-// #define OBSTACLE_NEXT_COUNT_MIN     0x1Fu  // min frames between spawning
-// #define OBSTACLE_NEXT_COUNT_BITMASK 0x7Fu  // bitmask to select range + min
+// == Obstacle Speed and Removal ==
+// Speed is in Fractional units of 1/255th of a pixel
+// TODO: try to match speed to innermost canyon section?
+#define FIXED_LS_BYTE_MAX     255u
+// TODO
+    #define OBSTACLE_INC_SPEED_MIN    450u
+    #define OBSTACLE_INC_SPEED_MAX    597u
+#define OBSTACLE_INC_SPEED    500u // 551u //597u // 500u //0x255u      // vertical 1.9 pixel pers frame  // TODO make variable? Speed seems fairly reasonable & universal
+#define OBSTACLE_Y_REMOVE     144u    // Remove obstacles after they exceed this threshold (Then added to the score. obstacle_y is top edge)
 
-#define OBSTACLE_NEXT_COUNT_DOUBLE     10u // TODO: adjust for movement speed
+// THIS ISNT WORKING RIGHT:
+#define OBS_COUNT_FROM_SCANLINES(scanlines) (scanlines / (OBSTACLE_INC_SPEED / FIXED_LS_BYTE_MAX))
 
+// == Obstacle Spawning Distance control ==
+// TODO: Min below depends on whether jumping distance / duration becomes variable
+#define OBSTACLE_NEXT_COUNT_MIN     OBS_COUNT_FROM_SCANLINES(25u) // Min frames between spawning 25 scanlines
+#define OBSTACLE_NEXT_COUNT_DOUBLE  OBS_COUNT_FROM_SCANLINES(10u) // Doubles: 10 pixels between spawning
+
+
+#define OBST_DIST_MIN_LVL_EASY       OBS_COUNT_FROM_SCANLINES(45u)
+#define OBST_DIST_MIN_LVL_MED        OBS_COUNT_FROM_SCANLINES(35u)
+#define OBST_DIST_MIN_LVL_HARD       (OBSTACLE_NEXT_COUNT_MIN) // TODO: is this too small and unplayable? Maybe 30?
+
+#define OBST_QTY_LVL_EASY ((OBSTACLES_COUNT_TOTAL) - 2u)
+#define OBST_QTY_LVL_MED  ((OBSTACLES_COUNT_TOTAL) - 1u)
+#define OBST_QTY_LVL_HARD (OBSTACLES_COUNT_TOTAL)
+
+
+// TODO: maybe make this adjustable?
+#define OBSTACLE_NEXT_COUNT_BITMASK 0x3Fu  // Bitmask to select Range + Min from above  // TODO: fixme or ok just fixed as is?
+
+// TODO: scroll screen down so starting at zero doesn't pop on-screen? if so, adjust OBSTACLE_Y_REMOVE
 #define OBSTACLE_SPAWN_Y      (0u << 8) // TODO: fixme
-#define OBSTACLE_SPAWN_STATE  0u  // TODO: fixme
+#define OBSTACLE_SPAWN_STATE  0u        // TODO: fixme
 
 // #define OBSTACLE_NEXT_TYPE_BITMASK 0x03u  // 4 types of obstacles to spawn
 
@@ -30,11 +54,6 @@
 #define OBJECTS_FLAG_DOUBLE_BIT  0x04u
 #define OBJECTS_FLAG_BOBBING_BIT 0x08u
 
-
-// TODO: try to match speed to innermost canyon section
-// #define OBSTACLE_INC_SPEED    0x128u  // 1/2 pixel per frame  // TODO make variable?
-        #define OBSTACLE_INC_SPEED    0x255u  // 1/2 pixel per frame  // TODO make variable?
-#define OBSTACLE_Y_REMOVE     144u    // Remove obstacles after they exceed this threshold
 
 
 // obstacle_x & obstacle_y are in upper left of metasprite hit box (0, 8) of metasprite
@@ -60,9 +79,11 @@
 
 typedef struct obs_ent {
     fixed   y;
-    uint8_t type;  // Should this be "Type" instead? how to deal with "bobbing" ?
+    uint8_t type;  // how to deal with "bobbing" ?
 } obs_ent;
 
+
+// Need extern access to these for collision detection
 extern obs_ent obstacles[];
 extern uint8_t obstacles_active_last;
 extern uint8_t obstacles_active_first;
@@ -73,9 +94,12 @@ extern uint8_t obstacles_spawn_countdown;
 extern const uint8_t obstacles_x_hitbox_left[];
 extern const uint8_t obstacles_x_hitbox_right[];
 
+void obstacles_level_set(uint8_t, uint8_t);
+
 void entity_obstacles_init(void);
 
 uint8_t entity_obstacles_update(uint8_t);
+
 
 
 #endif
