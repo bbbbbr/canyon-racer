@@ -55,6 +55,14 @@ static const level_entry level_data[] = {
 // OPTIMIZE: inline using global var access if needed
 void level_update_vars(void) {
 
+    // TODO:
+    // - obstacle speed
+    // - obstacle up/down
+    // - obstacle range
+    // - BG parallax speed?
+    // - Level increment threshold dial in
+    //   - More leel tiers
+
     // Map Canyon Shape difficulty
     mapfx_level_set(level_data[game_level].mapfx);
 
@@ -69,7 +77,7 @@ void level_init(void) {
     game_level = GAME_LEVEL_RESET;
 
     // Debug:
-    game_level = GAME_LEVEL_MAX;
+    // game_level = GAME_LEVEL_MAX;
 
     level_update_vars();
 }

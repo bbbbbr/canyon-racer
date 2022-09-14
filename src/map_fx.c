@@ -190,6 +190,7 @@ void vblank_isr_map_reset (void) {
             // End of table reached, transition to next table
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
+            //       could do a flag for "load next from queue", in queue is table entry + flag
             uint8_t next     = (rand() & mapfx_level_mask) + mapfx_level_base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
