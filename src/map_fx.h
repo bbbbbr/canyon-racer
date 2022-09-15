@@ -27,12 +27,16 @@ extern const uint8_t * p_scx_table_frame_base;
 // table size MUST be multiple of SCROLL_SCX_TABLE_MAP_SPEED
 #define MAPFX_SCY_SPEED_STOP    0u
 #define MAPFX_SCX_SPEED_STOP    0u
+
 #define MAPFX_SCY_SPEED_SLOW    1u
 #define MAPFX_SCX_SPEED_SLOW    1u
+
 #define MAPFX_SCY_SPEED_MED     2u
 #define MAPFX_SCX_SPEED_MED     2u
+
 #define MAPFX_SCY_SPEED_FAST    2u
 #define MAPFX_SCX_SPEED_FAST    4u
+
 #define MAPFX_SCY_SPEED_MAX     8u
 #define MAPFX_SCX_SPEED_MAX     8u
 

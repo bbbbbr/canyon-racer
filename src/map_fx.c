@@ -154,6 +154,10 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 //
 void vblank_isr_map_reset (void) {
 
+    // Turn off LCD Interrupt while in VBL
+    // (scanlines after 143 are not visible)
+    set_interrupts(IE_REG & ~LCD_IFLAG);
+
     #ifdef DEBUG_BENCHMARK_BG
         // Debug: Benchmark time left by toggling background source at end of processing
         LCDC_REG ^= 0x08u; // Toggle BG source (VBL int for toggle back on)
@@ -191,7 +195,7 @@ void vblank_isr_map_reset (void) {
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
             //       could do a flag for "load next from queue", in queue is table entry + flag
-            uint8_t next     = (rand() & mapfx_level_mask) + mapfx_level_base;
+            uint8_t next     =  (rand() & mapfx_level_mask) + mapfx_level_base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
         }
@@ -199,6 +203,9 @@ void vblank_isr_map_reset (void) {
     #ifdef SCX_TABLE_EVERY_OTHER_FRAME
     }
     #endif
+
+    // Turn LCD Interrupt back on
+    set_interrupts(IE_REG | LCD_IFLAG);
 }
 
 
