@@ -2,6 +2,8 @@
 #ifndef map_fx_H
 #define map_fx_H
 
+#include <stdbool.h>
+
 extern const uint8_t * p_scx_table_frame_base;
 
 #define SCREEN_H_PLUS_1 (145u)
@@ -43,8 +45,9 @@ extern const uint8_t * p_scx_table_frame_base;
 #define MAPFX_SCY_SPEED_DEFAULT (MAPFX_SCY_SPEED_MED)
 #define MAPFX_SCX_SPEED_DEFAULT (MAPFX_SCY_SPEED_STOP)
 
-// Makes Canyon Shape scrolling even slower
-#define SCX_TABLE_EVERY_OTHER_FRAME
+// Makes Canyon Shape scrolling faster/slower
+#define MAPFX_FAST_SCX_NO    false
+#define MAPFX_FAST_SCX_YES   true
 
 
 extern uint8_t mapfx_scroll_y_parallax_speed;

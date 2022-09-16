@@ -14,37 +14,44 @@
 #include "entity_obstacles.h"
 
 
-static uint8_t  game_level;            // Current game level
-        uint8_t level_count_till_next; // Obstacles to clear until level increment
+static uint8_t game_level; // Current game level
+uint8_t level_count_till_next; // Obstacles to clear until level increment
 
-typedef struct level_entry {
-    uint8_t  mapfx;
-    uint8_t  obst_qty_max;
-    uint8_t  obst_dist_min;
-} level_entry;
-
-// mapfx should not exceed SCX_TABLE_LEVEL_MAX
-// obst_qty_max should not exceed OBSTACLES_COUNT_TOTAL
+level_entry cur_level;
 
 
-// TODO: adjustable obstacle speed?
-// TODO: adjustable obstacle distance range mask
-// TODO: max speed
-// TODO
-    // #define OBSTACLE_INC_SPEED_MIN    450u
-    // #define OBSTACLE_INC_SPEED_MAX    597u
+#define OBST_COUNT_FROM_SCANLINES(scanlines, obs_inc_speed) (scanlines / obs_inc_speed)
 
+#define LEVEL_ENTRY(MAPFX_ENTRY, MAPFX_FAST_SCX, OBST_QTY_MAX, OBST_DIST_MIN, OBST_DIST_DOUBLE, OBST_SPEED) \
+    {.mapfx_scx_table_level     = MAPFX_ENTRY, \
+     .mapfx_scx_inc_every_frame = MAPFX_FAST_SCX, \
+     .obst_qty_max              = OBST_QTY_MAX, \
+     .obst_dist_min_raw         = OBST_DIST_MIN, \
+     .obst_dist_double_raw      = OBST_DIST_DOUBLE, \
+     .obst_speed                = OBST_SPEED}
 
 
 static const level_entry level_data[] = {
-    {.mapfx = MAPFX_LVL_EASY,   .obst_qty_max = OBST_QTY_LVL_EASY, .obst_dist_min = OBST_DIST_MIN_LVL_EASY},
-    {.mapfx = MAPFX_LVL_MED_LO, .obst_qty_max = OBST_QTY_LVL_MED,  .obst_dist_min = OBST_DIST_MIN_LVL_MED },
-    {.mapfx = MAPFX_LVL_MED,    .obst_qty_max = OBST_QTY_LVL_MED,  .obst_dist_min = OBST_DIST_MIN_LVL_MED },
-    {.mapfx = MAPFX_LVL_MED_HI, .obst_qty_max = OBST_QTY_LVL_HARD, .obst_dist_min = OBST_DIST_MIN_LVL_HARD},
-    {.mapfx = MAPFX_LVL_HARD,   .obst_qty_max = OBST_QTY_LVL_HARD, .obst_dist_min = OBST_DIST_MIN_LVL_HARD},
+    // MAP_SCX: Slow, OBST_SPD=Slow
+    LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_EASY, OBST_DIST_DBL, OBST_INC_SPD_EASY),
+    LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_EASY,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_EASY),
+    LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_EASY),
+    LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_MED),
+    LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_MED),
 
-// TODO make tiers of levels where first tier is few objects
+    // MAP_SCX: Slow, OBST_SPD=Medium
+    LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED, OBST_DIST_MIN_EASY, OBST_DIST_DBL, OBST_INC_SPD_MED),
+    LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_MED),
+    LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_MED,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_MED_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_HARD, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_MED_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_FAST_SCX_NO,  OBST_QTY_LVL_HARD, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_MED_HARD),
 
+    // MAP_SCX: Fast, OBST_SPD=Fast
+    LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_FAST_SCX_YES, OBST_QTY_LVL_MED, OBST_DIST_MIN_EASY, OBST_DIST_DBL, OBST_INC_SPD_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_FAST_SCX_YES, OBST_QTY_LVL_MED,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_FAST_SCX_YES, OBST_QTY_LVL_HARD,  OBST_DIST_MIN_MED,  OBST_DIST_DBL,  OBST_INC_SPD_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_FAST_SCX_YES, OBST_QTY_LVL_HARD, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_HARD),
+    LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_FAST_SCX_YES, OBST_QTY_LVL_HARD, OBST_DIST_MIN_HARD, OBST_DIST_DBL, OBST_INC_SPD_HARD),
 
 };
 
@@ -52,22 +59,27 @@ static const level_entry level_data[] = {
 #define GAME_LEVEL_MAX    (ARRAY_LEN(level_data) - 1u)
 
 
+
 // OPTIMIZE: inline using global var access if needed
 void level_update_vars(void) {
 
     // TODO:
-    // - obstacle speed
-    // - obstacle up/down
-    // - obstacle range
-    // - BG parallax speed?
+    // - obstacle range mask
     // - Level increment threshold dial in
-    //   - More leel tiers
+    // - obstacle up/down (floating / hidden / blacking?)
 
-    // Map Canyon Shape difficulty
-    mapfx_level_set(level_data[game_level].mapfx);
+    // Update cur_level to new level data (includes obstacle cur_level)
+    cur_level = level_data[game_level];
 
-    // Obstacle Speed and Quantity difficult
-    obstacles_level_set(level_data[game_level].obst_qty_max, level_data[game_level].obst_dist_min);
+    // Min distance between next spawned object
+    cur_level.obst_dist_min = OBST_COUNT_FROM_SCANLINES( cur_level.obst_dist_min_raw, cur_level.obst_speed);
+    // Distance apart when double objects are spawned
+    cur_level.obst_dist_double = OBST_COUNT_FROM_SCANLINES( cur_level.obst_dist_double_raw, cur_level.obst_speed);
+
+
+    // Update Map Canyon Shape difficulty
+    mapfx_level_set(cur_level.mapfx_scx_table_level);
+
 }
 
 
@@ -76,7 +88,7 @@ void level_init(void) {
     level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT_RESET;
     game_level = GAME_LEVEL_RESET;
 
-    // Debug:
+    // TODO: FOR DEBUG
     // game_level = GAME_LEVEL_MAX;
 
     level_update_vars();
@@ -87,10 +99,11 @@ void level_increment(void) {
 
     level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT;
 
-    if (game_level < GAME_LEVEL_MAX)
-        game_level++;
+    if (game_level < GAME_LEVEL_MAX) {
 
-    level_update_vars();
+        game_level++;
+        level_update_vars();
+    }
 
     // TODO: play sound / flash notice / etc on level up
 }

@@ -6,6 +6,7 @@
 
 #include <gb/isr.h>
 #include "common.h"
+#include "level.h"
 
 #include "map_fx.h"
 #include "lookup_tables.h"
@@ -183,26 +184,30 @@ void vblank_isr_map_reset (void) {
     // and increment pointer to prepare for next scanline.
     SCX_REG = *p_scx_table_scanline++;
 
-    // LOOP MODE
-    #ifdef SCX_TABLE_EVERY_OTHER_FRAME
-    if (sys_time & 0x01) {
-    #endif
+    // Determines whether SCX wave table is incremented every frame or every other frame
+    if ((cur_level.mapfx_scx_inc_every_frame) || (sys_time & 0x01)) {
 
         p_scx_cur_table -= mapfx_scx_table_map_speed;
         // TODO: optimize: make this less expensive to run in-frame
         if (p_scx_cur_table == p_scx_table_stop) {
-            // End of table reached, transition to next table
+            // End of table reached, transition to next table -> on the next frame
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
             //       could do a flag for "load next from queue", in queue is table entry + flag
+            //        --> mapfx_scx_next_queued
+            //            - apply it, and generate next  randomly with allowed override and save
+                    // TODO:
+                    //  mapfx_scx_next_queued can be overwritten manually outside of ISR to set transition segments
+                    //
+                    // p_scx_cur_table  = scx_tables[mapfx_scx_next_queued].start_address;
+                    // p_scx_table_stop = scx_tables[mapfx_scx_next_queued].end_address;
+                    // mapfx_scx_next_queued  =  (rand() & mapfx_level_mask) + mapfx_level_base;
             uint8_t next     =  (rand() & mapfx_level_mask) + mapfx_level_base;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
+            // ... frame_base set above
         }
-
-    #ifdef SCX_TABLE_EVERY_OTHER_FRAME
     }
-    #endif
 
     // Turn LCD Interrupt back on
     set_interrupts(IE_REG | LCD_IFLAG);
@@ -213,11 +218,15 @@ void vblank_isr_map_reset (void) {
 // Selects which scx table wave segments should be usable
 // based on a level based lookup table
 void mapfx_level_set(uint8_t level) {
+
     if (level > SCX_TABLE_LEVEL_MAX)
         level = SCX_TABLE_LEVEL_MAX;
 
+    // TODO: Wrap these in a critical section? It would be good form. Would it throw off interrupt timing much? Prob not.
+    // CRITICAL {
     mapfx_level_mask = scx_table_levels[level].mask;
     mapfx_level_base = scx_table_levels[level].base;
+    // }
 }
 
 
@@ -231,7 +240,7 @@ void mapfx_set_intro(void) {
     // SCX table: Set to all Straight
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
-    // mapfx_scx_table_reset();
+
     // Below can get overridden by calls to mapfx_level_set()
     mapfx_level_set(SCX_TABLE_LEVEL_MIN);
 }
@@ -243,7 +252,8 @@ void mapfx_set_gameplay(void) {
 
     mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
     mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_MED;
-    // SCX table: Set to all Straight -> Low
+
+    // SCX table: Set to all Straight -> Low transition
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
     // mapfx_level_set(SCX_TABLE_LEVEL_MIN);
@@ -262,6 +272,7 @@ void mapfx_scx_table_reset(void) {
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
     p_scx_table_frame_base = p_scx_table_scanline = p_scx_cur_table;
+
     // Below can get overridden by calls to mapfx_level_set()
     mapfx_level_set(SCX_TABLE_LEVEL_MIN);
 }

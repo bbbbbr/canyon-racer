@@ -126,6 +126,9 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             else {
                 // Done showing crash explosion, hide ship and exit gameplay
                 ship_state = SHIP_STATE_GAMEOVER;
+                    // TODO: FOR DEBUG
+                    // ship_state = SHIP_STATE_STARTUP;
+                    // ship_counter = SHIP_COUNTER_STARTUP;
                 ship_sprite_sel = SHIP_SPR_NONE;
             }
 

@@ -22,12 +22,7 @@
 obs_ent obstacles[OBSTACLES_COUNT_TOTAL];
 
 // == Difficulty level related ==
-uint8_t obstacles_active_max;         // Controls max number of spawned obstacles
-uint8_t obstacles_next_count_min;     // Min distance between next spawned objext -- OBSTACLE_NEXT_COUNT_MIN
-// TODO?
-//  uint8_t obstacles_inc_speed;          // Speed of obstacles incremented per frame -- OBSTACLE_INC_SPEED
-//      uint8_t obstacles_next_count_double;  // Set distance when double objects are spawned - should be: 255 / OBSTACLE_INC_SPEED
-
+    // See struct level_entry {}, level_entry settings
 
 // == Active entities related
 uint8_t obstacles_active_first;
@@ -64,22 +59,13 @@ static inline void queue_next(void) {
 
     // If random selection is for a double obstacle, space the next one close together
     if ((type & OBJECTS_FLAG_DOUBLE_BIT) && (!obstacles_next_isdouble)) {
-        obstacles_next_countdown = OBSTACLE_NEXT_COUNT_DOUBLE;
+        obstacles_next_countdown = cur_level.obst_dist_double;
         obstacles_next_isdouble = true;
     }
     else {
-        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + obstacles_next_count_min;
+        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + cur_level.obst_dist_min;
         obstacles_next_isdouble = false;
     }
-}
-
-
-// Updates Difficulty level related control cars for
-// max num of obstacles and their spawn distance spacing
-void obstacles_level_set(uint8_t obst_qty_max, uint8_t obst_dist_min) {
-
-    obstacles_active_max     = obst_qty_max;
-    obstacles_next_count_min = obst_dist_min;
 }
 
 
@@ -112,12 +98,12 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     uint8_t idx = obstacles_active_last;
     for (uint8_t c = obstacles_active_count; c != 0; c--) {
 
-        obstacles[idx].y.w += OBSTACLE_INC_SPEED;
+        obstacles[idx].y.w += cur_level.obst_speed;
         uint8_t y_pos = obstacles[idx].y.h;
         uint8_t object_sprite_sel = obstacles[idx].type;
 
         // Obstacle scrolled off-screen?
-        if (y_pos > OBSTACLE_Y_REMOVE) {
+        if (y_pos > OBSTACLE_REMOVE_Y) {
             // Obstacles are always in linear order. First in is always
             // first out, so the ones further down can be removed just by
             // reducing the total count.
@@ -164,7 +150,10 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     // entity_obstacles_check_spawn_new()
 
     // Add more obstacles if needed
-    if (obstacles_active_count != obstacles_active_max) {
+    // But only when the in normal gameplay -- TODO: Split ship motion from game state
+    if ((obstacles_active_count != cur_level.obst_qty_max) &&
+        ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) ||
+        (SHIP_STATE_GET() == SHIP_STATE_JUMP)) ) {
 
         // Is it time to spawn yet?
         if (obstacles_next_countdown) {
@@ -179,7 +168,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             if (obstacles_active_last == OBSTACLES_COUNT_WRAP)
                 obstacles_active_last = 0;
 
-            // TODO: scroll screen down so starting at zero doesn't pop on-screen? If so, adjust OBSTACLE_Y_REMOVE
+            // TODO: scroll screen down so starting at zero doesn't pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
             obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
             obstacles[obstacles_active_last].type = obstacles_next_type;
 
