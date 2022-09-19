@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <audio.h>
+
 // Graphics
 #include "../res/splash_logo.h"
 #include "../res/tiles_font_nums_bg.h"
@@ -42,6 +44,7 @@ static void splash_init(uint8_t bg_next_free_tile) {
     hi_score_render(get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y), bg_next_free_tile);
 
     // TODO: Play Intro Splash Music?
+    // audio_music_set(MUSIC_INTRO_SONG);
 
     // Window start off-screen
     WY_REG = (SCREENHEIGHT + 1u);
@@ -108,7 +111,20 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
 
 
     // Idle until user presses any button
-    waitpadticked_lowcpu(J_ANY);
+   waitpadticked_lowcpu(J_ANY);
+
+    // TODO: REMOVE SFX Debug code
+    /*
+    UPDATE_KEYS();
+    while (! KEY_TICKED(J_A | J_START)) {
+
+        if (KEY_TICKED(J_B))
+            audio_sfx_play_increment();
+
+        UPDATE_KEYS();
+    }*/
+
+    audio_sfx_play(SFX_EXIT_SPLASH);
 
     window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
     fade_out(FADE_DELAY_FX_RUNNING);

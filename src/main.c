@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <rand.h>
 
+#include <audio.h>
+
 #include "input.h"
 #include "common.h"
 #include "gfx.h"
@@ -59,6 +61,8 @@ void init(void) {
 
     mapfx_set_intro();
     mapfx_isr_enable();
+
+    audio_init();
 }
 
 
@@ -80,11 +84,14 @@ void main() {
                 break;
 
             case GAME_STATE_START_GAME:
-                // Expects: screen paletfade_out(FADE_DELAY_FX_RUNNING);tes faded-out
+                // Expects: screen palettes faded-out
                 spr_next_free_tile = 0u; // TODO: fix this up
                 spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
                 SHOW_SPRITES;
                 gameplay_prestart();
+                // TODO: audio_music_set(MUSIC_GAMEPLAY_SONG);
+                audio_music_set(MUSIC_DEMO_SONG);
+                audio_music_unpause();
                 game_state = GAME_STATE_RUNNING;
                 break;
 
@@ -94,8 +101,10 @@ void main() {
                 break;
 
             case GAME_STATE_OVER:
+                // TODO: ?? audio_music_set(MUSIC_GAMEOVER_SONG);
                 gameplay_show_gameover(bg_next_free_tile);
                 game_state = GAME_STATE_SHOW_INTRO;
+                audio_music_pause();
                 break;
         }
     }

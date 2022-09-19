@@ -93,6 +93,9 @@ LCCFLAGS += $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Fla
 # CFLAGS += -Wl-j -Wm-yoA -Wm-ya4 -autobank -Wb-ext=.rel -Wb-v # MBC + Autobanking related flags
 # CFLAGS += -v     # Uncomment for lcc verbose output
 
+# Add pre-compiled Music Driver to lib path
+LIBS_INC = -Wl-llib/hUGEDriver.lib
+LCCFLAGS += $(LIBS_INC)
 
 # You can set the name of the ROM file here
 PROJECTNAME    = canyon_racer_$(VERSION)_$(CART_TYPE)
@@ -100,13 +103,20 @@ PROJECTNAME    = canyon_racer_$(VERSION)_$(CART_TYPE)
 # -Wl-w   Wide map listing
 CFLAGS += -debug -Wl-w
 CFLAGS += -Wf-MMD
+
 # Add include path for type of flash cart if enabled
 CFLAGS += -Wf-I"$(CART_TYPE_DIR)/"
+
 # Add language directory to include path
 CFLAGS += -Wf-I"$(LANGDIR)/"
-SRCDIR      = src
-SFXDIR         = $(SRCDIR)/sfx
+SRCDIR         = src
+AUDIODIR       = $(SRCDIR)/audio
+SFXDIR         = $(SRCDIR)/audio/sfx
+SONGSDIR       = $(SRCDIR)/audio/songs
 CART_TYPE_DIR  = $(SRCDIR)/cart_$(CART_TYPE)
+
+# Add audio dir to include path
+CFLAGS += -Wf-I"$(AUDIODIR)/"
 
 OBJDIR      = obj/$(EXT)/$(CART_TYPE)
 RESDIR      = res
@@ -116,7 +126,9 @@ MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-cr
 BINS	      = $(OBJDIR)/$(PROJECTNAME).$(EXT)
 CSOURCES      = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c)))
 CSOURCES      += $(foreach dir,$(RESDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES      += $(foreach dir,$(AUDIODIR),$(notdir $(wildcard $(dir)/*.c)))
 CSOURCES      += $(foreach dir,$(SFXDIR),$(notdir $(wildcard $(dir)/*.c)))
+CSOURCES      += $(foreach dir,$(SONGSDIR),$(notdir $(wildcard $(dir)/*.c)))
 CSOURCES_CART = $(foreach dir,$(CART_TYPE_DIR),$(notdir $(wildcard $(dir)/*.c)))
 
 ASMSOURCES  = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.s)))
@@ -144,8 +156,16 @@ $(OBJDIR)/%.o:	$(SRCDIR)/%.c
 $(OBJDIR)/%.o:	$(RESDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
 
-# Compile .c files in "sfx/" to .o object files
+# Compile .c files in "audio/" to .o object files
+$(OBJDIR)/%.o:	$(AUDIODIR)/%.c
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
+# Compile .c files in "audio/" to .o object files
 $(OBJDIR)/%.o:	$(SFXDIR)/%.c
+	$(LCC) $(CFLAGS) -c -o $@ $<
+
+# Compile .c files in "audio/" to .o object files
+$(OBJDIR)/%.o:	$(SONGSDIR)/%.c
 	$(LCC) $(CFLAGS) -c -o $@ $<
 
 # Compile .c files in "src/<CART_TYPE_DIR>/" to .o object files

@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include <audio.h>
+
 #include "common.h"
 #include "input.h"
 #include "score.h"
@@ -82,6 +84,7 @@ static void ship_handle_input(void) {
         if (ship_state ==  SHIP_STATE_PLAYING) {
 
             ship_state = SHIP_STATE_JUMP;
+            audio_sfx_play(SFX_SHIP_JUMP);
             // ship_counter = SHIP_COUNTER_JUMPSTART;
             ship_velocity = SHIP_VELOCITY_START;
             ship_z.h = 1;
@@ -170,6 +173,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 // Will take effect next frame
                 ship_state = SHIP_STATE_CRASHED;
                 ship_counter = SHIP_COUNTER_CRASH;
+                audio_sfx_play(SFX_SHIP_CRASH);
             }
             break;
     }
