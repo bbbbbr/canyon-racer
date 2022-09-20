@@ -15,6 +15,8 @@ void audio_music_pause(void);
 void audio_music_unpause(void);
 void audio_music_set(uint8_t);
 
+void audio_start_fadeout(void);
+
 void audio_sfx_play(uint8_t);
 void audio_sfx_play_increment(void);
 

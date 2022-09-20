@@ -104,7 +104,7 @@ void main() {
                 // TODO: ?? audio_music_set(MUSIC_GAMEOVER_SONG);
                 gameplay_show_gameover(bg_next_free_tile);
                 game_state = GAME_STATE_SHOW_INTRO;
-                audio_music_pause();
+                audio_start_fadeout();
                 break;
         }
     }
