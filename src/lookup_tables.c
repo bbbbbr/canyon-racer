@@ -136,12 +136,12 @@ const scx_table_entry scx_tables[] = {
     {.start_address = SCX_TABLE_ADDR(6u),  .end_address = SCX_TABLE_ADDR(3u) }, // low -> med -> low
     {.start_address = SCX_TABLE_ADDR(6u),  .end_address = SCX_TABLE_ADDR(3u) }, // low -> med -> low
     {.start_address = SCX_TABLE_ADDR(3u),  .end_address = SCX_TABLE_ADDR(0u) }, // low -> long-med -> low
-    {.start_address = SCX_TABLE_ADDR(6u),  .end_address = SCX_TABLE_ADDR(3u) }, // low -> med -> low
+    {.start_address = SCX_TABLE_ADDR(3u),  .end_address = SCX_TABLE_ADDR(0u) }, // low -> long-med -> low
 
     // 8-11 (0x03 mask + 8u) Higher Difficulty
     // TODO: implement transition tables so this can use all med and no low
+    {.start_address = SCX_TABLE_ADDR(3u),  .end_address = SCX_TABLE_ADDR(0u) }, // low -> long-med -> low
     {.start_address = SCX_TABLE_ADDR(6u),  .end_address = SCX_TABLE_ADDR(3u) }, // low -> med -> low
-    {.start_address = SCX_TABLE_ADDR(13u), .end_address = SCX_TABLE_ADDR(11u) }, // low -> short-med -> low
     {.start_address = SCX_TABLE_ADDR(13u), .end_address = SCX_TABLE_ADDR(11u) }, // low -> short-med -> low
     {.start_address = SCX_TABLE_ADDR(13u), .end_address = SCX_TABLE_ADDR(11u) }, // low -> short-med -> low
 

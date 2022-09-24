@@ -64,6 +64,8 @@ static inline void queue_next(void) {
     }
     else {
         obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + cur_level.obst_dist_min;
+        // TODO: DEBUG: force distance to min distance
+        // obstacles_next_countdown = cur_level.obst_dist_min;
         obstacles_next_isdouble = false;
     }
 }

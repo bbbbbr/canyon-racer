@@ -19,6 +19,13 @@
 
 // #define DEBUG_BENCHMARK_BG
 
+// Debug option to resume gameplay after crashing
+// #define DEBUG_RESUME_AFTER_CRASH
+
+// Debug option to show level in score
+#define DEBUG_SHOW_LEVEL_IN_SCORE
+
+
 #define FIXED_BITSHIFT 8
 
 // SHIP

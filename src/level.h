@@ -22,7 +22,6 @@ typedef struct level_entry {
     uint8_t   obst_dist_double; // Set distance when double objects are spawned (always recalc based on obstacle speed)
 
     uint16_t   obst_dist_min_raw;    // Value before scaling by speed
-    uint16_t   obst_dist_double_raw; // Value before scaling by speed
 
 } level_entry;
 

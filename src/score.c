@@ -18,6 +18,11 @@ void score_reset(void) {
 }
 
 
+// DEBUG - show game level
+#ifdef DEBUG_SHOW_LEVEL_IN_SCORE
+    extern uint8_t game_level;
+#endif
+
 // Displays a score during gameplay with sprites
 void score_update(void) {
 
@@ -35,6 +40,11 @@ void score_update(void) {
         // Move to next pair of digits in next byte
         p_score++;
     }
+
+    // DEBUG - show game level
+    #ifdef DEBUG_SHOW_LEVEL_IN_SCORE
+        set_sprite_tile(SPR_ID_SCORE_START, SPR_TILES_START_FONTNUMS + (game_level << 1));
+    #endif
 }
 
 

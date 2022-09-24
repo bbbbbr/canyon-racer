@@ -24,7 +24,9 @@
 // #define SHIP_Z_LANDING  2u   // Landing ground is more generous
 // #define SHIP_Z_MAX  60u  // Max air time
 
+// Z axis is for jumping
 #define SHIP_Z_INIT (SHIP_Z_MIN)
+#define SHIP_Z_JUMP_START (SHIP_Z_MIN)
 
 
 #define SHIP_STATE_STARTUP   1u

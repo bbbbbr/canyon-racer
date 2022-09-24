@@ -27,21 +27,39 @@ uint8_t ship_sprite_sel;
 uint8_t ship_state;
 uint8_t ship_counter;
 uint8_t ship_sprite_sel;
-int16_t ship_velocity;
+int16_t ship_jump_velocity;
 
 void entity_ship_init(void) {
-    ship_x.w = SHIP_X_INIT;
-    ship_y.w = SHIP_Y_INIT;
-    ship_z.w = SHIP_Z_INIT;
+    ship_x.w = SHIP_X_INIT;  // X Position on screen
+    ship_y.w = SHIP_Y_INIT;  // Y Position on screen
+    ship_z.w = SHIP_Z_INIT;  // Z Jump position (alters Y position)
     ship_state = SHIP_STATE_STARTUP;
     ship_counter = SHIP_COUNTER_STARTUP;
-    ship_velocity = 0u;
+    ship_jump_velocity = 0u;
 }
 
-#define SHIP_VELOCITY_START 768
-#define SHIP_GRAVITY 32
-#define SHIP_VELOCITY_MIN -512
-#define SHIP_VELOCITY_MIN_ABS 512
+
+// Roughly "classic" version
+// All values used with fixed point 8.8
+#define SHIP_JUMP_GRAVITY              32   // Gravity per frame
+#define SHIP_JUMP_VELOCITY_START       800 // 768 (prev) // Controls max jump height (if button remains dowNn
+#define SHIP_JUMP_VELOCITY_SMALL       350  // Min jump height if button released early
+#define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -512 // Max downward velocity
+
+// This "works" ok but doesn't feel as fun
+// TODO: Delete these
+// #define SHIP_JUMP_GRAVITY              70
+// #define SHIP_JUMP_VELOCITY_START       1300 // TODO: 1350?
+// #define SHIP_JUMP_VELOCITY_SMALL       600
+// #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -600
+    // #define SHIP_JUMP_GRAVITY              60
+    // #define SHIP_JUMP_VELOCITY_START       1200
+    // #define SHIP_JUMP_VELOCITY_SMALL       500
+    // #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -600
+// #define SHIP_JUMP_GRAVITY              50
+// #define SHIP_JUMP_VELOCITY_START       1000
+// #define SHIP_JUMP_VELOCITY_SMALL       480
+// #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -512
 
 
 static void ship_handle_input(void) {
@@ -64,6 +82,7 @@ static void ship_handle_input(void) {
     }
 
     // Vertical Movement
+    // Note: Jumping applies a secondary vertical offset to a secondary sprite
     switch (KEYS() & (J_UP | J_DOWN)) {
 
         case J_UP:
@@ -81,16 +100,26 @@ static void ship_handle_input(void) {
 
     // Jumping
     if (KEY_TICKED(J_A)) {
-        if (ship_state ==  SHIP_STATE_PLAYING) {
+        // Jump can only start when ship is on the ground (SHIP_STATE_PLAYING)
+        if (ship_state == SHIP_STATE_PLAYING) {
 
+            // TODO: separate jump state from playing state?
             ship_state = SHIP_STATE_JUMP;
             audio_sfx_play(SFX_SHIP_JUMP);
-            // ship_counter = SHIP_COUNTER_JUMPSTART;
-            ship_velocity = SHIP_VELOCITY_START;
-            ship_z.h = 1;
+
+            ship_jump_velocity = SHIP_JUMP_VELOCITY_START;
+            // ship_z.h = SHIP_Z_JUMP_START;  // TODO: Doesn't seem to be needed
+        }
+    } else if (ship_state == SHIP_STATE_JUMP) {
+        if (!KEY_PRESSED(J_A)) {
+
+            // If jump button is released before min jump threshold is reached
+            // then then clamp jump to min jump amount instead
+            if (ship_jump_velocity > SHIP_JUMP_VELOCITY_SMALL) {
+                ship_jump_velocity = SHIP_JUMP_VELOCITY_SMALL;
+            }
         }
     }
-
 
 }
 
@@ -129,9 +158,11 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             else {
                 // Done showing crash explosion, hide ship and exit gameplay
                 ship_state = SHIP_STATE_GAMEOVER;
-                    // TODO: FOR DEBUG
-                    // ship_state = SHIP_STATE_STARTUP;
-                    // ship_counter = SHIP_COUNTER_STARTUP;
+                // Debug option to resume gameplay after crashing
+                #ifdef DEBUG_RESUME_AFTER_CRASH
+                    ship_state = SHIP_STATE_STARTUP;
+                    ship_counter = SHIP_COUNTER_STARTUP;
+                #endif
                 ship_sprite_sel = SHIP_SPR_NONE;
             }
 
@@ -142,24 +173,31 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             // Ship movement is allowed during jumping
             ship_handle_input();
 
-            ship_z.w += ship_velocity;
-            if (ship_z.w <= SHIP_VELOCITY_MIN_ABS) {
+            // If current velocity will cause ship to hit the ground (<= 0)
+            // then land it exactly and change state
+            // TODO: use var to speed up past crest of jump testing?
+            if ((ship_jump_velocity < 0) && ((ship_jump_velocity * -1) > ship_z.w)) {
                 // Ship landed
                 ship_z.w = SHIP_Z_INIT;
                 ship_state = SHIP_STATE_PLAYING;
 
             } else {
                 // Ship still in air
-                ship_velocity -= SHIP_GRAVITY;
-                if (ship_velocity < SHIP_VELOCITY_MIN)
-                    ship_velocity = SHIP_VELOCITY_MIN;
-                // TODO: Use a lookup table for Y offset of ship from shadow?
-                // TODO: Adjustable duration jump?
+
+                // Apply current velocity to Jump Z position
+                ship_z.w += ship_jump_velocity;
+
+                // Apply gravity for next frame
+                // and limit max speed
+                ship_jump_velocity -= SHIP_JUMP_GRAVITY;
+                if (ship_jump_velocity < SHIP_JUMP_VELOCITY_DOWN_LIMIT)
+                    ship_jump_velocity = SHIP_JUMP_VELOCITY_DOWN_LIMIT;
             }
-            // Set shadow
+
+            // Set sprite at main player location to shadow
             ship_sprite_sel = SHIP_SPR_JUMP; // (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
 
-            // And also draw separated ship
+            // And also draw separated ship using Jump Z offset for Y axis
             oam_high_water += move_metasprite(sprite_ship_metasprites[SHIP_SPR_DEFAULT],
                                          (SPR_TILES_START_SHIP),
                                          oam_high_water, ship_x.h, ship_y.h - ship_z.h);

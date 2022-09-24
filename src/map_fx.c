@@ -203,6 +203,7 @@ void vblank_isr_map_reset (void) {
                     // p_scx_table_stop = scx_tables[mapfx_scx_next_queued].end_address;
                     // mapfx_scx_next_queued  =  (rand() & mapfx_level_mask) + mapfx_level_base;
             uint8_t next     =  (rand() & mapfx_level_mask) + mapfx_level_base;
+            // next     =  SCX_TABLE_STR_STR;
             p_scx_cur_table  = scx_tables[next].start_address;
             p_scx_table_stop = scx_tables[next].end_address;
             // ... frame_base set above

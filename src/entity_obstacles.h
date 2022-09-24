@@ -3,7 +3,7 @@
 
 
 // == Obstacle Spawning Number control ==
-#define OBSTACLES_COUNT_TOTAL 4u                            // Array size for obstacles
+#define OBSTACLES_COUNT_TOTAL 5u                            // Array size for obstacles
 #define OBSTACLES_COUNT_MIN   0u                            // Min array index number
 #define OBSTACLES_COUNT_MAX   (OBSTACLES_COUNT_TOTAL - 1u)  // Max array index number
 #define OBSTACLES_COUNT_WRAP  (OBSTACLES_COUNT_TOTAL)       // Wrap around to zero when (array index == this num)
@@ -16,31 +16,41 @@
     // TODO: try to match speed to innermost canyon section?
     #define FIXED_LS_BYTE_SZ      256u
     // TODO
-    #define OBST_INC_SPD_EASY     450u
-    #define OBST_INC_SPD_MED      500u
-    #define OBST_INC_SPD_MED_HARD 540u
+    #define OBST_INC_SPD_EASY     500u
+    #define OBST_INC_SPD_MED      550u
+    #define OBST_INC_SPD_MED_HARD 575u
     #define OBST_INC_SPD_HARD     597u
+        // #define OBST_INC_SPD_EASY     450u // TODO: slower, maybe 350?
+        // #define OBST_INC_SPD_MED      500u
+        // #define OBST_INC_SPD_MED_HARD 540u
+        // #define OBST_INC_SPD_HARD     597u
 
     // == Obstacle Spawning Distance control ==
 
     // Scale up to speed units (x 256) and makes easier to divide by speed at runtime
     #define OBS_COUNT_SCALE_UP(scanlines) (scanlines * FIXED_LS_BYTE_SZ)
 
-    #define OBST_DIST_MIN_EASY    OBS_COUNT_SCALE_UP(45u)
-    #define OBST_DIST_MIN_MED     OBS_COUNT_SCALE_UP(35u)
-    #define OBST_DIST_MIN_HARD    OBS_COUNT_SCALE_UP(30u) // TODO: is 25 too small and unplayable? Maybe 30?
+    #define OBST_DIST_MIN_EASY    OBS_COUNT_SCALE_UP(70u)
+    #define OBST_DIST_MIN_MED     OBS_COUNT_SCALE_UP(65u)
+    #define OBST_DIST_MIN_HARD    OBS_COUNT_SCALE_UP(60u) // TODO: is 25 too small and unplayable? Maybe 30?
 
     #define OBST_DIST_DBL         OBS_COUNT_SCALE_UP(10u) // Doubles: 10 pixels between spawning
 
     // == Max num obstacles per level ==
-    #define OBST_QTY_LVL_EASY           ((OBSTACLES_COUNT_TOTAL) - 2u)
-    #define OBST_QTY_LVL_MED            ((OBSTACLES_COUNT_TOTAL) - 1u)
-    #define OBST_QTY_LVL_HARD           ((OBSTACLES_COUNT_TOTAL) - 0u)
+    #define OBST_QTY_LVL_EASY           ((OBSTACLES_COUNT_TOTAL) - 3u)
+    #define OBST_QTY_LVL_MED            ((OBSTACLES_COUNT_TOTAL) - 2u)
+    #define OBST_QTY_LVL_HARD           ((OBSTACLES_COUNT_TOTAL) - 1u)
+    #define OBST_QTY_LVL_HARDEST        ((OBSTACLES_COUNT_TOTAL) - 0u)
 
 
-    // TODO: maybe make this adjustable?
-    #define OBSTACLE_NEXT_COUNT_BITMASK 0x3Fu  // Bitmask to select Range + Min from above  // TODO: fixme or ok just fixed as is?
+// TODO: maybe make this adjustable? - needs to be based on speed
+    // Bitmask to select Range in addition to Min from above
+//    #define OBSTACLE_NEXT_COUNT_BITMASK_EASY 0x3Fu  // 0 - 63
+#define OBSTACLE_NEXT_COUNT_BITMASK_EASY 0x3Fu  // 0 - 31
+#define OBSTACLE_NEXT_COUNT_BITMASK_MED 0x1Fu  // 0 - 31
+#define OBSTACLE_NEXT_COUNT_BITMASK_HARD 0x0Fu  // 0 - 31
 
+    #define OBSTACLE_NEXT_COUNT_BITMASK (OBSTACLE_NEXT_COUNT_BITMASK_MED) // 0x0Fu
 
 // ========== Type / Spawn Location ==========
 
