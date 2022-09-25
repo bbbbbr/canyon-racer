@@ -20,6 +20,7 @@ void audio_start_fadeout(void);
 void audio_sfx_play(uint8_t);
 void audio_sfx_play_increment(void);
 
+void audio_vbl_isr();
 void audio_init();
 
 #endif

@@ -27,7 +27,7 @@ const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
                                     0b00110011,
                                     0b01100110,
                                     0b01110111,
-                                    //0b11111111 // Sound on highest - don't need this step
+                                  //0b11111111 // Sound on highest - don't need this step
                                     };
 #define AUDIO_FADE_BITSHIFT 2u
 #define AUDIO_FADE_DONE 0u
@@ -52,7 +52,15 @@ uint8_t audio_fading_out;
 
 
 // Runs as the last part of VBL
+//
+// Must be installed AFTER mapfx_isr_install()
+//
+// TODO: should this get merged into mapfx_isr_install() to save the additial calling overhead?
 void audio_vbl_isr() {
+
+    // Allow nested interrupts for this portion of VBL to allow
+    // Stat LCD (Parallax Effect) ISR to interrupt it if needed
+   __asm__("EI");
 
     // Update music driver
     if (music_is_playing) {
@@ -130,6 +138,7 @@ void audio_sfx_play(uint8_t sfx_id) {
 }
 
 
+// TODO: For debugging, remove
 void audio_sfx_play_increment(void) {
 
     static uint8_t sfx_test_counter = 0u;
@@ -144,6 +153,7 @@ void audio_sfx_play_increment(void) {
         sfx_test_counter = 0u;
 }
 
+// Call this BEFORE mapfx_isr_install()
 void audio_init() {
 
     // Music not playing by default
@@ -156,15 +166,12 @@ void audio_init() {
     NR51_REG = 0xFF;
     NR50_REG = 0x77;
 
-    __critical {
-        add_VBL(audio_vbl_isr);
-    }
+    // Instead of here, the music ISR gets installed by
+    // mapfx_isr_install() to ensure that the music VBL handler
+    // is placed AFTER the mapfx_isr_install() vbl handler
+    //
 
-    // Select demo song
-    // audio_music_set(AUDIO_DEMO_SONG);
-
-    //         case J_UP    : c0 ^= 1; hUGE_mute_channel(HT_CH1, c0); set_bkg_tiles(0,0,1,1,&map[c0 & 1]); waitpadup(); break;
-    //         case J_DOWN  : c1 ^= 1; hUGE_mute_channel(HT_CH2, c1); set_bkg_tiles(1,0,1,1,&map[c1 & 1]); waitpadup(); break;
-    //         case J_LEFT  : c2 ^= 1; hUGE_mute_channel(HT_CH3, c2); set_bkg_tiles(2,0,1,1,&map[c2 & 1]); waitpadup(); break;
-    //         case J_RIGHT : c3 ^= 1; hUGE_mute_channel(HT_CH4, c3); set_bkg_tiles(3,0,1,1,&map[c3 & 1]); waitpadup(); break;
+    // __critical {
+    //     add_VBL(audio_vbl_isr);
+    // }
 }

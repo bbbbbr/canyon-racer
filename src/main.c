@@ -59,10 +59,12 @@ void init(void) {
     stats_load();
     init_gfx();
 
-    mapfx_set_intro();
-    mapfx_isr_enable();
-
+    // Call this BEFORE mapfx_isr_install() to ensure audio is configured before it's VBL starts
     audio_init();
+
+    mapfx_set_intro();
+    mapfx_isr_install();
+
 }
 
 

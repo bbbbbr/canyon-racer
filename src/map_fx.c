@@ -8,6 +8,8 @@
 #include "common.h"
 #include "level.h"
 
+#include "audio.h"
+
 #include "map_fx.h"
 #include "lookup_tables.h"
 
@@ -24,32 +26,32 @@ const uint8_t * p_scx_cur_table;
       uint8_t   mapfx_level_base;
 
 // Effect pans up from end of SCX table to start to reveal curves
-
-
+//
+//
 // == Vertical Parallax clock timing ==
 // TODO: Analogue Pocket .pocket format special timing & #define?
-
+//
 // == Interrupt Activity ==
 //
-// 1. VBlank:
+// = VBlank:
 // * SCX Wave Tables
 //   - Increment SCX table base pointer
 //   - Reset per-scanline pointer
 //   - Apply SCX value for first scanline
+//   - Load new SCX table address if needed
 // * Y Parallax Effect
-//   - Increment ... TODO
+//   - Increment SCY at preset speed
 //
-// 2. HBlank Interrupts: (Start in Mode 2 OAM Scan)
+// = HBlank Interrupts: (Start in Mode 2 OAM Scan)
 // * Y Parallax Effect
 //   - Load Y Scroll amount, shift and apply to each column area
 // * SCX Wave Tables
-//   - Apply SCX value for NEXT scanline
+//   - Pre-Apply SCX value for NEXT scanline
 //   - Increment per-scanline pointer value
 //
 
 
-
-// 4 REGION MODE: Outer / Mid / Inner / Center
+// 4 REGIONS: Outer / Mid / Inner / Center
 //
 // Left Side: SCY bit-Rotated Right once before each region to create
 //            a 2x scrolling speeds for it,
@@ -57,10 +59,13 @@ const uint8_t * p_scx_cur_table;
 // Right Side: Same as left side, but Rotated Left to gradually restore
 //             original SCY value
 //
-// The bits wrapping around looks ok
+// The bits wrapping around looks ok!
 //
-// Note: To make this non-interruptable by other ISRs add: __critical
-// http://sdcc.sourceforge.net/doc/sdccman.pdf#subsection.3.8.4
+//
+// * Uses a bare function and manages register saving itself.
+// * Does not use equivalent of wait_int_handler() to avoid GFX
+//   corruption in main code since always exits ,midway in Mode 0/HBLANK
+//   NOTE: if this behavior changes then start guarding GFX loading
 void map_fx_stat_isr(void) __interrupt __naked {
     __asm \
 
@@ -72,7 +77,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
     // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
 
-    // .rept 1 // 9
+    // Was .rept 9 before moving pushes to above
     .rept 1
         nop
     .endm
@@ -135,6 +140,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
     // Apply SCX update as late as possible to try and take effect
     // ~after rendering of scanline is completed
     // (sprites/etc could push timing out)
+    // Should be in Mode 0 (HBlank)
     ldh (_SCX_REG + 0), a    // Load value at (*p_scx_table_scanline)
 
     pop af
@@ -150,14 +156,17 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 
 
 // * End of VBlank ISR (start of new frame):
-//   - Increment frame-global SCY
-//   - Increment, reset SCX table pointers, select next if needed
+//   - Turn LCD int OFF
+//   - SCY: Increment frame-global SCY offset
+//   - SCX: Reset SCX table pointers
+//          Load for next frame
+//          Increment
+//          Select next table adderss if needed
+//   - Turn LCD int ON
+//
+// * audio_vbl_isr() gets called after this
 //
 void vblank_isr_map_reset (void) {
-
-    // Turn off LCD Interrupt while in VBL
-    // (scanlines after 143 are not visible)
-    set_interrupts(IE_REG & ~LCD_IFLAG);
 
     #ifdef DEBUG_BENCHMARK_BG
         // Debug: Benchmark time left by toggling background source at end of processing
@@ -169,7 +178,6 @@ void vblank_isr_map_reset (void) {
     // Scroll the Outer vertical edges of the canyon map by configured amount.
     // The Inner regions will get scrolled an amount derived from this value.
     SCY_REG -= mapfx_y_parallax_speed;
-
 
     // == X Axis ==
     // Update SCX table for start of new frame. Sets the base pointer to an index
@@ -210,8 +218,9 @@ void vblank_isr_map_reset (void) {
         }
     }
 
-    // Turn LCD Interrupt back on
-    set_interrupts(IE_REG | LCD_IFLAG);
+    // Clear any pending LCD/STAT interrupt to prevent Map Effect ISR running
+    // on scanlines > 143 which aren't visible. Saves a little cpu time.
+    IF_REG = IF_REG & ~LCD_IFLAG;
 }
 
 
@@ -255,6 +264,7 @@ void mapfx_set_gameplay(void) {
     mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_MED;
 
     // SCX table: Set to all Straight -> Low transition
+    // This gives a non-curved initial startup
     p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
     // mapfx_level_set(SCX_TABLE_LEVEL_MIN);
@@ -279,32 +289,56 @@ void mapfx_scx_table_reset(void) {
 }
 
 
-// mapfx_set_*() should be called before this
-// to correcty initialize scoll speeds
-void mapfx_isr_enable(void) {
+// Installs the Map Effect VBL ISR *AND* Audio VBL ISR
+//
+// Only call after:
+// * mapfx_set_*() has been used to init Map Effect control vars
+// * audio_init() has been called to init Audio control vars
+void mapfx_isr_install(void) {
 
     // Enable STAT ISR
     __critical {
-        STAT_REG = STATF_MODE10; // Fire interrupt at start of OAM SCAN (Mode 2) right before rendering
+        // Fire interrupt at start of OAM SCAN (Mode 2) right before rendering
+        STAT_REG = STATF_MODE10;
+
         add_VBL(vblank_isr_map_reset);
+
+        // Audio VBL (music & sfx) MUST be installed AFTER vblank_isr_map_reset() ISR
+        add_VBL(audio_vbl_isr);
     }
 
-    // Try to wait until just after the start of the next frame before enabling
+    // Try to wait until just after the start of the next frame before enabling effect
     wait_vbl_done();
 
-    // Pre-load SCX
-    // SCX_REG = *p_scx_table++;
+    mapfx_isr_lcd_enable();
+}
+
+
+// Installs the Map Effect VBL ISR *AND* Audio VBL ISR
+void mapfx_isr_deinstall(void) {
+
+    mapfx_isr_lcd_disable();
+
+    __critical {
+        remove_VBL(audio_vbl_isr);
+        remove_VBL(vblank_isr_map_reset);
+    }
+}
+
+
+// Turn on LCD/STAT ISR
+// * Should only be called if mapfx_isr_install() has been called once before
+// * Does not need
+void mapfx_isr_lcd_enable(void) {
+
     set_interrupts(IE_REG | LCD_IFLAG);
 }
 
 
-void mapfx_isr_disable(void) {
+// Turns off LCD/STAT ISR
+void mapfx_isr_lcd_disable(void) {
 
-    // Disable STAT ISR
-    __critical {
-        set_interrupts(IE_REG & ~LCD_IFLAG);
-        remove_VBL(vblank_isr_map_reset);
-    }
+    set_interrupts(IE_REG & ~LCD_IFLAG);
 }
 
 

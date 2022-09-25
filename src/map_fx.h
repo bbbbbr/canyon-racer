@@ -60,8 +60,13 @@ void mapfx_set_gameplay(void);
 
 void mapfx_scx_table_reset(void);
 
-void mapfx_isr_enable(void);
-void mapfx_isr_disable(void);
+// Installing and removing VBL
+void mapfx_isr_install(void);
+void mapfx_isr_deinstall(void);
+
+// Turning LCD/STAT interrupt in/off
+void mapfx_isr_lcd_enable(void);
+void mapfx_isr_lcd_disable(void);
 
 
 void mapfx_level_set(uint8_t);
