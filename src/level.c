@@ -6,6 +6,7 @@
 
 #include <gb/isr.h>
 #include "common.h"
+#include "audio.h"
 
 #include "level.h"
 
@@ -34,6 +35,13 @@ level_entry cur_level;
 static const level_entry level_data[] = {
     // 0 - 4: MAP_SCX: Slow, OBST_SPD=Slow
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_EASY, OBST_INC_SPD_EASY),
+
+// TODO: DEBUG
+LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_SCX_FAST, OBST_QTY_LVL_HARD,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
+LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
+LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
+
+
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
     LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
     LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
@@ -58,6 +66,7 @@ static const level_entry level_data[] = {
 #define GAME_LEVEL_RESET  0u
 #define GAME_LEVEL_MAX    (ARRAY_LEN(level_data) - 1u)
 
+#define GAME_LEVEL_SPEEDS_UP 2u
 
 
 // OPTIMIZE: inline using global var access if needed
@@ -91,7 +100,7 @@ void level_init(void) {
     // TODO: FOR DEBUG
     // game_level = GAME_LEVEL_MAX;
     // game_level = GAME_LEVEL_MAX - 6;
-    // game_level = 9; // 
+    // game_level = 9; //
 
     level_update_vars();
 }
@@ -107,5 +116,11 @@ void level_increment(void) {
         level_update_vars();
     }
 
-    // TODO: play sound / flash notice / etc on level up
+    // TODO: finalize this threshhold, or make it detectable
+    // if (game_level == GAME_LEVEL_SPEEDS_UP)
+    // audio_sfx_play(SFX_SPEED_UP);
+    // else
+    audio_sfx_play(SFX_LEVEL_UP);
+
+    // TODO: flash notice / etc on level up
 }
