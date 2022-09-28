@@ -24,7 +24,7 @@ jobs:
         if: matrix.name == 'Linux-x64'
         run: |
           # Pull in GBDK-2020 4.1.0
-          curl -Lo GBDK-2020_4.1.0_Linux-x64.tar.gz https://github.com/bbbbbr/canyon-racer/releases/download/CI-CD-GBDK-4.1.0-PRE/GBDK-2020_4.1.0_Linux-x64.tar.gz
+          curl -Lo GBDK-2020_4.1.0_Linux-x64.tar.gz https://github.com/bbbbbr/gbdk-2020-sdcc/releases/download/CI-CD-GBDK-4.1.0-PRE/GBDK-2020_4.1.0_Linux-x64.tar.gz
           tar xvfz GBDK-2020_4.1.0_Linux-x64.tar.gz
 
       # ==== Build Steps ====
