@@ -27,7 +27,7 @@
 #define WIN_SPEED_FAST 4u
 
 
-static void splash_init(uint8_t bg_next_free_tile) {
+uint8_t splash_init(uint8_t bg_next_free_tile) {
 
     mapfx_set_intro();
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
@@ -50,6 +50,8 @@ static void splash_init(uint8_t bg_next_free_tile) {
     WY_REG = (SCREENHEIGHT + 1u);
     WX_REG = WIN_X_INITIAL;
     SHOW_WIN;
+
+    return bg_next_free_tile;
 }
 
 const uint8_t scx_shake_offset[] = {7u, 6u, 5u, 4u, 3u, 2u};
@@ -100,31 +102,52 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 }
 
 
+extern uint8_t sfx_test_counter;
+
+
+#ifdef DEBUG_SOUND_TEST
+    // TODO: DEBUG SOUND TEST
+    static void sfx_test(uint8_t bg_next_free_tile) {
+        uint8_t * p_vram_addr = get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y);
+        while (1) {
+
+            waitpadticked_lowcpu(J_ANY);
+
+            if (KEY_PRESSED(J_UP | J_LEFT)) {
+                audio_sfx_test_decrement();
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+            }
+            else if (KEY_PRESSED(J_RIGHT | J_DOWN)) {
+                audio_sfx_test_increment();
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+            }
+            else if (KEY_PRESSED(J_SELECT | J_A | J_B)) {
+                audio_sfx_play(sfx_test_counter);
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+            }
+            else
+                break;
+        }
+    }
+#endif
+
 
 // Expects Sprites to be turned off
 void splash_intro_run(uint8_t bg_next_free_tile) {
 
-    splash_init(bg_next_free_tile);
+    bg_next_free_tile = splash_init(bg_next_free_tile);
 
     fade_in(FADE_DELAY_FX_RUNNING);
     window_move_with_shake(((SCREENHEIGHT) - (splash_logo_HEIGHT)), WIN_MOVE_DIR_UP);
 
+    #ifdef DEBUG_SOUND_TEST
+        sfx_test(bg_next_free_tile);
+    #else
+        // Idle until user presses any button
+        waitpadticked_lowcpu(J_ANY);
+    #endif
 
-    // Idle until user presses any button
-   waitpadticked_lowcpu(J_ANY);
-
-    // TODO: REMOVE SFX Debug code
-    /*
-    UPDATE_KEYS();
-    while (! KEY_TICKED(J_A | J_START)) {
-
-        if (KEY_TICKED(J_B))
-            audio_sfx_play_increment();
-
-        UPDATE_KEYS();
-    }*/
-
-    audio_sfx_play(SFX_EXIT_SPLASH);
+    audio_sfx_play(SFX_TITLE_EXIT);
 
     window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
     fade_out(FADE_DELAY_FX_RUNNING);

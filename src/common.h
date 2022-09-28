@@ -17,6 +17,8 @@
 #define GAME_STATE_RUNNING    2u
 #define GAME_STATE_OVER       3u
 
+// ===========================
+
 // #define DEBUG_BENCHMARK_BG
 
 // Debug option to resume gameplay after crashing
@@ -24,6 +26,13 @@
 
 // Debug option to show level in score
 #define DEBUG_SHOW_LEVEL_IN_SCORE
+
+// Debug sound test
+#define DEBUG_SOUND_TEST
+
+#define DEBUG_MUSIC_IS_OFF
+
+// ===========================
 
 
 #define FIXED_BITSHIFT 8

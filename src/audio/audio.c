@@ -9,17 +9,15 @@
 
 #include "audio.h"
 
-#include "sfx/SFX_00.h"
-#include "sfx/SFX_01.h"
-#include "sfx/SFX_02.h"
-#include "sfx/SFX_03.h"
-#include "sfx/SFX_04.h"
+#include "sfx/levelup.h"
+#include "sfx/pause.h"
+#include "sfx/shipjump.h"
+#include "sfx/shipland.h"
+#include "sfx/speedup.h"
+#include "sfx/titleexit.h"
 #include "sfx/SFX_05.h"
-#include "sfx/SFX_06.h"
-#include "sfx/SFX_07.h"
-#include "sfx/SFX_08.h"
-#include "sfx/SFX_09.h"
 
+uint8_t sfx_test_counter = 0u;
 
 const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
                                     0b00010001,
@@ -37,8 +35,16 @@ const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
 #define SFX_ENQUE(sfx_num) (sfx_enqueued = sfx_num + 1u)  // Off by +1 so it can be non-zero tested
 #define SFX_GET_NUM()      (sfx_enqueued - 1u)
 
-
-const uint8_t * sfx_list[] = { &SFX_00[0], &SFX_01[0], &SFX_02[0], &SFX_03[0], &SFX_04[0], &SFX_05[0], &SFX_06[0], &SFX_07[0], &SFX_08[0], &SFX_09[0] };
+// TODO: Reorg and name these to match, then maybe just ditch array and use include to make it all work?
+const uint8_t * sfx_list[] = {
+    &SFX_0D[0], // pause     0
+    &SFX_0E[0], // titleexit 1
+    &SFX_0F[0], // shipjump  2
+    &SFX_10[0], // shipland  3
+    &SFX_11[0], // levelup   4
+    &SFX_13[0], // speedup   5
+    &SFX_05[0], // crash     6  // TODO: from cbtfx demos, replace
+};
 
 const hUGESong_t * song_list[] = { &Intro };
 
@@ -107,7 +113,9 @@ void audio_music_pause(void) {
 
 
 void audio_music_unpause(void) {
-    music_is_playing = true;
+    #ifndef DEBUG_MUSIC_IS_OFF
+        music_is_playing = true;
+    #endif
     // NR50_REG = 0x77;
 }
 
@@ -134,23 +142,24 @@ void audio_sfx_play(uint8_t sfx_id) {
             SFX_ENQUE(sfx_id);
         }
     }
-    // CBTFX_init(sfx_list[sfx_id]);
 }
 
 
 // TODO: For debugging, remove
-void audio_sfx_play_increment(void) {
+void audio_sfx_test_increment(void) {
 
-    static uint8_t sfx_test_counter = 0u;
-
-    // CBTFX_init(sfx_list[sfx_test_counter++]);
-    __critical {
-        SFX_ENQUE(sfx_test_counter++);
-    }
-
-
+    sfx_test_counter++;
     if (sfx_test_counter >= ARRAY_LEN(sfx_list))
         sfx_test_counter = 0u;
+}
+
+// TODO: For debugging, remove
+void audio_sfx_test_decrement(void) {
+
+    if (sfx_test_counter > 0u)
+        sfx_test_counter--;
+    else
+        sfx_test_counter = ARRAY_LEN(sfx_list) - 1u;
 }
 
 // Call this BEFORE mapfx_isr_install()

@@ -180,6 +180,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 // Ship landed
                 ship_z.w = SHIP_Z_INIT;
                 ship_state = SHIP_STATE_PLAYING;
+                audio_sfx_play(SFX_SHIP_LAND);
 
             } else {
                 // Ship still in air
