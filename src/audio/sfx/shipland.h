@@ -5,7 +5,7 @@
 	Sound Effect File.
 	
 	Info:
-		Length			:	9
+		Length			:	5
 		Priority		:	0
 		Channels used	:	Duty channel 2
 		SGB Support		:	No
