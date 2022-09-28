@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           cd game/build/gb
-		  7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+	  7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
 
       - name: Store build
         if: (matrix.name == 'Linux-64')
