@@ -5,3 +5,4 @@ archived_builds/
 build/
 *.noi
 *.sav
+!res/source_audio/*.sav
