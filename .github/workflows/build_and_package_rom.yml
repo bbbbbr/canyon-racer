@@ -44,21 +44,24 @@ jobs:
           echo "BUILD_PACKAGE_FILENAME=canyon_racer.zip" >> $GITHUB_ENV
 
 
-      # ==== Builds ====
+      # ==== Build ====
       - name: Build GBDK-2020 Linux
         if: (matrix.name == 'Linux-x64')
         shell: bash
         run: |
           export GBDK_HOME=`pwd`/../gbdk
+          cd game
           make
+          cd ..
+
 
       # ==== Packaging ====
-      - name: Package build Linux
+      - name: Package build Linux/MacOS
         if: (matrix.name == 'Linux-x64')
         shell: bash
         run: |
           cd game/build/gb
-	  7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+          7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
 
       - name: Store build
         if: (matrix.name == 'Linux-64')
