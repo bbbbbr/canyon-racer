@@ -49,7 +49,7 @@ jobs:
         if: (matrix.name == 'Linux-x64')
         shell: bash
         run: |
-          export GBDK_HOME=`pwd`/gbdk
+          export GBDK_HOME=`pwd`/gbdk/
           cd game
           make
           cd ..
