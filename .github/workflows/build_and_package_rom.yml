@@ -70,4 +70,3 @@ jobs:
           name: ${{ matrix.name }} build
           path: game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
           # retention-days: 14
-
