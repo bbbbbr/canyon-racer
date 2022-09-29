@@ -62,6 +62,7 @@ jobs:
         run: |
           cd game/build/gb
           7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+          cd ../../..
 
       - name: Store build
         if: (matrix.name == 'Linux-64')
