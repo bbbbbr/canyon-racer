@@ -24,7 +24,7 @@ jobs:
         if: matrix.name == 'Linux-x64'
         run: |
           # Pull in GBDK-2020 4.1.0
-          curl -Lo https://github.com/bbbbbr/canyon-racer/releases/download/CI-CD-GBDK-4.1.0-PRE/GBDK-2020_4.1.0_Linux-x64.tar.gz
+          curl -Lo GBDK-2020_4.1.0_Linux-x64.tar.gz https://github.com/bbbbbr/gbdk-2020-sdcc/releases/download/CI-CD-GBDK-4.1.0-PRE/GBDK-2020_4.1.0_Linux-x64.tar.gz
           tar xvfz GBDK-2020_4.1.0_Linux-x64.tar.gz
 
       # ==== Build Steps ====
@@ -49,7 +49,7 @@ jobs:
         if: (matrix.name == 'Linux-x64')
         shell: bash
         run: |
-          export GBDK_HOME=`pwd`/../gbdk
+          export GBDK_HOME=`pwd`/gbdk/
           cd game
           make
           cd ..
@@ -61,13 +61,15 @@ jobs:
         shell: bash
         run: |
           cd game/build/gb
-          7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+          # 7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+          cd ../../..
+          ls -la game/build/gb
 
       - name: Store build
-        if: (matrix.name == 'Linux-64')
+        if: (matrix.name == 'Linux-x64')
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }} build
-          path: game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
+          name: Canyon Racer ROM build
+          # path: game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
+          path: game/build/gb
           # retention-days: 14
-
