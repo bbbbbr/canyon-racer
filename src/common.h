@@ -30,7 +30,10 @@
 // Debug sound test
 #define DEBUG_SOUND_TEST
 
+// Music On/OFF
 #define DEBUG_MUSIC_IS_OFF
+
+#define DEBUG_FAST_LEVELS_EARLY
 
 // ===========================
 

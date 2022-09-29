@@ -15,10 +15,10 @@
 #include "entity_obstacles.h"
 
 
-uint8_t game_level; // Current game level
-uint8_t level_count_till_next; // Obstacles to clear until level increment
-
-level_entry cur_level;
+uint8_t      game_level;            // Current game level
+uint8_t      level_count_till_next; // Obstacles to clear until level increment
+level_entry  cur_level;             // Settings data for current level
+uint8_t      level_scx_speed_prev;
 
 
 // "scanlines" is pre-scaled with OBS_COUNT_SCALE_UP(), which multiplies by 256
@@ -35,14 +35,17 @@ level_entry cur_level;
 static const level_entry level_data[] = {
     // 0 - 4: MAP_SCX: Slow, OBST_SPD=Slow
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_EASY, OBST_INC_SPD_EASY),
-
-// TODO: DEBUG
-LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_SCX_FAST, OBST_QTY_LVL_HARD,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
-LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
-LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
-
-
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
+
+    // TODO: DEBUG
+    #ifdef DEBUG_FAST_LEVELS_EARLY
+        LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_FAST, OBST_QTY_LVL_MED,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
+        LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_FAST, OBST_QTY_LVL_MED,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
+        LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_SCX_FAST, OBST_QTY_LVL_HARD,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
+        LEVEL_ENTRY(MAPFX_LVL_MED_HI, MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
+        LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_MED,  OBST_INC_SPD_HARD),
+    #endif
+
     LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
     LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
     LEVEL_ENTRY(MAPFX_LVL_MED,    MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
@@ -66,8 +69,6 @@ LEVEL_ENTRY(MAPFX_LVL_HARD,   MAPFX_SCX_FAST, OBST_QTY_LVL_HARD, OBST_DIST_MIN_M
 #define GAME_LEVEL_RESET  0u
 #define GAME_LEVEL_MAX    (ARRAY_LEN(level_data) - 1u)
 
-#define GAME_LEVEL_SPEEDS_UP 2u
-
 
 // OPTIMIZE: inline using global var access if needed
 void level_update_vars(void) {
@@ -85,10 +86,8 @@ void level_update_vars(void) {
     // Distance apart when double objects are spawned
     cur_level.obst_dist_double = OBST_COUNT_FROM_SCANLINES( OBST_DIST_DBL, cur_level.obst_speed);
 
-
     // Update Map Canyon Shape difficulty
     mapfx_level_set(cur_level.mapfx_scx_table_level);
-
 }
 
 
@@ -103,6 +102,9 @@ void level_init(void) {
     // game_level = 9; //
 
     level_update_vars();
+
+    // Init saved SCX wave scrolling speed
+    level_scx_speed_prev = cur_level.mapfx_scx_inc_every_frame;
 }
 
 
@@ -113,14 +115,19 @@ void level_increment(void) {
     if (game_level < GAME_LEVEL_MAX) {
 
         game_level++;
+
+        // Save SCX wave scrolling speed for comparison later
+        level_scx_speed_prev = cur_level.mapfx_scx_inc_every_frame;
         level_update_vars();
     }
 
-    // TODO: finalize this threshhold, or make it detectable
-    // if (game_level == GAME_LEVEL_SPEEDS_UP)
-    // audio_sfx_play(SFX_SPEED_UP);
-    // else
-    audio_sfx_play(SFX_LEVEL_UP);
+    // Play "speed up" sound instead of level up if
+    // scx wave scrolling increased in speed
+    if (level_scx_speed_prev < cur_level.mapfx_scx_inc_every_frame)
+        audio_sfx_play(SFX_SPEED_UP);
+    else
+        audio_sfx_play(SFX_LEVEL_UP);
 
     // TODO: flash notice / etc on level up
+    //  - giving objects a chance to clear off the screen maybe? - with timeout?
 }
