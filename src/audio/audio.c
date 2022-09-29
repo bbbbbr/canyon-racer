@@ -42,7 +42,7 @@ const uint8_t * sfx_list[] = {
     &SFX_0F[0], // shipjump  2
     &SFX_10[0], // shipland  3
     &SFX_11[0], // levelup   4
-    &SFX_13[0], // speedup   5
+    &SFX_12[0], // speedup   5
     &SFX_05[0], // crash     6  // TODO: from cbtfx demos, replace
 };
 
