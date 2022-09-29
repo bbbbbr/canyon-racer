@@ -61,14 +61,15 @@ jobs:
         shell: bash
         run: |
           cd game/build/gb
-          7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
+          # 7z a ${{ env.BUILD_PACKAGE_FILENAME }} *.gb
           cd ../../..
-          ls -la game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
+          ls -la game/build/gb
 
       - name: Store build
         if: (matrix.name == 'Linux-x64')
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ matrix.name }} build
-          path: game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
+          name: Canyon Racer ROM build
+          # path: game/build/gb/${{ env.BUILD_PACKAGE_FILENAME }}
+          path: game/build/gb
           # retention-days: 14
