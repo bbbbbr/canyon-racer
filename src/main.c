@@ -36,7 +36,9 @@ void init_gfx(void) {
 
     // TODO: Move into main()
     // Fades in, shows credits, fades out
-    intro_credits_show();
+    #ifndef DEBUG_SKIP_INTRO_CREDITS
+        intro_credits_show();
+    #endif
 
     // TODO: move to gameplay_init_gfx()
     bg_next_free_tile = 0u;
