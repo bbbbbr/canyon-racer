@@ -78,9 +78,10 @@ void gameplay_run(void) {
         if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER)
             break;
 
-        #ifdef DEBUG_BENCHMARK_BG
-            // Debug: Benchmark time left by toggling background source at end of processing
-            LCDC_REG |= 0x08u; // Toggle BG source (VBL int for toggle back on)
+        #ifdef VISUAL_DEBUG_BENCHMARK_MAIN
+            // VISUAL BENCHMARK END
+            // Debug: Benchmark time left by toggling background on/off
+            LCDC_REG &= ~LCDCF_BGON; // Turn BG / WIN OFF
         #endif
     }
 
