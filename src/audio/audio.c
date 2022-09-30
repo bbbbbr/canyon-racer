@@ -9,6 +9,8 @@
 
 #include "audio.h"
 
+
+// Sound FX
 #include "sfx/levelup.h"
 #include "sfx/pause.h"
 #include "sfx/shipjump.h"
@@ -17,7 +19,15 @@
 #include "sfx/titleexit.h"
 #include "sfx/SFX_05.h"
 
+// Music
+// Demo song
+extern const hUGESong_t Intro;
+extern const hUGESong_t cyberacd;
+extern const hUGESong_t bs_mm_highway;
+
+
 uint8_t sfx_test_counter = 0u;
+uint8_t song_test_counter = 0u;
 
 const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
                                     0b00010001,
@@ -35,6 +45,7 @@ const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
 #define SFX_ENQUE(sfx_num) (sfx_enqueued = sfx_num + 1u)  // Off by +1 so it can be non-zero tested
 #define SFX_GET_NUM()      (sfx_enqueued - 1u)
 
+
 // TODO: Reorg and name these to match, then maybe just ditch array and use include to make it all work?
 const uint8_t * sfx_list[] = {
     &SFX_0D[0], // pause     0
@@ -46,10 +57,11 @@ const uint8_t * sfx_list[] = {
     &SFX_05[0], // crash     6  // TODO: from cbtfx demos, replace
 };
 
-const hUGESong_t * song_list[] = { &Intro };
-
-// Demo song
-extern const hUGESong_t Intro;
+const hUGESong_t * song_list[] = {
+    &Intro,
+    &cyberacd,
+    &bs_mm_highway
+};
 
 
 bool    music_is_playing;
@@ -67,6 +79,13 @@ void audio_vbl_isr() {
     // Allow nested interrupts for this portion of VBL to allow
     // Stat LCD (Parallax Effect) ISR to interrupt it if needed
    __asm__("EI");
+
+    #ifdef VISUAL_DEBUG_BENCHMARK_AUDIO
+        // VISUAL BENCHMARK END
+        // Debug: Benchmark time left by toggling background on/off
+        LCDC_REG &= ~LCDCF_BGON; // Turn BG / WIN OFF
+    #endif
+
 
     // Update music driver
     if (music_is_playing) {
@@ -95,6 +114,12 @@ void audio_vbl_isr() {
     } else {
         CBTFX_update();
     }
+
+    #ifdef VISUAL_DEBUG_BENCHMARK_AUDIO
+        // VISUAL BENCHMARK START
+        // Debug: Benchmark time left by toggling background on/off
+        LCDC_REG |= LCDCF_BGON; // Toggle BG source (VBL int for toggle back on)
+    #endif
 }
 
 
@@ -145,7 +170,9 @@ void audio_sfx_play(uint8_t sfx_id) {
 }
 
 
+// ====== START: DEBUG ======
 // TODO: For debugging, remove
+
 void audio_sfx_test_increment(void) {
 
     sfx_test_counter++;
@@ -153,7 +180,6 @@ void audio_sfx_test_increment(void) {
         sfx_test_counter = 0u;
 }
 
-// TODO: For debugging, remove
 void audio_sfx_test_decrement(void) {
 
     if (sfx_test_counter > 0u)
@@ -161,6 +187,25 @@ void audio_sfx_test_decrement(void) {
     else
         sfx_test_counter = ARRAY_LEN(sfx_list) - 1u;
 }
+
+
+void audio_song_test_increment(void) {
+
+    song_test_counter++;
+    if (song_test_counter >= ARRAY_LEN(song_list))
+        song_test_counter = 0u;
+}
+
+void audio_song_test_decrement(void) {
+
+    if (song_test_counter > 0u)
+        song_test_counter--;
+    else
+        song_test_counter = ARRAY_LEN(song_list) - 1u;
+}
+
+// ====== END: DEBUG ======
+
 
 // Call this BEFORE mapfx_isr_install()
 void audio_init() {

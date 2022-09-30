@@ -14,6 +14,10 @@
 
 
 
+extern uint8_t sfx_test_counter;
+extern uint8_t song_test_counter;
+
+
 // See song_list[]
 #define MUSIC_DEMO_SONG  0u
 
@@ -26,6 +30,8 @@ void audio_start_fadeout(void);
 void audio_sfx_play(uint8_t);
 void audio_sfx_test_increment(void);
 void audio_sfx_test_decrement(void);
+void audio_song_test_increment(void);
+void audio_song_test_decrement(void);
 
 void audio_vbl_isr();
 void audio_init();
