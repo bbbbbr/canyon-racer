@@ -21,7 +21,8 @@
 
 // Music
 // Demo song
-extern const hUGESong_t Intro;
+extern const hUGESong_t ingame_test_1;
+extern const hUGESong_t ingame_test_2;
 extern const hUGESong_t cyberacd;
 extern const hUGESong_t bs_mm_highway;
 
@@ -58,7 +59,8 @@ const uint8_t * sfx_list[] = {
 };
 
 const hUGESong_t * song_list[] = {
-    &Intro,
+    &ingame_test_1,
+    &ingame_test_2,
     &cyberacd,
     &bs_mm_highway
 };
