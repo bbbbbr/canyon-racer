@@ -102,10 +102,18 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 }
 
 
+// TODO: DEBUG SOUND TEST
 #ifdef DEBUG_SOUND_TEST
-    // TODO: DEBUG SOUND TEST
+
     static void sfx_test(uint8_t bg_next_free_tile) {
+
+        // Address for start of numeric score text
         uint8_t * p_vram_addr = get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y);
+
+        // Show current selected SFX and Song num on startup
+        set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+        set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+
         while (1) {
 
             waitpadticked_lowcpu(J_ANY);
