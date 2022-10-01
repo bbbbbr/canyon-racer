@@ -11,6 +11,8 @@
 
 #define ARRAY_LEN(A)  sizeof(A) / sizeof(A[0])
 
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 #define GAME_STATE_SHOW_INTRO 0u
 #define GAME_STATE_START_GAME 1u
