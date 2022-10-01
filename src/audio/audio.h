@@ -19,7 +19,8 @@ extern uint8_t song_test_counter;
 
 
 // See song_list[]
-#define MUSIC_DEMO_SONG  0u
+#define MUSIC_TITLE_SCREEN  0u
+#define MUSIC_GAMEPLAY      1u
 
 void audio_music_pause(void);
 void audio_music_unpause(void);

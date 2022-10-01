@@ -91,8 +91,11 @@ void main() {
                 spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
                 SHOW_SPRITES;
                 gameplay_prestart();
-                // TODO: audio_music_set(MUSIC_GAMEPLAY_SONG);
-                audio_music_set(song_test_counter);
+                #ifdef DEBUG_SOUND_TEST
+                    audio_music_set(song_test_counter);
+                #else
+                    audio_music_set(MUSIC_GAMEPLAY);
+                #endif
                 audio_music_unpause();
                 game_state = GAME_STATE_RUNNING;
                 break;

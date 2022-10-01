@@ -542,4 +542,4 @@ static const unsigned char waves[] = {
     1,17,17,17,17,18,34,114,99,167,187,236,26,247,239,143,
 };
 
-const hUGESong_t ingame_test_1 = {7, &order_cnt, order1, order2, order3,order4, duty_instruments, wave_instruments, noise_instruments, NULL, waves};
+const hUGESong_t music_titlescreen = {7, &order_cnt, order1, order2, order3,order4, duty_instruments, wave_instruments, noise_instruments, NULL, waves};

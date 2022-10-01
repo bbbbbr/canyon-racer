@@ -107,6 +107,9 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 
     static void sfx_test(uint8_t bg_next_free_tile) {
 
+        // Set default for gameplay
+        song_test_counter = MUSIC_GAMEPLAY;
+
         // Address for start of numeric score text
         uint8_t * p_vram_addr = get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y);
 
@@ -157,7 +160,11 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 // Expects Sprites to be turned off
 void splash_intro_run(uint8_t bg_next_free_tile) {
 
+    audio_music_set(MUSIC_TITLE_SCREEN);
+
     bg_next_free_tile = splash_init(bg_next_free_tile);
+
+    audio_music_unpause();
 
     fade_in(FADE_DELAY_FX_RUNNING);
     window_move_with_shake(((SCREENHEIGHT) - (splash_logo_HEIGHT)), WIN_MOVE_DIR_UP);
@@ -173,6 +180,7 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
 
     window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
     fade_out(FADE_DELAY_FX_RUNNING);
+    audio_start_fadeout();
 
     HIDE_WIN;
 }
