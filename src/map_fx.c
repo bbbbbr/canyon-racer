@@ -168,11 +168,11 @@ ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 //
 void vblank_isr_map_reset (void) {
 
-    #ifdef DEBUG_BENCHMARK_BG
-        // Debug: Benchmark time left by toggling background source at end of processing
-        LCDC_REG ^= 0x08u; // Toggle BG source (VBL int for toggle back on)
+    #ifdef VISUAL_DEBUG_BENCHMARK_MAIN
+        // VISUAL BENCHMARK START
+        // Debug: Benchmark time left by toggling background on/off
+        LCDC_REG |= LCDCF_BGON; // Toggle BG source (VBL int for toggle back on)
     #endif
-
 
     // == Y Axis ==
     // Scroll the Outer vertical edges of the canyon map by configured amount.

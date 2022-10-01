@@ -102,9 +102,6 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 }
 
 
-extern uint8_t sfx_test_counter;
-
-
 #ifdef DEBUG_SOUND_TEST
     // TODO: DEBUG SOUND TEST
     static void sfx_test(uint8_t bg_next_free_tile) {
@@ -113,17 +110,34 @@ extern uint8_t sfx_test_counter;
 
             waitpadticked_lowcpu(J_ANY);
 
-            if (KEY_PRESSED(J_UP | J_LEFT)) {
+            // SFX
+            if (KEY_PRESSED(J_UP)) {
                 audio_sfx_test_decrement();
                 set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
             }
-            else if (KEY_PRESSED(J_RIGHT | J_DOWN)) {
+            else if (KEY_PRESSED(J_DOWN)) {
                 audio_sfx_test_increment();
                 set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
             }
-            else if (KEY_PRESSED(J_SELECT | J_A | J_B)) {
+            else if (KEY_PRESSED(J_A)) {
                 audio_sfx_play(sfx_test_counter);
                 set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+            }
+            // Music
+            else if (KEY_PRESSED(J_LEFT)) {
+                audio_song_test_decrement();
+                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+            }
+            else if (KEY_PRESSED(J_RIGHT)) {
+                audio_song_test_increment();
+                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+            }
+            else if (KEY_PRESSED(J_B)) {
+                audio_music_set(song_test_counter);
+                audio_music_unpause();
+            }
+            else if (KEY_PRESSED(J_SELECT)) {
+                audio_music_pause();
             }
             else
                 break;

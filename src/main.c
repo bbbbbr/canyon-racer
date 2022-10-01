@@ -99,7 +99,7 @@ void main() {
                 SHOW_SPRITES;
                 gameplay_prestart();
                 // TODO: audio_music_set(MUSIC_GAMEPLAY_SONG);
-                audio_music_set(MUSIC_DEMO_SONG);
+                audio_music_set(song_test_counter);
                 audio_music_unpause();
                 game_state = GAME_STATE_RUNNING;
                 break;

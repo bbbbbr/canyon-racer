@@ -19,7 +19,8 @@
 
 // ===========================
 
-// #define DEBUG_BENCHMARK_BG
+// #define VISUAL_DEBUG_BENCHMARK_MAIN
+// #define VISUAL_DEBUG_BENCHMARK_AUDIO
 
 // Debug option to resume gameplay after crashing
 // #define DEBUG_RESUME_AFTER_CRASH
@@ -27,10 +28,11 @@
 // Debug option to show level in score
 #define DEBUG_SHOW_LEVEL_IN_SCORE
 
-// Debug sound test
 #define DEBUG_SOUND_TEST
 
-#define DEBUG_MUSIC_IS_OFF
+// #define DEBUG_MUSIC_IS_OFF
+
+#define DEBUG_FAST_LEVELS_EARLY
 
 // #define DEBUG_SKIP_INTRO_CREDITS
 
