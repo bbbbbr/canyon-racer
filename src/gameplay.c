@@ -7,6 +7,7 @@
 #include "input.h"
 #include "common.h"
 #include "fade.h"
+#include "audio.h"
 
 #include "map_fx.h"
 
@@ -186,7 +187,7 @@ void gameplay_show_gameover(uint8_t spr_next_free_tile) {
 
     // // TODO: show game over screen
     // waitpadticked_lowcpu(J_ANY);
-
+    audio_start_fadeout();
     fade_out(FADE_DELAY_FX_RUNNING);
 
     // Hide all sprites

@@ -140,14 +140,21 @@ void audio_music_pause(void) {
 
 
 void audio_music_unpause(void) {
+
     #ifndef DEBUG_MUSIC_IS_OFF
+    __critical {
         music_is_playing = true;
+        // Clear any pending audio fade out
+        // to avoid potential race condition
+        audio_fading_out = AUDIO_FADE_DONE;
+    }
     #endif
     // NR50_REG = 0x77;
 }
 
 
 void audio_music_set(uint8_t song_id) {
+
     __critical {
         hUGE_init(song_list[song_id]);
     }

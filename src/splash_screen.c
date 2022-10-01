@@ -161,10 +161,9 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 void splash_intro_run(uint8_t bg_next_free_tile) {
 
     audio_music_set(MUSIC_TITLE_SCREEN);
+    audio_music_unpause();
 
     bg_next_free_tile = splash_init(bg_next_free_tile);
-
-    audio_music_unpause();
 
     fade_in(FADE_DELAY_FX_RUNNING);
     window_move_with_shake(((SCREENHEIGHT) - (splash_logo_HEIGHT)), WIN_MOVE_DIR_UP);
@@ -176,11 +175,13 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
         waitpadticked_lowcpu(J_ANY);
     #endif
 
+    // No music fade out here since SFX should play immediately
+    // and it's harder to hear with it playing
+    audio_music_pause();
     audio_sfx_play(SFX_TITLE_EXIT);
-
     window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
+
     fade_out(FADE_DELAY_FX_RUNNING);
-    audio_start_fadeout();
 
     HIDE_WIN;
 }

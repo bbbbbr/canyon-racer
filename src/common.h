@@ -14,6 +14,8 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+#define SECONDS_IN_FRAMES(sec) (sec * 60u)
+
 #define GAME_STATE_SHOW_INTRO 0u
 #define GAME_STATE_START_GAME 1u
 #define GAME_STATE_RUNNING    2u
@@ -70,6 +72,8 @@
 #define CANYON_WIDTH          (4u * 8u) // 4 tiles x 8 pixels per tile
 
 
+#define GAME_OVER_WAIT_SECONDS 0.5
+
 // Save record signature check
 #define STATS_SIG_CHECK_0 0xA50Fu
 #define STATS_SIG_CHECK_1 0x1E78u
@@ -99,5 +103,6 @@ typedef struct settings_rec {
 
 extern settings_rec game_settings;
 
+void delay_lowcpu(uint16_t num_frames);
 
 #endif

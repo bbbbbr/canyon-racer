@@ -113,10 +113,11 @@ void main() {
                 break;
 
             case GAME_STATE_OVER:
-                // TODO: ?? audio_music_set(MUSIC_GAMEOVER_SONG);
+                // TODO: audio_music_set(MUSIC_GAMEOVER_SONG);
                 gameplay_show_gameover(bg_next_free_tile);
                 game_state = GAME_STATE_SHOW_INTRO;
-                audio_start_fadeout();
+                // Audio and Screen are faded at this point
+                delay_lowcpu( SECONDS_IN_FRAMES(GAME_OVER_WAIT_SECONDS) );
                 break;
         }
     }
