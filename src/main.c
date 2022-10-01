@@ -13,6 +13,7 @@
 #include "fade.h"
 #include "stats.h"
 
+#include "intro_credits.h"
 #include "splash_screen.h"
 #include "gameplay.h"
 #include "map_fx.h"
@@ -27,16 +28,22 @@ void init_gfx(void) {
 
     fade_out(FADE_DELAY_NORM);
 
-    bg_next_free_tile = 0u;
-    spr_next_free_tile = 0u;
-
-    bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
-
     SPRITES_8x16;
     SHOW_SPRITES;
     SHOW_BKG;
 
     DISPLAY_ON;
+
+    // TODO: Move into main()
+    // Fades in, shows credits, fades out
+    #ifndef DEBUG_SKIP_INTRO_CREDITS
+        intro_credits_show();
+    #endif
+
+    // TODO: move to gameplay_init_gfx()
+    bg_next_free_tile = 0u;
+    spr_next_free_tile = 0u;
+    bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
 }
 
 

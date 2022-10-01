@@ -6,7 +6,8 @@
 #include "common.h"
 
 #define FADE_DELAY_NORM       (70u)
-#define FADE_DELAY_FX_RUNNING (15u)  // BG FX use a lot of CPU idle time, so delay between fade steps is smalled
+#define FADE_DELAY_INTRO      (110u)
+#define FADE_DELAY_FX_RUNNING (15u)  // BG FX use a lot of CPU idle time, so delay between fade steps is smaller
 
 void fade_in(uint8_t delay_len);
 void fade_out(uint8_t delay_len);

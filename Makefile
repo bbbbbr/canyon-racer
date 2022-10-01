@@ -5,6 +5,7 @@ ifndef GBDK_HOME
 endif
 
 PNG2ASSET = $(GBDK_HOME)bin/png2asset
+GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
 
 VERSION=0.5.0
@@ -205,7 +206,7 @@ $(BINS):	$(OBJS)
 	
 
 # Convert source PNGs -> C source
-# These are TARGET independent. 
+# These are TARGET independent
 assets:
 	# Canyon BG Map
 	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map -noflip
@@ -223,6 +224,17 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums_bg.png -keep_palette_order -map -tiles_only -c $(RESDIR)/tiles_font_nums_bg.c
 	# -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/game_over.png -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
+	# Intro credits screen
+	rm -f $(RESDIR)/intro_credits*.c $(RESDIR)/intro_credits*.h $(RESDIR)/intro_credits*.bin
+	# Non-compressed version
+	#  Needs both -bpp 1 -pack_mode 1bpp
+	# $(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -c res/intro_credits_data.c
+	#
+	# Intro credits screen COMPRESSED version of if needed later (saves 300+ bytes)
+	# -> .bin -> compress -> .c
+	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
+	$(GBCOMPRESS) --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
+	$(GBCOMPRESS) --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
 
 carts:
 	${MAKE} CART_TYPE=31k_1kflash
