@@ -21,6 +21,9 @@ const uint8_t * p_scx_cur_table;
 
       uint8_t   mapfx_y_parallax_speed = MAPFX_SCY_SPEED_DEFAULT;
       uint8_t   mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_DEFAULT;
+      // Matching vars used for save during pause/resume
+      uint8_t   save__mapfx_y_parallax_speed;
+      uint8_t   save__mapfx_scx_table_map_speed;
 
       uint8_t   mapfx_level_mask;
       uint8_t   mapfx_level_base;
@@ -269,6 +272,32 @@ void mapfx_set_gameplay(void) {
     p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
     // mapfx_level_set(SCX_TABLE_LEVEL_MIN);
     // mapfx_scx_table_reset();
+}
+
+
+// Pauses and Un-pauses map SCX Wave and SCY Column scrolling
+void mapfx_set_setpause(bool is_paused) {
+
+    if (is_paused) {
+        __critical {
+            // Save current effect speeds to re-apply during Un-Pause
+            save__mapfx_y_parallax_speed    = mapfx_y_parallax_speed;
+            save__mapfx_scx_table_map_speed = mapfx_scx_table_map_speed;
+
+            // *Keep* applying SCX wave effect per-scanline
+            // Stop incrementing SCY parallax columns
+            // Stop incrementing SCX wave scrolling
+            mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_STOP;
+            mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
+        }
+    }
+    else {
+        // Resume effect scrolling using saved values
+        __critical {
+            mapfx_y_parallax_speed = save__mapfx_y_parallax_speed;
+            mapfx_scx_table_map_speed = save__mapfx_scx_table_map_speed;
+        }
+    }
 }
 
 

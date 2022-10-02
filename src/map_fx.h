@@ -58,6 +58,8 @@ extern uint8_t mapfx_scroll_scx_table_map_speed;
 void mapfx_set_intro(void);
 void mapfx_set_gameplay(void);
 
+void mapfx_set_setpause(bool);
+
 void mapfx_scx_table_reset(void);
 
 // Installing and removing VBL

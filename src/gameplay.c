@@ -25,6 +25,8 @@ uint8_t oam_high_water;
 uint8_t oam_high_water_prev;
 
 
+static void gameplay_pause(void);
+
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
 
@@ -49,12 +51,31 @@ void gameplay_prestart(void) {
 }
 
 
+static void gameplay_handle_pause(void) {
+
+    // Map effects will stop scrolling during Pause
+    mapfx_set_setpause(true);
+    audio_music_pause();
+    audio_sfx_play(SFX_PAUSE);
+
+    waitpadticked_lowcpu(J_START);
+
+    audio_music_unpause();
+    mapfx_set_setpause(false);
+}
+
 
 // Main game loop
 void gameplay_run(void) {
 
     while(1) {
         wait_vbl_done();
+
+        UPDATE_KEYS();
+
+        if (KEY_TICKED(J_START)) {
+            gameplay_handle_pause();
+        }
 
         // == Sprites ==
         oam_high_water = SPR_ID_FREE_START;
@@ -73,7 +94,6 @@ void gameplay_run(void) {
         }
         oam_high_water_prev = oam_high_water;
 
-        UPDATE_KEYS();
 
         // If game is over, break out and return to main state select
         if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER)
