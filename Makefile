@@ -204,6 +204,8 @@ $(BINS):	$(OBJS)
 # Prevents: make[1]: *** No rule to make target 'someheader.h', needed by 'someobjfile.o'.  Stop.
 %.h:
 	
+# Don't remove the tab-only line direcly above
+
 
 # Convert source PNGs -> C source
 # These are TARGET independent
@@ -216,12 +218,15 @@ assets:
 	# Obstacles
 	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/sprite_obstacles.png -sw 32 -sh 16 -px -8 -py -16 -pw 32 -ph 8  -spr8x16 -c $(RESDIR)/sprite_obstacles.c
-	# Font Numbers
+	# Font Numbers Sprites
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
+	# Pause Sprites
+	$(PNG2ASSET) $(RESDIR)/sprite_pause.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/sprite_pause.c
 	# Intro Logo
 	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
 	# Font Numbers used on BG with Intro Logo
 	$(PNG2ASSET) $(RESDIR)/font_nums_bg.png -keep_palette_order -map -tiles_only -c $(RESDIR)/tiles_font_nums_bg.c
+	# Game over Sprites
 	# -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/game_over.png -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
 	# Intro credits screen

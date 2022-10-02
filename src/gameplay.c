@@ -11,6 +11,7 @@
 
 #include "map_fx.h"
 
+#include "gameplay_pause.h"
 #include "stats.h"
 #include "score.h"
 #include "level.h"
@@ -24,8 +25,6 @@
 uint8_t oam_high_water;
 uint8_t oam_high_water_prev;
 
-
-static void gameplay_pause(void);
 
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
@@ -51,22 +50,8 @@ void gameplay_prestart(void) {
 }
 
 
-static void gameplay_handle_pause(void) {
-
-    // Map effects will stop scrolling during Pause
-    mapfx_set_setpause(true);
-    audio_music_pause();
-    audio_sfx_play(SFX_PAUSE);
-
-    waitpadticked_lowcpu(J_START);
-
-    audio_music_unpause();
-    mapfx_set_setpause(false);
-}
-
-
 // Main game loop
-void gameplay_run(void) {
+void gameplay_run(uint8_t spr_next_free_tile) {
 
     while(1) {
         wait_vbl_done();
@@ -74,7 +59,7 @@ void gameplay_run(void) {
         UPDATE_KEYS();
 
         if (KEY_TICKED(J_START)) {
-            gameplay_handle_pause();
+            gameplay_pause(spr_next_free_tile, oam_high_water);
         }
 
         // == Sprites ==
