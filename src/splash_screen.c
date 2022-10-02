@@ -123,11 +123,11 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 
             // SFX
             if (KEY_PRESSED(J_UP)) {
-                audio_sfx_test_decrement();
+                audio_sfx_test_increment();
                 set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
             }
             else if (KEY_PRESSED(J_DOWN)) {
-                audio_sfx_test_increment();
+                audio_sfx_test_decrement();
                 set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
             }
             else if (KEY_PRESSED(J_A)) {

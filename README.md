@@ -14,6 +14,7 @@ If you aren't playing on original hardware you may need an accurate emulator (Em
 ### Credits, Contributors and Thanks
 
 Code & Gameplay: [bbbbbr](https://twitter.com/0xbbbbbr)
+Music & SFX: [BeatScribe](https://twitter.com/beatscribemusic)
 
 Additional code and contributions from:
   - [Coffee "Valen" Bat](https://twitter.com/cofebbat) : [CBTFX Driver](https://github.com/datguywitha3ds/CBT-FX)
