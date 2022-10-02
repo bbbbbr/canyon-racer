@@ -66,7 +66,7 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
     }
 
     // Short animation of PAUSE letters flying in from Left and Right edges
-    uint8_t * p_sprite_x = &pause_sprite_x_frames[0];
+    const uint8_t * p_sprite_x = &pause_sprite_x_frames[0];
     for (uint8_t frame = 0; frame < (ARRAY_LEN(pause_sprite_x_frames) / PAUSE_SPRITE_COUNT); frame++) {
 
         // Show sprites in next frame location
