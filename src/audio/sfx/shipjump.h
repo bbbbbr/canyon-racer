@@ -7,7 +7,7 @@
 	Info:
 		Length			:	10
 		Priority		:	0
-		Channels used	:	Duty channel 2 & Noise channel
+		Channels used	:	Duty channel 2
 		SGB Support		:	No
 */
 
