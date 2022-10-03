@@ -26,6 +26,9 @@
 #define WIN_SPEED_MED  2u
 #define WIN_SPEED_FAST 4u
 
+#define WIN_Y_SHOWING    ((SCREENHEIGHT) - (splash_logo_HEIGHT))
+#define WIN_Y_OFFSCREEN  ((SCREENHEIGHT) + 1u)
+
 
 uint8_t splash_init(uint8_t bg_next_free_tile) {
 
@@ -119,7 +122,18 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 
         while (1) {
 
-            waitpadticked_lowcpu(J_ANY);
+            // Idle until user presses any button
+            UPDATE_KEYS();
+            while (!KEY_TICKED(J_ANY)) {
+                // Wait till scanline below window top to start
+                // playing music, so glitches are obscured.
+                // Wait in HALT state so that ISR timing is
+                // predictable. The LCD ISR will wake it.
+                wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
+                audio_vbl_isr(); // Update playback manually
+                wait_vbl_done();
+                UPDATE_KEYS();
+            }
 
             // SFX
             if (KEY_PRESSED(J_UP)) {
@@ -153,6 +167,9 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
             else
                 break;
         }
+
+    // Now install the vbl isr so that the exit splash SFX will play
+    add_VBL(audio_vbl_isr);
     }
 #endif
 
@@ -166,20 +183,32 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
     bg_next_free_tile = splash_init(bg_next_free_tile);
 
     fade_in(FADE_DELAY_FX_RUNNING);
-    window_move_with_shake(((SCREENHEIGHT) - (splash_logo_HEIGHT)), WIN_MOVE_DIR_UP);
+    window_move_with_shake(WIN_Y_SHOWING, WIN_MOVE_DIR_UP);
 
     #ifdef DEBUG_SOUND_TEST
         sfx_test(bg_next_free_tile);
     #else
         // Idle until user presses any button
-        waitpadticked_lowcpu(J_ANY);
+        UPDATE_KEYS();
+        while (!KEY_TICKED(J_ANY)) {
+            // Wait till scanline below window top to start
+            // playing music, so glitches are obscured.
+            // Wait in HALT state so that ISR timing is
+            // predictable. The LCD ISR will wake it.
+            wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
+            audio_vbl_isr(); // Update playback manually
+            wait_vbl_done();
+            UPDATE_KEYS();
+        }
+        // Now install the vbl isr so that the exit splash SFX will play
+        add_VBL(audio_vbl_isr);
     #endif
 
     // No music fade out here since SFX should play immediately
     // and it's harder to hear with it playing
     audio_music_pause();
     audio_sfx_play(SFX_TITLE_EXIT);
-    window_move_with_shake(((SCREENHEIGHT) + 1u), WIN_MOVE_DIR_DOWN);
+    window_move_with_shake(WIN_Y_OFFSCREEN, WIN_MOVE_DIR_DOWN);
 
     fade_out(FADE_DELAY_FX_RUNNING);
 

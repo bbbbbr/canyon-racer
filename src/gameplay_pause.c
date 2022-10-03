@@ -25,21 +25,21 @@ const uint8_t pause_sprite_x_frames[] = {
 
     // Mostly Linear version - (maybe looks a little better)
     // First frame with sprites moving in from edges
-    0u, 8u, 144u, 160u, 168u,
+/*    0u, 8u, 144u, 160u, 168u,
     20u, 28u, 124u, 140u, 156u,
     44u, 52u, 100u, 116u, 132u,
     // Last frame, Centered
     52u, 68u, 84u, 100u, 116u,
-
+*/
     // Non-Linear version
     // First frame with sprites moving in from edges
-/*    0u,   8u, 144u, 168u, 168u,
+    0u,   8u, 144u, 168u, 168u,
     0u,  28u, 124u, 160u, 168u,
     20u, 52u, 100u, 116u, 140u,
     35u, 60u,  92u, 110u, 128u,
     // Last frame, Centered
     52u, 68u,  84u, 100u, 116u,
-*/
+
 };
 
 
@@ -73,6 +73,9 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
         for (uint8_t c = 0; c < PAUSE_SPRITE_COUNT; c++) {
             move_sprite(oam_high_water + c, *p_sprite_x++, PAUSE_SPRITE_Y);
         }
+        // Wait 3 frames :)
+        wait_vbl_done();
+        wait_vbl_done();
         wait_vbl_done();
     }
 

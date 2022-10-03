@@ -323,7 +323,7 @@ void mapfx_scx_table_reset(void) {
 // Only call after:
 // * mapfx_set_*() has been used to init Map Effect control vars
 // * audio_init() has been called to init Audio control vars
-void mapfx_isr_install(void) {
+void mapfx_isr_install(bool add_audio_isr) {
 
     // Enable STAT ISR
     __critical {
@@ -333,7 +333,8 @@ void mapfx_isr_install(void) {
         add_VBL(vblank_isr_map_reset);
 
         // Audio VBL (music & sfx) MUST be installed AFTER vblank_isr_map_reset() ISR
-        add_VBL(audio_vbl_isr);
+        if (add_audio_isr)
+            add_VBL(audio_vbl_isr);
     }
 
     // Try to wait until just after the start of the next frame before enabling effect

@@ -104,5 +104,6 @@ typedef struct settings_rec {
 extern settings_rec game_settings;
 
 void delay_lowcpu(uint16_t num_frames);
+void wait_in_halt_to_scanline(uint8_t exit_scanline);
 
 #endif
