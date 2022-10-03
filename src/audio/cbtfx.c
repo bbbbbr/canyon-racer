@@ -10,8 +10,6 @@ Thanks to bbbbbr for getting my code to ACTUALLY work
 
 // asm version by bbbbbr
 
-#define CPTFX_UPDATE_ASM
-
 
 #include <gb/gb.h>
 #include "cbtfx.h"
@@ -53,7 +51,7 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
     MUSIC_DRIVER_CH2_ON;
     MUSIC_DRIVER_CH4_ON;
 
-    CBTFX_priority = *SFX & 0x0f;
+    CBTFX_priority = *SFX & CBTFX_PRIORITY_MASK;
     CBTFX_ch_used = *SFX++;
     CBTFX_size = *SFX++;
 
@@ -64,7 +62,7 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
 }
 
 
-#ifndef CPTFX_UPDATE_ASM
+#ifndef CBTFX_UPDATE_ASM
 
 void CBTFX_update(void) NONBANKED {
 
@@ -118,7 +116,8 @@ void CBTFX_update(void) NONBANKED {
                 if (CBTFX_ch_used & CBTFX_CH4){
                     NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
                 }
-                CBTFX_ch_used = 0;
+                // Don't zero channels here - they get tested on next play...?
+                // CBTFX_ch_used = 0;
                 CBTFX_priority = 0;
                 #if (MONO_MUSIC==1)
                     NR51_REG = 0xff;
@@ -132,7 +131,7 @@ void CBTFX_update(void) NONBANKED {
 
 #else // CPTFX_UPDATE_ASM
 
-void CBTFX_update_isr(void) __naked NONBANKED {
+void CBTFX_update(void) __naked NONBANKED {
 // void CBTFX_update_asm(void) NONBANKED {
 
     __asm \
@@ -162,65 +161,73 @@ void CBTFX_update_isr(void) __naked NONBANKED {
         .cbtfx_play_update:
             ; // Load _CBTFX_pointer into HL
             ; //
-            ; // Load the frame's length
-            ; // CBTFX_repeater = *CBTFX_pointer++;
+            ; // // Store the frame's length with pan bit masked out
+            ; // CBTFX_repeater = *CBTFX_pointer & CBTFX_REPEAT_LENGTH_MASK; // (0x7f)
             ld  a, (_CBTFX_pointer + 0)
             ld  l, a
             ld  a, (_CBTFX_pointer + 1)
             ld  h, a
-
-            ld  a, (hl+)
+            ld  a, (hl)
+            and #0x7F
             ld  (#_CBTFX_repeater),a
 
-            ; // mask -> A
-            ; //
-            ; // Mask to avoid muting an unused channel
-            ; // uint8_t mask = 0;
-            ; // if (CBTFX_ch_used & 128) mask |= 0x22;
-            ; // if (CBTFX_ch_used & 32) mask |= 0x88;
-            ; // duplicate mask bits into LSBits
-            ld  a, (#_CBTFX_ch_used)
+            ; // // Check repeater Pan bit
+            ; // if(*CBTFX_pointer++ & CBTFX_REPEAT_PAN_BIT) { // (0x80)
+            ld  a, (hl+)
+            and #0x80
+            jr  Z, .cbtfx_repeater_pan_bit_done
 
-            ;// This is a shorter version of code commented out below
-            and  #(0x80 | 0x20)
-            srl  a
-            srl  a
-            ld   b, a
-            swap a
-            or   b
+                ; // mask -> A
+                ; //
+                ; // Mask to avoid muting an unused channel
+                ; // uint8_t mask = 0;
+                ; // if (CBTFX_ch_used & 128) mask |= 0x22;
+                ; // if (CBTFX_ch_used & 32) mask |= 0x88;
+                ; // duplicate mask bits into LSBits
+                ld  a, (#_CBTFX_ch_used)
 
-                ;// ld  c, a
-                ;// xor a
-                ;//
-                ;// bit 7, c
-                ;//     jr  Z, .cbtfx_skip_ch2_skip_mask
-                ;//     or  a, #0x22
-                ;// .cbtfx_skip_ch2_skip_mask:
+                ;// This is a shorter version of code commented out below
+                and  #(0x80 | 0x20)
+                srl  a
+                srl  a
+                ld   b, a
+                swap a
+                or   b
 
-                ;// bit 5, c
-                ;// jr  Z, .cbtfx_skip_ch4_skip_mask
-                ;//     or  a, #0x88
-                ;// .cbtfx_skip_ch4_skip_mask:
+                    ;// ld  c, a
+                    ;// xor a
+                    ;//
+                    ;// bit 7, c
+                    ;//     jr  Z, .cbtfx_skip_ch2_skip_mask
+                    ;//     or  a, #0x22
+                    ;// .cbtfx_skip_ch2_skip_mask:
 
-            ; // Mask out the CH2 and CH4 pan values
-            ; // src/cbtfx.c:55: NR51_REG &= ~mask;
-            ; //  mask -> C
-            ; // (NR51_REG &= ~mask) -> B
-            ld   c, a
-            cpl
-            ld   b, a
-            ldh  a, (_NR51_REG + 0)
-            and  a, b
-            ld   b, a
-                ; // TODO: does this have to be a separate write or can it be combined
-                ; // ldh  (_NR51_REG + 0), a
+                    ;// bit 5, c
+                    ;// jr  Z, .cbtfx_skip_ch4_skip_mask
+                    ;//     or  a, #0x88
+                    ;// .cbtfx_skip_ch4_skip_mask:
 
-            ; // And write ours
-            ; //src/cbtfx.c:56: NR51_REG |= mask & *CBTFX_pointer++;
-            ld   a, (hl+)
-            and  a, c
-            or   a, b
-            ldh  (_NR51_REG + 0), a
+                ; // Mask out the CH2 and CH4 pan values
+                ; // src/cbtfx.c:55: NR51_REG &= ~mask;
+                ; //  mask -> C
+                ; // (NR51_REG &= ~mask) -> B
+                ld   c, a
+                cpl
+                ld   b, a
+                ldh  a, (_NR51_REG + 0)
+                and  a, b
+                ld   b, a
+                    ; // TODO: does this have to be a separate write or can it be combined
+                    ; // ldh  (_NR51_REG + 0), a
+
+                ; // And write ours
+                ; //src/cbtfx.c:56: NR51_REG |= mask & *CBTFX_pointer++;
+                ld   a, (hl+)
+                and  a, c
+                or   a, b
+                ldh  (_NR51_REG + 0), a
+
+            .cbtfx_repeater_pan_bit_done:
 
             ; // if (CBTFX_ch_used & 128){
             ; //     NR21_REG = *CBTFX_pointer++;
@@ -293,8 +300,21 @@ void CBTFX_update_isr(void) __naked NONBANKED {
             ld  (#_CBTFX_size), a
             jp  NZ, .cbtfx_play_update_done
 
-                xor a
 
+                ; // MUSIC_DRIVER_CH2_ON;
+                ld  hl, #0x01 // #((HT_CH_PLAY << 8) | HT_CH2) //
+                push    hl
+                call    _hUGE_mute_channel
+                pop hl
+
+                ; // MUSIC_DRIVER_CH4_ON;
+                ld  hl, #0x03 // #((HT_CH_PLAY << 8) | HT_CH4)
+                push    hl
+                call    _hUGE_mute_channel
+                pop hl
+
+
+                xor a
                 ; // if(CBTFX_size == 0){
                 ; //     CBTFX_priority = 0;
                 ld  (#_CBTFX_priority), a
@@ -329,6 +349,10 @@ void CBTFX_update_isr(void) __naked NONBANKED {
             ld  (_CBTFX_pointer + 0), a
             ld  a, h
             ld  (_CBTFX_pointer + 1), a
+
+            ; // Don't zero channels here - they get tested on next play...?
+            ; // CBTFX_ch_used = 0;
+
 
         .cbtfx_done:
 
