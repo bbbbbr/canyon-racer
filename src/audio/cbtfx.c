@@ -32,19 +32,13 @@ uint8_t CBTFX_repeater = 0;
 uint8_t CBTFX_panning = 0;
 uint8_t CBTFX_priority = 0;
 uint8_t CBTFX_ch_used = 0;
-uint8_t CBTFX_sgb = 0;
+
+// WARNING: Does not support any CBTFX commands which use or tag SGB
 
 //Restart values and point to the new sfx
 void CBTFX_init(const unsigned char * SFX) NONBANKED {
-    if ((*SFX & CBTFX_PRIORITY_MASK) < CBTFX_priority) return;
 
-    // Check SGB
-    if((*SFX & CBTFX_sgb) & CBTFX_SGB){
-            SFX++;
-            SFX++;
-            // sgb_transfer(SFX);
-            return;
-    }
+    if ((*SFX & CBTFX_PRIORITY_MASK) < CBTFX_priority) return;
 
     // To avoid hanging notes
     // Check the channels used by last sfx in case it's called while the drivers playing an sfx
@@ -59,18 +53,6 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
     CBTFX_ch_used = *SFX++;
     CBTFX_size = *SFX++;
 
-    // TODO: strip all SGB support out once crash sound that uses it is removed
-    //
-    // Go back to the header and then skip 5 SGB bytes on non SGB mode
-    // Since we just copied the first SFX byte to ch_used, we can look IT up instead of going back and forth
-    if(CBTFX_ch_used & CBTFX_SGB){
-            SFX++;
-            SFX++;
-            SFX++;
-            SFX++;
-            SFX++;
-    }
-
     CBTFX_repeater = 0;
     CBTFX_pointer = SFX;
     if (CBTFX_ch_used & CBTFX_CH2) MUSIC_DRIVER_CH2_OFF;
@@ -79,6 +61,7 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
 
 
 void CBTFX_update(void) NONBANKED {
+
     if (CBTFX_size != 0){ // If we have an SFX to play...
 
         if(CBTFX_repeater != 0){ // If we are still playing a frame
