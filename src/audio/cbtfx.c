@@ -8,14 +8,22 @@ Thanks to bbbbbr for getting my code to ACTUALLY work
 
 */
 
+
 #include <gb/gb.h>
-// #include <gb/sgb.h>
 #include "cbtfx.h"
 #include "hUGEDriver.h"
 #define MUSIC_DRIVER_CH2_ON  hUGE_mute_channel(HT_CH2, HT_CH_PLAY);
 #define MUSIC_DRIVER_CH2_OFF hUGE_mute_channel(HT_CH2, HT_CH_MUTE);
 #define MUSIC_DRIVER_CH4_ON  hUGE_mute_channel(HT_CH4, HT_CH_PLAY);
 #define MUSIC_DRIVER_CH4_OFF hUGE_mute_channel(HT_CH4, HT_CH_MUTE);
+
+#define CBTFX_CH2 0x80u
+#define CBTFX_CH4 0x20u
+#define CBTFX_SGB 0x40u
+
+#define CBTFX_PRIORITY_MASK      0x0Fu
+#define CBTFX_REPEAT_PAN_BIT     0x80u
+#define CBTFX_REPEAT_LENGTH_MASK 0x7Fu
 
 const unsigned char CBTFX_HEADER[] = "CBT-FX BY COFFEEBAT 2021-22";
 const uint8_t * CBTFX_pointer;
@@ -24,19 +32,14 @@ uint8_t CBTFX_repeater = 0;
 uint8_t CBTFX_panning = 0;
 uint8_t CBTFX_priority = 0;
 uint8_t CBTFX_ch_used = 0;
-uint8_t CBTFX_SGB = 0;
-
-// DEBUG
-uint8_t NR51_save, NR22_save;
+uint8_t CBTFX_sgb = 0;
 
 //Restart values and point to the new sfx
 void CBTFX_init(const unsigned char * SFX) NONBANKED {
-    if ((*SFX & 0x0f) < CBTFX_priority) return;
+    if ((*SFX & CBTFX_PRIORITY_MASK) < CBTFX_priority) return;
 
     // Check SGB
-    if((*SFX & CBTFX_SGB) & 64){
-            // *SFX++;
-            // *SFX++;
+    if((*SFX & CBTFX_sgb) & CBTFX_SGB){
             SFX++;
             SFX++;
             // sgb_transfer(SFX);
@@ -44,8 +47,9 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
     }
 
     // To avoid hanging notes
-    if (CBTFX_ch_used & 128) NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
-    if (CBTFX_ch_used & 32) NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
+    // Check the channels used by last sfx in case it's called while the drivers playing an sfx
+    if (CBTFX_ch_used & CBTFX_CH2) NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
+    if (CBTFX_ch_used & CBTFX_CH4) NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
 
     // To avoid the priority system leaving some channels turned off (Don't ask how I discovered this...)
     MUSIC_DRIVER_CH2_ON;
@@ -55,14 +59,11 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
     CBTFX_ch_used = *SFX++;
     CBTFX_size = *SFX++;
 
+    // TODO: strip all SGB support out once crash sound that uses it is removed
+    //
     // Go back to the header and then skip 5 SGB bytes on non SGB mode
     // Since we just copied the first SFX byte to ch_used, we can look IT up instead of going back and forth
-    if(CBTFX_ch_used & 64){
-            // *SFX++;
-            // *SFX++;
-            // *SFX++;
-            // *SFX++;
-            // *SFX++;
+    if(CBTFX_ch_used & CBTFX_SGB){
             SFX++;
             SFX++;
             SFX++;
@@ -72,50 +73,47 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
 
     CBTFX_repeater = 0;
     CBTFX_pointer = SFX;
-    if (CBTFX_ch_used & 128) MUSIC_DRIVER_CH2_OFF;
-    if (CBTFX_ch_used & 32) MUSIC_DRIVER_CH4_OFF;
+    if (CBTFX_ch_used & CBTFX_CH2) MUSIC_DRIVER_CH2_OFF;
+    if (CBTFX_ch_used & CBTFX_CH4) MUSIC_DRIVER_CH4_OFF;
 }
 
 
 void CBTFX_update(void) NONBANKED {
     if (CBTFX_size != 0){ // If we have an SFX to play...
 
-    	if(CBTFX_repeater != 0){ // If we are still playing a frame
-    		CBTFX_repeater--; // Remove one from the frame counter
-    	}else{
+        if(CBTFX_repeater != 0){ // If we are still playing a frame
+            CBTFX_repeater--; // Remove one from the frame counter
+        }else{
 
-        	CBTFX_repeater = *CBTFX_pointer++; // Load the frame's length
-			if(CBTFX_repeater & 0x80){
-    	        uint8_t mask = 0; // Mask to avoid muting an unused channel
-    	        if (CBTFX_ch_used & 128) mask |= 0x22;
-    	        if (CBTFX_ch_used & 32) mask |= 0x88;
-    	        NR51_REG &= ~mask; // Mask out the CH2 and CH4 pan values
-    	        NR51_REG |= mask & *CBTFX_pointer++; // And write ours
+            // Store the frame's length with pan bit masked out
+            CBTFX_repeater = *CBTFX_pointer & CBTFX_REPEAT_LENGTH_MASK;
+            // Check repeater Pan bit
+            if(*CBTFX_pointer++ & CBTFX_REPEAT_PAN_BIT) {
+                uint8_t mask = 0; // Mask to avoid muting an unused channel
+                if (CBTFX_ch_used & CBTFX_CH2) mask |= 0x22;
+                if (CBTFX_ch_used & CBTFX_CH4) mask |= 0x88;
+                NR51_REG  = (NR51_REG &= ~mask) | (mask & *CBTFX_pointer++); // Mask out the CH2 and CH4 pan values and write ours
             }
 
-            // AND out the pan byte after we used it
-            CBTFX_repeater &= 0x7f;
-
-
-            if (CBTFX_ch_used & 128){
+            if (CBTFX_ch_used & CBTFX_CH2){
                 NR21_REG = *CBTFX_pointer++;
                 NR22_REG = *CBTFX_pointer & 0xf0; // To assure the envelope is set to 0
             }
 
-            if (CBTFX_ch_used & 32){
+            if (CBTFX_ch_used & CBTFX_CH4){
                 NR42_REG = *CBTFX_pointer << 4; // Volume for the noise channel is the lower 4 bits of the same byte
             }
 
             CBTFX_pointer++;
 
             // If CH2 isn't used, we omit this data
-            if (CBTFX_ch_used & 128) {
+            if (CBTFX_ch_used & CBTFX_CH2) {
                 NR23_REG = *CBTFX_pointer++; // The lower 8 bits of the frequency
                 NR24_REG = *CBTFX_pointer++; // Higher 3 bits of the frequency + making sure the length isn't used and triggering the channel
             }
 
             // If CH4 isn't used, we omit this data
-            if (CBTFX_ch_used & 32) {
+            if (CBTFX_ch_used & CBTFX_CH4) {
                 NR43_REG = *CBTFX_pointer++; // Noise freq
                 NR44_REG = 0x80; // Trigger the noise channel
             }
@@ -125,17 +123,17 @@ void CBTFX_update(void) NONBANKED {
             if(CBTFX_size == 0){
                 MUSIC_DRIVER_CH2_ON;
                 MUSIC_DRIVER_CH4_ON;
-                if (CBTFX_ch_used & 128){
+                if (CBTFX_ch_used & CBTFX_CH2){
                     NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
                 }
-                if (CBTFX_ch_used & 32){
+                if (CBTFX_ch_used & CBTFX_CH4){
                     NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
                 }
                 CBTFX_ch_used = 0;
                 CBTFX_priority = 0;
                 #if (MONO_MUSIC==1)
-					NR51_REG = 0xff;
-				#endif
+                    NR51_REG = 0xff;
+                #endif
             }
 
         }
