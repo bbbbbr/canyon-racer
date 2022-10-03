@@ -70,8 +70,6 @@ void init(void) {
     audio_init();
 
     mapfx_set_intro();
-    mapfx_isr_install();
-
 }
 
 
@@ -88,12 +86,20 @@ void main() {
             case GAME_STATE_SHOW_INTRO:
                 HIDE_SPRITES;
                 // Expects: screen palettes faded-out
+
+                // Start up effect
+                // In Splash screen music is run manually, not by vbl
+                mapfx_isr_install(MAPFX_AUDIO_VBL_NO);
                 splash_intro_run(bg_next_free_tile);
+                // Remove effect from running after fade-out
+                mapfx_isr_deinstall();
                 game_state = GAME_STATE_START_GAME;
                 break;
 
             case GAME_STATE_START_GAME:
                 // Expects: screen palettes faded-out
+
+                mapfx_isr_install(MAPFX_AUDIO_VBL_YES);
                 spr_next_free_tile = 0u; // TODO: fix this up
                 spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
                 SHOW_SPRITES;
@@ -118,6 +124,8 @@ void main() {
                 game_state = GAME_STATE_SHOW_INTRO;
                 // Audio and Screen are faded at this point
                 delay_lowcpu( SECONDS_IN_FRAMES(GAME_OVER_WAIT_SECONDS) );
+                // Remove effect from running after fade-out
+                mapfx_isr_deinstall();
                 break;
         }
     }

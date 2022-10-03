@@ -50,6 +50,9 @@ extern const uint8_t * p_scx_table_frame_base;
 #define MAPFX_SCX_FAST   true
 
 
+#define MAPFX_AUDIO_VBL_NO  false
+#define MAPFX_AUDIO_VBL_YES true
+
 extern uint8_t mapfx_scroll_y_parallax_speed;
 extern uint8_t mapfx_scroll_scx_table_map_speed;
 #define MAPFX_Y_PARALLAX_SPEED(NEWVAL) (mapfx_scroll_y_parallax_speed = NEWVAL)
@@ -63,7 +66,7 @@ void mapfx_set_setpause(bool);
 void mapfx_scx_table_reset(void);
 
 // Installing and removing VBL
-void mapfx_isr_install(void);
+void mapfx_isr_install(bool add_audio_isr);
 void mapfx_isr_deinstall(void);
 
 // Turning LCD/STAT interrupt in/off
