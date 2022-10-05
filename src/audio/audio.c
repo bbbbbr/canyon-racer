@@ -23,9 +23,6 @@
 // Demo song
 extern const hUGESong_t music_titlescreen;
 extern const hUGESong_t music_gameplay;
-extern const hUGESong_t cyberacd;
-extern const hUGESong_t bs_mm_highway;
-
 
 uint8_t sfx_test_counter = 0u;
 uint8_t song_test_counter = 0u;
@@ -61,8 +58,6 @@ const uint8_t * sfx_list[] = {
 const hUGESong_t * song_list[] = {
     &music_titlescreen,
     &music_gameplay,
-    &cyberacd,
-    &bs_mm_highway
 };
 
 
