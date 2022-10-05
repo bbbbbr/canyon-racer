@@ -168,8 +168,10 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
                 break;
         }
 
-    // Now install the vbl isr so that the exit splash SFX will play
-    add_VBL(audio_vbl_isr);
+        // Now install the vbl isr so that the exit splash SFX will play
+        __critical {
+            add_VBL(audio_vbl_isr);
+        }
     }
 #endif
 
@@ -201,7 +203,9 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
             UPDATE_KEYS();
         }
         // Now install the vbl isr so that the exit splash SFX will play
-        add_VBL(audio_vbl_isr);
+        __critical {
+            add_VBL(audio_vbl_isr);
+        }
     #endif
 
     // No music fade out here since SFX should play immediately

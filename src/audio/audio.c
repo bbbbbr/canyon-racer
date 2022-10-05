@@ -233,7 +233,6 @@ void audio_init() {
     // mapfx_isr_install() to ensure that the music VBL handler
     // is placed AFTER the mapfx_isr_install() vbl handler
     //
-
     // __critical {
     //     add_VBL(audio_vbl_isr);
     // }
