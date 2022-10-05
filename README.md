@@ -14,21 +14,30 @@ If you aren't playing on original hardware you may need an accurate emulator (Em
 ### Credits, Contributors and Thanks
 
 Code & Gameplay: [bbbbbr](https://twitter.com/0xbbbbbr)
+
 Music & SFX: [BeatScribe](https://twitter.com/beatscribemusic)
 
-Additional code and contributions from:
+Additional code from:
   - [Coffee "Valen" Bat](https://twitter.com/cofebbat) : [CBTFX Driver](https://github.com/datguywitha3ds/CBT-FX)
   - [SuperDisk](https://github.com/SuperDisk) : [hUGETracker](https://github.com/SuperDisk/hUGETracker)  / [hUGEDriver](https://github.com/SuperDisk/)
   - [toxa](https://github.com/untoxa/) : GBDK HugeDriver integration
 
-Assets
-  - Canyon tiles are partially based on this tileset from [sondanielson](https://sondanielson.itch.io/gameboy-simple-rpg-tileset). CCA License
-  - Ship tiles are partially based on this tilset from [Jerom](https://opengameart.org/content/retro-spaceships). CC-BY-3 License.
+Assets:
+  - Some canyon tiles are based on this tileset: [sondanielson](https://sondanielson.itch.io/gameboy-simple-rpg-tileset). CCA License
+  - Ship tiles are based on this tileset: [Jerom](https://opengameart.org/content/retro-spaceships). CC-BY-3 License.
+  - Title Logo letter shapes are stylized versions of the [Vermin Vibes 1989](https://nalgames.com/fonts/vermin-vibes-1989) font. Non-commercial license
+
+Docs & Tools:
+  - [Pan Docs](https://gbdev.io/pandocs/) are a useful resource
+  - Lots of debugging and optimizing in the [Emulicious](https://emulicious.net/) emulator
+  - Built with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020)
 
 
-Built using [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.1.0-Pre+)
+### Builing:
+* [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.1.0-Pre+)
+* For SFX converversion from .sav files use the patched converter:
+  - https://github.com/bbbbbr/CBT-FX/blob/length_fix/hammer2cbt.py
 
-Lots of debugging and optimizing in the [Emulicious](https://emulicious.net/) emulator.
 
 # About the Effects
 
@@ -41,7 +50,12 @@ For Horizontal parallax it can be sufficient to modify the X scroll position jus
 
 In this demo only a couple instruction cycles are available to run between each Vertical parallax region to modify the scroll value and load it. The demo runs at a full 60 frames per second.
 
-Horizontal scrolling offsets and sprites will both alter the required Vertical parallax timing. While it is possible to somewhat compensate for the horizontal offsets, the computational cost is higher and leaves less room for gameplay. This demo tries to work with those limitations in a way that's visually pleasing and does not try to compensate for them.
+### Effect Timing and Artifacts
+Horizontal scrolling offsets and sprites will both alter the required Vertical parallax timing. While it is possible to somewhat compensate for the horizontal offsets, the computational cost is higher and leaves less room for gameplay. 
+
+There is additional timing variation based on the opcode being executed at the time each scanline interrupt triggers. If it's during an opcode which takes several cycles to complete before the interrupt can jump then the timing may be off by that amount of cycles. The Vertical parallax timing is sensitive down to 1-2 cycles of alignment, so this can also cause artifacts.
+
+This mini game tries to work with those limitations in a way that's visually pleasing when possible and does not try to compensate for them.
 
 ### Sine Waves
 In addition to the above, scrolling sine waves of various sizes are used to distort the background. This makes it both more visually interesting and more fun to navigate through the canyon.

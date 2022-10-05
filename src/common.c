@@ -16,7 +16,7 @@ void delay_lowcpu(uint16_t num_frames) {
 }
 
 // NOTE: This only works with a per-scanline STAT ISR running
-//       which can to wake it up from HALT once per scanline
+//       which can wake it up from HALT once per scanline
 //
 // Waits in halt until a given scanline
 void wait_in_halt_to_scanline(uint8_t exit_scanline) {
