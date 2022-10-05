@@ -37,8 +37,8 @@
     // #define OBST_DIST_MIN_HARD    OBS_COUNT_SCALE_UP(60u) // TODO: is 25 too small and unplayable? Maybe 30?
     #define OBST_DIST_MIN_EASY    OBS_COUNT_SCALE_UP(90u)
     #define OBST_DIST_MIN_MED     OBS_COUNT_SCALE_UP(85u)
-    #define OBST_DIST_MIN_HARD    OBS_COUNT_SCALE_UP(70u) // TODO: is 25 too small and unplayable? Maybe 30?
-
+    #define OBST_DIST_MIN_HARD    OBS_COUNT_SCALE_UP(70u)
+    #define OBST_DIST_MIN_HARD2   OBS_COUNT_SCALE_UP(55u)
     #define OBST_DIST_DBL         OBS_COUNT_SCALE_UP(10u) // Doubles: 10 pixels between spawning
 
     // == Max num obstacles per level ==
