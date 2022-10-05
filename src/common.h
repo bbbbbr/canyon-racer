@@ -36,9 +36,9 @@
 
 // #define DEBUG_MUSIC_IS_OFF
 
-#define DEBUG_FAST_LEVELS_EARLY
+// #define DEBUG_FAST_LEVELS_EARLY
 
-#define DEBUG_SKIP_INTRO_CREDITS
+// #define DEBUG_SKIP_INTRO_CREDITS
 
 // ===========================
 
