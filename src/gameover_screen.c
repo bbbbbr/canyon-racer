@@ -74,32 +74,59 @@ static void gameover_screen_initgfx(uint8_t spr_next_free_tile) {
 }
 
 
+uint8_t rotate_speed_mask[] = {0x03, 0x01, 0x00, 0x00};
+
 // Show gameover message (while BG continues to run) until user presses a button
 void gameover_screen_show(uint8_t spr_next_free_tile) {
 
-    uint16_t base_angle = GAME_OVER_START_ANGLE;
+    static uint16_t base_angle;
+    base_angle = GAME_OVER_START_ANGLE;
     uint8_t  x_pos      = GAME_OVER_X_START;
     uint8_t  y_pos      = GAME_OVER_Y_START;
     uint8_t  spr_count  = GAME_OVER_SPR_COUNT_START;
+    uint8_t  hold_time  = 0;
 
     gameover_screen_initgfx(spr_next_free_tile);
 
     while (1) {
 
 
-        if (y_pos != (GAME_OVER_Y_END)) {
-            y_pos++;
+        #ifndef DMG_MGB_LESS_BLUR_STYLE
+            if (y_pos != (GAME_OVER_Y_END)) {
+                y_pos+= GAME_OVER_Y_DROP_SPEED;
+            }
             base_angle += GAME_OVER_ROTATE_SPEED_NORM;
-        }
-        else {
-        // TODO: slow down angle at certain speeds
-            base_angle += GAME_OVER_ROTATE_SPEED_NORM;
-        }
+        #else
+            if (y_pos != (GAME_OVER_Y_END)) {
+                y_pos+= GAME_OVER_Y_DROP_SPEED;
+                base_angle += GAME_OVER_ROTATE_SPEED_NORM;
+            }
+            else {
+                // Slow down angle at top of rotation briefly for better DMG readbility
+                //
+                // Creates a uint8_t based midpoint at the target slowdown angle
+                // Then uses that to create a ramp to/from the midpoint
+                uint8_t midpoint_delta = (base_angle >> GAME_OVER_BIT_SHIFT) - GAME_OVER_SLOWDOWN_ANGLE;
+                if (midpoint_delta > 127u) midpoint_delta = 255u - midpoint_delta;  // 127u & 255u as uint8_t midpoint and max
+                midpoint_delta >>= GAME_OVER_ROTATE_MIDPOINT_BITSHIFT;
+
+                // Suppress slow wiggle/crawl while it's near the stopping point
+                if (midpoint_delta == 0) {
+                    hold_time++;
+                    // Then give angle a bump to start moving again once done waiting
+                    if (hold_time > GAME_OVER_MIDPOINT_HOLD_TIME) {
+                        hold_time = 0;
+                        base_angle += GAME_OVER_ROTATE_SPEED_NORM;
+                    }
+                } else
+                    base_angle += (midpoint_delta >> GAME_OVER_ROTATE_MIDPOINT_BITSHIFT) + GAME_OVER_ROTATE_SPEED_SLOW;
+            }
+        #endif
 
         wait_vbl_done();
 
         static uint8_t c;
-        uint16_t spr_angle = base_angle >> GAME_OVER_BIT_SHIFT;
+        uint8_t spr_angle = (uint8_t)(base_angle >> GAME_OVER_BIT_SHIFT);
         // Update all rotating sprites based with X,y calculated
         // based on an incrementing angle (from initial rotating angle)
         for (c = GAME_OVER_SPR_COUNT_START; c < spr_count; c++) {

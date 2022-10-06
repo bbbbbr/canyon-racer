@@ -115,7 +115,7 @@ void main() {
                 break;
 
             case GAME_STATE_RUNNING:
-                //gameplay_run(spr_next_free_tile);
+                gameplay_run(spr_next_free_tile);
                 game_state = GAME_STATE_OVER;
                 break;
 
