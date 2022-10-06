@@ -51,14 +51,11 @@ const uint8_t gameover_sprite_map[] = {0u,  2u, 4u,  6u,   // "GAME"
                                        8u, 10u, 6u, 12u}; // "OVER"
 
 
-// Show gameover message (while BG continues to run) until user presses a button
-void gameplay_show_gameover(uint8_t spr_next_free_tile) {
-
-
-    uint16_t base_angle = GAME_OVER_START_ANGLE;
-    uint8_t  x_pos      = GAME_OVER_X_START;
-    uint8_t  y_pos      = GAME_OVER_Y_START;
-    uint8_t  spr_count  = GAME_OVER_SPR_COUNT_START;
+// Load graphics for gameover screen
+//
+// Uses same oam range as gameplay sprites (doesn't get called till no more sprites on screen)
+// Does not clear score sprites
+static void gameover_screen_initgfx(uint8_t spr_next_free_tile) {
 
     // Make sure sprites are hidden (may be redundant)
     hide_sprites_range(GAME_OVER_SPR_COUNT_START, 40u);
@@ -74,23 +71,40 @@ void gameplay_show_gameover(uint8_t spr_next_free_tile) {
     // Load the letter tiles
     set_sprite_data(spr_next_free_tile, game_over_TILE_COUNT, game_over_tiles);
 
+}
+
+
+// Show gameover message (while BG continues to run) until user presses a button
+void gameover_screen_show(uint8_t spr_next_free_tile) {
+
+    uint16_t base_angle = GAME_OVER_START_ANGLE;
+    uint8_t  x_pos      = GAME_OVER_X_START;
+    uint8_t  y_pos      = GAME_OVER_Y_START;
+    uint8_t  spr_count  = GAME_OVER_SPR_COUNT_START;
+
+    gameover_screen_initgfx(spr_next_free_tile);
 
     while (1) {
 
-        if (y_pos != (GAME_OVER_Y_END))
+
+        if (y_pos != (GAME_OVER_Y_END)) {
             y_pos++;
+            base_angle += GAME_OVER_ROTATE_SPEED_NORM;
+        }
+        else {
+        // TODO: slow down angle at certain speeds
+            base_angle += GAME_OVER_ROTATE_SPEED_NORM;
+        }
 
         wait_vbl_done();
 
-        // TODO: slow down angle at certain speeds
-        //
-        base_angle += GAME_OVER_ROTATE_SPEED_NORM;
-
         static uint8_t c;
-        uint8_t spr_angle = base_angle;
+        uint16_t spr_angle = base_angle >> GAME_OVER_BIT_SHIFT;
+        // Update all rotating sprites based with X,y calculated
+        // based on an incrementing angle (from initial rotating angle)
         for (c = GAME_OVER_SPR_COUNT_START; c < spr_count; c++) {
-            shadow_OAM[c].x =  ((SIN(spr_angle) * (GAME_OVER_LETTER_RADIUS)) >> 7) + x_pos;
-            shadow_OAM[c].y =  ((COS(spr_angle) * (GAME_OVER_LETTER_RADIUS)) >> 7) + y_pos;
+            shadow_OAM[c].x =  (uint8_t)((SIN(spr_angle) * (GAME_OVER_LETTER_RADIUS)) >> 7) + x_pos;
+            shadow_OAM[c].y =  (uint8_t)((COS(spr_angle) * (GAME_OVER_LETTER_RADIUS)) >> 7) + y_pos;
             spr_angle -= GAME_OVER_SPR_ANGLE_GAP; // Minus to go counter clockwise for sprite letters
         }
 

@@ -7,6 +7,5 @@
 
 void gameplay_prestart(void);
 void gameplay_run(uint8_t spr_next_free_tile);
-void gameplay_show_gameover(uint8_t spr_next_free_tile);
 
 #endif

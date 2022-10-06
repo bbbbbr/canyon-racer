@@ -16,6 +16,7 @@
 #include "intro_credits.h"
 #include "splash_screen.h"
 #include "gameplay.h"
+#include "gameover_screen.h"
 #include "map_fx.h"
 
 
@@ -114,13 +115,13 @@ void main() {
                 break;
 
             case GAME_STATE_RUNNING:
-                gameplay_run(spr_next_free_tile);
+                //gameplay_run(spr_next_free_tile);
                 game_state = GAME_STATE_OVER;
                 break;
 
             case GAME_STATE_OVER:
                 // TODO: audio_music_set(MUSIC_GAMEOVER_SONG);
-                gameplay_show_gameover(bg_next_free_tile);
+                gameover_screen_show(bg_next_free_tile);
                 game_state = GAME_STATE_SHOW_INTRO;
                 // Audio and Screen are faded at this point
                 delay_lowcpu( SECONDS_IN_FRAMES(GAME_OVER_WAIT_SECONDS) );

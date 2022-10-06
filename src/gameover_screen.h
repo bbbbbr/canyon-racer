@@ -3,10 +3,11 @@
 #ifndef _GAMEOVER_SCREEN_H
 #define _GAMEOVER_SCREEN_H
 
+#define GAME_OVER_BIT_SHIFT        0u
+#define GAME_OVER_ROTATE_SPEED_NORM (2u << GAME_OVER_BIT_SHIFT) // (2u) looks nice, (1u) is better for non modded screens // In 260/255 degrees
+#define GAME_OVER_ROTATE_SPEED_SLOW (1u << GAME_OVER_BIT_SHIFT)
 
 #define GAME_OVER_ADD_LETTER_MASK  (0x0Fu)
-#define GAME_OVER_ROTATE_SPEED_NORM (2u) // (2u) looks nice, (1u) is better for non modded screens // In 260/255 degrees
-#define GAME_OVER_ROTATE_SPEED_SLOW (1u)
 #define GAME_OVER_LETTER_RADIUS    (40u)
 #define GAME_OVER_SPR_COUNT        (8u)
 #define GAME_OVER_SPR_ANGLE_GAP    (255u / (GAME_OVER_SPR_COUNT + 4u)) // 2u)) // (2u is more spaced out, 6u is letters closer together)
@@ -26,7 +27,7 @@
 // Start closer to 9pm, combined with GAME_OVER_Y_START mid-screen has a ok swoop in look
 #define GAME_OVER_START_ANGLE    (164u)
 
-void gameplay_show_gameover(uint8_t spr_next_free_tile);
+void gameover_screen_show(uint8_t spr_next_free_tile);
 
 
 #endif
