@@ -228,7 +228,7 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums_bg.png -keep_palette_order -map -tiles_only -c $(RESDIR)/tiles_font_nums_bg.c
 	# Game over Sprites
 	# -8, -16 offset is to remove GB hardware sprite offset
-	$(PNG2ASSET) $(RESDIR)/game_over.png -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
+	$(PNG2ASSET) $(RESDIR)/game_over.png -tiles_only -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
 	# Intro credits screen
 	rm -f $(RESDIR)/intro_credits*.c $(RESDIR)/intro_credits*.h $(RESDIR)/intro_credits*.bin
 	# Non-compressed version
