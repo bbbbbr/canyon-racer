@@ -1,0 +1,31 @@
+hUGETracker / Driver with compression support + GBDK-2020 (4.1.0, but others too)
+
+  - hUGETracker Editor build (1.0 b.9 based)
+    - https://github.com/SuperDisk/hUGETracker/actions/runs/3010801289
+
+  - hUGETracker Driver (1.0 b.9 based)
+    - https://github.com/SuperDisk/hUGEDriver/tree/uncap
+
+  - Build with RGBDS 0.5.2
+    - https://github.com/gbdev/rgbds/releases/tag/v0.5.2
+
+  - Use rgb2sdas from hUGETracker 1.0 b10 release build
+    - https://github.com/SuperDisk/hUGETracker/releases/tag/1.0b10
+
+# Build RGBDS (on Linux, at least)
+~/rgbds/0.5.2
+make
+
+# Build driver and convert to sdcc compatible object file
+Use the rgb2sdas.exe from the b10 windows release, not from b9 or uncap.b9
+
+cd gbdk_example
+~/rgbds/0.5.2/rgbasm -DGBDK -ohUGEDriver.obj -i.. ../hUGEDriver.asm
+chmod a+x rgb2sdas.exe
+./rgb2sdas.exe hUGEDriver.obj
+
+
+# Make it compatible with GBDK-2020 4.1.0 / new SDCC port/platform (2022)
+- Edit the resulting .o file and replace -mgbz80 with -msm83 
+
+

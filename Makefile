@@ -97,7 +97,8 @@ LCCFLAGS += $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Fla
 # CFLAGS += -v     # Uncomment for lcc verbose output
 
 # Add pre-compiled Music Driver to lib path
-LIBS_INC = -Wl-llib/hUGEDriver.lib
+# LIBS_INC = -Wl-llib/hUGEDriver.lib
+OBJ_MUSIC_DRIVER_COMPILED = lib/hUGEDriver_with_compression_sm83.obj.o
 LCCFLAGS += $(LIBS_INC)
 
 # You can set the name of the ROM file here
@@ -192,7 +193,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
-	$(LCC) $(LCCFLAGS) $(CFLAGS) -o $(BINDIR)/$(PROJECTNAME).$(EXT) $(OBJS)
+	$(LCC) $(LCCFLAGS) $(CFLAGS) -o $(BINDIR)/$(PROJECTNAME).$(EXT) $(OBJS) $(OBJ_MUSIC_DRIVER_COMPILED)
 
 
 # Rule to absorb .h header files which have been removed but may be
@@ -258,7 +259,7 @@ run:
 
 romusage:
 # Ignores failure if romusage not in path
-	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
+	-romusage build/gb/$(PROJECTNAME).noi -sRd -g $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
 	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E > romusage.txt
 
 clean:
