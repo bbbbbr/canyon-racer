@@ -120,12 +120,11 @@ void main() {
                 break;
 
             case GAME_STATE_OVER:
-                // TODO: audio_music_set(MUSIC_GAMEOVER_SONG);
                 gameover_screen_show(bg_next_free_tile);
                 game_state = GAME_STATE_SHOW_INTRO;
-                // Audio and Screen are faded at this point
+                // Audio and Screen are faded out at this point
                 delay_lowcpu( SECONDS_IN_FRAMES(GAME_OVER_WAIT_SECONDS) );
-                // Remove effect from running after fade-out
+                // Remove effect from running after fade-out, it will get reinstalled differently for splash screen
                 mapfx_isr_deinstall();
                 break;
         }

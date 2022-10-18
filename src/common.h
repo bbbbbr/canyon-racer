@@ -42,7 +42,7 @@
 
 // ===========================
 
-// #define DMG_MGB_LESS_BLUR_STYLE
+#define DMG_MGB_LESS_BLUR_STYLE
 
 
 #define FIXED_BITSHIFT 8
