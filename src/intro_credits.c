@@ -4,6 +4,8 @@
 
 #include <gb/gbdecompress.h>
 
+#include <audio.h>
+
 #include "input.h"
 #include "common.h"
 #include "gfx.h"
@@ -42,8 +44,24 @@ void intro_credits_show(void) {
     //               (intro_credits_data_HEIGHT / intro_credits_data_TILE_H),
     //               intro_credits_data_map);
 
+
+
+    audio_music_set(MUSIC_CREDITS);
+    audio_music_unpause();
+
+    // Temporarily install the audio vbl isr
+    __critical {
+        add_VBL(audio_vbl_isr);
+    }
+
     delay(120);
     fade_in(FADE_DELAY_INTRO);
     delay(1750);
     fade_out(FADE_DELAY_INTRO);
+
+    // Then de-install audio vbl isr
+    __critical {
+        remove_VBL(audio_vbl_isr);
+    }
+
 }

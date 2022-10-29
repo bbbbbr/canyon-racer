@@ -135,6 +135,7 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
                 UPDATE_KEYS();
             }
 
+            // TODO: if this is going to remain, make it a switch statement
             // SFX
             if (KEY_PRESSED(J_UP)) {
                 audio_sfx_test_increment();

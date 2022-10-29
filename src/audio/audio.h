@@ -22,6 +22,7 @@ extern uint8_t song_test_counter;
 #define MUSIC_TITLE_SCREEN  0u
 #define MUSIC_GAMEPLAY      1u
 #define MUSIC_GAMEOVER_SONG 2u
+#define MUSIC_CREDITS       3u
 
 void audio_music_pause(void);
 void audio_music_unpause(void);

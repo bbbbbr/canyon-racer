@@ -16,10 +16,11 @@
 
 #define SECONDS_IN_FRAMES(sec) (sec * 60u)
 
-#define GAME_STATE_SHOW_INTRO 0u
-#define GAME_STATE_START_GAME 1u
-#define GAME_STATE_RUNNING    2u
-#define GAME_STATE_OVER       3u
+#define GAME_STATE_STARTUP_CREDITS 0u
+#define GAME_STATE_SHOW_INTRO      1u
+#define GAME_STATE_START_GAME      2u
+#define GAME_STATE_RUNNING         3u
+#define GAME_STATE_OVER            4u
 
 // ===========================
 

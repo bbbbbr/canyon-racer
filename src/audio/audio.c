@@ -24,6 +24,7 @@
 extern const hUGESong_t music_titlescreen;
 extern const hUGESong_t music_gameplay;
 extern const hUGESong_t music_gameover;
+extern const hUGESong_t music_credits;
 
 uint8_t sfx_test_counter = 0u;
 uint8_t song_test_counter = 0u;
@@ -59,7 +60,8 @@ const uint8_t * sfx_list[] = {
 const hUGESong_t * song_list[] = {
     &music_titlescreen,
     &music_gameplay,
-    &music_gameover
+    &music_gameover,
+    &music_credits
 };
 
 

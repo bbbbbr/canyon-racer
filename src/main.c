@@ -34,17 +34,6 @@ void init_gfx(void) {
     SHOW_BKG;
 
     DISPLAY_ON;
-
-    // TODO: Move into main()
-    // Fades in, shows credits, fades out
-    #ifndef DEBUG_SKIP_INTRO_CREDITS
-        intro_credits_show();
-    #endif
-
-    // TODO: move to gameplay_init_gfx()
-    bg_next_free_tile = 0u;
-    spr_next_free_tile = 0u;
-    bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
 }
 
 
@@ -64,6 +53,7 @@ void init(void) {
         // cpu_fast();
     // }
 
+
     stats_load();
     init_gfx();
 
@@ -78,15 +68,30 @@ void init(void) {
 void main() {
 
     init();
-    game_state = GAME_STATE_SHOW_INTRO;
+    game_state = GAME_STATE_STARTUP_CREDITS;
 
     while (1) {
 
         switch (game_state) {
 
+            case GAME_STATE_STARTUP_CREDITS:
+                // Fades in, shows credits + plays music, fades out
+                #ifndef DEBUG_SKIP_INTRO_CREDITS
+                    intro_credits_show();
+                #endif
+                game_state = GAME_STATE_SHOW_INTRO;
+                break;
+
+
             case GAME_STATE_SHOW_INTRO:
                 HIDE_SPRITES;
                 // Expects: screen palettes faded-out
+
+                // Load up shared BG canyon GFX
+                // TODO: move to gameplay_init_gfx() ?
+                bg_next_free_tile = 0u;
+                spr_next_free_tile = 0u;
+                bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
 
                 // Start up effect
                 // In Splash screen music is run manually, not by vbl
@@ -104,13 +109,13 @@ void main() {
                 spr_next_free_tile = 0u; // TODO: fix this up
                 spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
                 SHOW_SPRITES;
-                gameplay_prestart();
                 #ifdef DEBUG_SOUND_TEST
                     audio_music_set(song_test_counter);
                 #else
                     audio_music_set(MUSIC_GAMEPLAY);
                 #endif
                 audio_music_unpause();
+                gameplay_prestart();
                 game_state = GAME_STATE_RUNNING;
                 break;
 
