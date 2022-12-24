@@ -266,6 +266,7 @@ romusage:
 	-romusage build/gb/$(PROJECTNAME).noi -sRd -g $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
 	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E > romusage.txt
 
+# Needs stock inside gadgets firmware to work, can use flashgbx ui to swap it out if needed
 flashduck:
 	tools/gbxcart_rw_megaduck_32kb_flasher build/duck/canyon_racer_0.5.0_32k_nosave.duck &
 
