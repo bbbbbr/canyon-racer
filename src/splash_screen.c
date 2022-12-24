@@ -33,6 +33,9 @@
 uint8_t splash_init(uint8_t bg_next_free_tile) {
 
     mapfx_set_intro();
+// DEBUG - don't run FX
+mapfx_set_setpause(true);
+
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
 
     // Splash logo goes on the Window so it can overlay on top of the scrolling background
@@ -104,6 +107,7 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
     WX_REG = WIN_X_FINAL;
 }
 
+#include "hUGEDriver.h"
 
 // TODO: DEBUG SOUND TEST
 #ifdef DEBUG_SOUND_TEST
@@ -120,6 +124,8 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
         set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
         set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
 
+#define HT_MUTE_NONE (HT_CH4 + 1)
+uint8_t mute_index = HT_MUTE_NONE;
         while (1) {
 
             // Idle until user presses any button
@@ -165,6 +171,43 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
             else if (KEY_PRESSED(J_SELECT)) {
                 audio_music_pause();
             }
+else if (KEY_PRESSED(J_START)) {
+    mute_index++;
+    if (mute_index > HT_MUTE_NONE)
+        mute_index = HT_CH1;
+    switch (mute_index) {
+        case HT_MUTE_NONE:
+            hUGE_mute_channel(HT_CH1, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH2, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH3, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH4, HT_CH_PLAY);
+            break;
+        case HT_CH1:
+            hUGE_mute_channel(HT_CH1, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH2, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH3, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH4, HT_CH_MUTE);
+            break;
+        case HT_CH2:
+            hUGE_mute_channel(HT_CH1, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH2, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH3, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH4, HT_CH_MUTE);
+            break;
+        case HT_CH3:
+            hUGE_mute_channel(HT_CH1, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH2, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH3, HT_CH_PLAY);
+            hUGE_mute_channel(HT_CH4, HT_CH_MUTE);
+            break;
+        case HT_CH4:
+            hUGE_mute_channel(HT_CH1, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH2, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH3, HT_CH_MUTE);
+            hUGE_mute_channel(HT_CH4, HT_CH_PLAY);
+            break;
+    }
+}
             else
                 break;
         }

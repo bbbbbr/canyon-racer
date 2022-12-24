@@ -60,7 +60,7 @@ void init(void) {
     // Call this BEFORE mapfx_isr_install() to ensure audio is configured before it's VBL starts
     audio_init();
 
-    mapfx_set_intro();
+    // mapfx_set_intro();
 }
 
 
@@ -96,10 +96,13 @@ void main() {
                 // Start up effect
                 // In Splash screen music is run manually, not by vbl
                 mapfx_isr_install(MAPFX_AUDIO_VBL_NO);
+
                 splash_intro_run(bg_next_free_tile);
                 // Remove effect from running after fade-out
                 mapfx_isr_deinstall();
-                game_state = GAME_STATE_START_GAME;
+// DEBUG - run game
+                // game_state = GAME_STATE_START_GAME;
+                game_state = GAME_STATE_SHOW_INTRO;
                 break;
 
             case GAME_STATE_START_GAME:
