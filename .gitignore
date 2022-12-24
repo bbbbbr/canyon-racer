@@ -6,3 +6,4 @@ build/
 *.noi
 *.sav
 !res/source_audio/*.sav
+*.ini
