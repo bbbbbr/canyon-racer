@@ -98,7 +98,11 @@ LCCFLAGS += $(LCCFLAGS_$(EXT)) # This adds the current platform specific LCC Fla
 
 # Add pre-compiled Music Driver to lib path
 # LIBS_INC = -Wl-llib/hUGEDriver.lib
-OBJ_MUSIC_DRIVER_COMPILED = lib/hUGEDriver_with_compression_sm83.obj.o
+ifeq ($(PLAT),duck)
+	OBJ_MUSIC_DRIVER_COMPILED = lib/hUGEDriver_megaduck_with_compression_sm83.obj.o
+else
+	OBJ_MUSIC_DRIVER_COMPILED = lib/hUGEDriver_with_compression_sm83.obj.o
+endif
 LCCFLAGS += $(LIBS_INC)
 
 # You can set the name of the ROM file here
@@ -261,6 +265,9 @@ romusage:
 # Ignores failure if romusage not in path
 	-romusage build/gb/$(PROJECTNAME).noi -sRd -g $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
 	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E > romusage.txt
+
+flashduck:
+	tools/gbxcart_rw_megaduck_32kb_flasher build/duck/canyon_racer_0.5.0_32k_nosave.duck &
 
 clean:
 	@echo Cleaning

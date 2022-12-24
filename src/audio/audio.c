@@ -130,11 +130,10 @@ void audio_music_pause(void) {
     }
 
     // Turn off and reset sound
-    NR52_REG = 0;  // ?
-    NR52_REG = 0x80;
-    NR51_REG = 0xff;
-    NR50_REG = 0x77;
-
+    NR52_REG = AUDENA_OFF;  // ??
+    NR52_REG = AUDENA_ON;
+    NR51_REG = AUDTERM_ALL_LEFT | AUDTERM_ALL_RIGHT;
+    NR50_REG = 0x77u;
 }
 
 
@@ -224,9 +223,9 @@ void audio_init() {
     audio_fading_out = AUDIO_FADE_DONE;
 
     // Enable audio output
-    NR52_REG = 0x80;
-    NR51_REG = 0xFF;
-    NR50_REG = 0x77;
+    NR52_REG = AUDENA_ON;
+    NR51_REG = AUDTERM_ALL_LEFT | AUDTERM_ALL_RIGHT;
+    NR50_REG = 0x77u;
 
     // Instead of here, the music ISR gets installed by
     // mapfx_isr_install() to ensure that the music VBL handler

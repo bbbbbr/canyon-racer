@@ -77,18 +77,28 @@ void CBTFX_update(void) NONBANKED {
             // Check repeater Pan bit
             if(*CBTFX_pointer++ & CBTFX_REPEAT_PAN_BIT) {
                 uint8_t mask = 0; // Mask to avoid muting an unused channel
-                if (CBTFX_ch_used & CBTFX_CH2) mask |= 0x22;
-                if (CBTFX_ch_used & CBTFX_CH4) mask |= 0x88;
+                if (CBTFX_ch_used & CBTFX_CH2) mask |= (AUDTERM_2_LEFT | AUDTERM_2_RIGHT); // 0x22;
+                if (CBTFX_ch_used & CBTFX_CH4) mask |= (AUDTERM_4_LEFT | AUDTERM_4_RIGHT)// 0x88;
                 NR51_REG  = (NR51_REG &= ~mask) | (mask & *CBTFX_pointer++); // Mask out the CH2 and CH4 pan values and write ours
             }
 
             if (CBTFX_ch_used & CBTFX_CH2){
                 NR21_REG = *CBTFX_pointer++;
-                NR22_REG = *CBTFX_pointer & 0xf0; // To assure the envelope is set to 0
+                #ifdef MEGADUCK
+                    // Megaduck NR22 is Nybble Swapped
+                    NR22_REG = (*CBTFX_pointer >> 4); // To assure the envelope is set to 0
+                #else
+                    NR22_REG = *CBTFX_pointer & 0xf0; // To assure the envelope is set to 0
+                #endif
             }
 
             if (CBTFX_ch_used & CBTFX_CH4){
-                NR42_REG = *CBTFX_pointer << 4; // Volume for the noise channel is the lower 4 bits of the same byte
+                #ifdef MEGADUCK
+                    // Megaduck NR42 is Nybble Swapped
+                    NR42_REG = *CBTFX_pointer & 0x0Fu; // Volume for the noise channel is the lower 4 bits of the same byte
+                #else
+                    NR42_REG = *CBTFX_pointer << 4; // Volume for the noise channel is the lower 4 bits of the same byte
+                #endif
             }
 
             CBTFX_pointer++;
@@ -101,7 +111,13 @@ void CBTFX_update(void) NONBANKED {
 
             // If CH4 isn't used, we omit this data
             if (CBTFX_ch_used & CBTFX_CH4) {
-                NR43_REG = *CBTFX_pointer++; // Noise freq
+                #ifdef MEGADUCK
+                    // Megaduck NR22 is Nybble Swapped
+                    NR43_REG = (*CBTFX_pointer << 4) | (*CBTFX_pointer >> 4); // Noise freq
+                    CBTFX_pointer++;
+                #else
+                    NR43_REG = *CBTFX_pointer++; // Noise freq
+                #endif
                 NR44_REG = 0x80; // Trigger the noise channel
             }
 
@@ -243,7 +259,13 @@ void CBTFX_update(void) __naked NONBANKED {
                 ldh  (_NR21_REG + 0), a
 
                 ld   a, (hl)
-                and  a, #0xF0
+                ; // Megaduck NR22 is Nybble Swapped
+                #ifdef MEGADUCK
+                    swap a
+                    and  a, #0x0F
+                #else
+                    and  a, #0xF0
+                #endif
                 ldh  (_NR22_REG + 0), a
             .cbtfx_skip_ch2_env_zero:
 
@@ -254,8 +276,13 @@ void CBTFX_update(void) __naked NONBANKED {
             jr  Z, .cbtfx_skip_ch4_vol
 
                 ld   a, (hl)
-                swap a
-                and  #0xF0
+                ; // Megaduck NR22 is Nybble Swapped
+                #ifdef MEGADUCK
+                    and  #0x0F
+                #else
+                    swap a
+                    and  #0xF0
+                #endif
                 ldh  (_NR42_REG + 0), a
             .cbtfx_skip_ch4_vol:
 
@@ -286,6 +313,10 @@ void CBTFX_update(void) __naked NONBANKED {
             jr  Z, .cbtfx_skip_ch4_data
 
                 ld   a, (hl+)
+                ; // Megaduck NR22 is Nybble Swapped
+                #ifdef MEGADUCK
+                    swap a
+                #endif
                 ldh  (_NR43_REG + 0), a
 
                 ld   a, #0x80
