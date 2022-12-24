@@ -21,25 +21,29 @@ extern const uint8_t * p_scx_table_frame_base;
 #define SCX_TABLE_SCROLL
 
 
-// TODO: Make speed an adjustable var
-//  * 1/2/4 for Y parallax speed
-//  * 1/2/4 for Y scroll speed or every/other/fourth for update masking
-
 // Region scrolling speed
 // table size MUST be multiple of SCROLL_SCX_TABLE_MAP_SPEED
-#define MAPFX_SCY_SPEED_STOP    0u
+#ifdef MEGADUCK
+    // Some MegaDuck model LCDs can't handle faster pixel changes from Y Parallax scrolling
+    // and may get damaged, so turn it off completely
+    #define MAPFX_SCY_SPEED_STOP    0u
+    #define MAPFX_SCY_SPEED_SLOW    (MAPFX_SCY_SPEED_STOP)
+    #define MAPFX_SCY_SPEED_MED     (MAPFX_SCY_SPEED_STOP)
+    #define MAPFX_SCY_SPEED_FAST    (MAPFX_SCY_SPEED_STOP)
+    #define MAPFX_SCY_SPEED_MAX     (MAPFX_SCY_SPEED_STOP)
+#else
+    // Game Boy / Analogue Pocket
+    #define MAPFX_SCY_SPEED_STOP    0u
+    #define MAPFX_SCY_SPEED_SLOW    1u
+    #define MAPFX_SCY_SPEED_MED     2u
+    #define MAPFX_SCY_SPEED_FAST    2u
+    #define MAPFX_SCY_SPEED_MAX     8u
+#endif
+
 #define MAPFX_SCX_SPEED_STOP    0u
-
-#define MAPFX_SCY_SPEED_SLOW    1u
 #define MAPFX_SCX_SPEED_SLOW    1u
-
-#define MAPFX_SCY_SPEED_MED     2u
 #define MAPFX_SCX_SPEED_MED     2u
-
-#define MAPFX_SCY_SPEED_FAST    2u
 #define MAPFX_SCX_SPEED_FAST    4u
-
-#define MAPFX_SCY_SPEED_MAX     8u
 #define MAPFX_SCX_SPEED_MAX     8u
 
 #define MAPFX_SCY_SPEED_DEFAULT (MAPFX_SCY_SPEED_MED)
