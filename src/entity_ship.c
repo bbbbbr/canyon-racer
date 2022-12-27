@@ -150,7 +150,17 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
         case SHIP_STATE_CRASHED:
             // If crashed, render explosion then restart
-            if (ship_counter) {
+
+            if (ship_counter == SHIP_COUNTER_CRASH) {
+                // Start game over music on first pass
+                audio_music_pause();
+                // Give playing music 2 frames to settle before starting up next song
+                delay_lowcpu(2u);
+                audio_music_set(MUSIC_GAMEOVER_SONG);
+                audio_music_unpause();
+                ship_counter--;
+            }
+            else if (ship_counter) {
                 ship_counter--;
                 // Select crash frame
                 ship_sprite_sel = (ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
@@ -193,6 +203,13 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 ship_jump_velocity -= SHIP_JUMP_GRAVITY;
                 if (ship_jump_velocity < SHIP_JUMP_VELOCITY_DOWN_LIMIT)
                     ship_jump_velocity = SHIP_JUMP_VELOCITY_DOWN_LIMIT;
+
+                if (check_collisions_air() == true) {
+                    // Will take effect next frame
+                    ship_state = SHIP_STATE_CRASHED;
+                    ship_counter = SHIP_COUNTER_CRASH;
+                    // audio_sfx_play(SFX_SHIP_CRASH);
+                }
             }
 
             // Set sprite at main player location to shadow
@@ -208,17 +225,11 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
             ship_handle_input();
 
-            if (check_collisions() == true) {
+            if (check_collisions_ground() == true) {
                 // Will take effect next frame
                 ship_state = SHIP_STATE_CRASHED;
                 ship_counter = SHIP_COUNTER_CRASH;
                 // audio_sfx_play(SFX_SHIP_CRASH);
-
-                audio_music_pause();
-                // Give playing music 2 frames to settle before starting up next song
-                delay_lowcpu(2u);
-                audio_music_set(MUSIC_GAMEOVER_SONG);
-                audio_music_unpause();
             }
             break;
     }
