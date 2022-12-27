@@ -77,7 +77,7 @@
 
 
 // CANYON X Axis offsets
-#define CANYON_LEFT_X_BASE    (8u * 8u) // 8 tiles x 8 pixels per tile // ((160u  - 10u) / 2u) // TODO
+#define CANYON_LEFT_X_BASE    (8u * 8u) // 8 tiles x 8 pixels per tile
 #define CANYON_WIDTH          (4u * 8u) // 4 tiles x 8 pixels per tile
 
 

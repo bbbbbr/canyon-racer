@@ -90,13 +90,12 @@ void entity_obstacles_init(void) {
 
 
 
-// TODO: optimize: make oam_high_water global and don't pass it between functions
+// TODO: MAYBE: OPTIMIZE: make oam_high_water global and don't pass it between functions
 uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
 
     // Update all active obstacles
     // Process them in order from top of screen (last) down to bottom (first)
-    // TODO: Swap this out to using obstacles_active_first for counter? - Why?
     uint8_t idx = obstacles_active_last;
     for (uint8_t c = obstacles_active_count; c != 0; c--) {
 
@@ -120,7 +119,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
             // Record number of obstacles cleared
             // Only count for score if game is not over
-            // TODO: HACK: state test here is temporary
+            // TODO: HACK: state test here is temporary, improve to single state test
             if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP)) {
                 SCORE_INCREMENT();
                 score_update();
@@ -148,11 +147,11 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     }
 
 
-    // TODO: move to function is there is overhead for it:
+    // TODO: move to function if there is overhead for it:
     // entity_obstacles_check_spawn_new()
 
     // Add more obstacles if needed
-    // But only when the in normal gameplay -- TODO: Split ship motion from game state
+    // But only when the in normal gameplay -- TODO: Split ship motion state from game state
     if ((obstacles_active_count != cur_level.obst_qty_max) &&
         ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) ||
         (SHIP_STATE_GET() == SHIP_STATE_JUMP)) ) {
@@ -170,7 +169,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             if (obstacles_active_last == OBSTACLES_COUNT_WRAP)
                 obstacles_active_last = 0;
 
-            // TODO: scroll screen down so starting at zero doesn't pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
+            // TODO: scroll screen down so starting at zero doesn't cause sprites to pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
             obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
             obstacles[obstacles_active_last].type = obstacles_next_type;
 

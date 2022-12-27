@@ -69,11 +69,10 @@ bool check_collisions(void) {
 
             // // If this is reached then the ship has Y overlap with the obstacle
             uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - p_scx_table_frame_base[obstacle_y_pos];
-            // TODO: optimize lookups
+
             uint8_t obstacle_x_hitbox_left  = obstacle_x_pos + obstacles_x_hitbox_left[obstacle_type];
             uint8_t obstacle_x_hitbox_right = obstacle_x_pos + obstacles_x_hitbox_right[obstacle_type];
 
-            // TODO: variable width collision for different obstacle widths
             // Check X axis Overlap (via non-overlap)
             if ( ((obstacle_x_hitbox_left) <= (ship_x.h + SHIP_HITBOX_X_RIGHT)) &&
                  ((obstacle_x_hitbox_right) >= (ship_x.h + SHIP_HITBOX_X_LEFT)) ) {

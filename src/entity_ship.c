@@ -46,21 +46,6 @@ void entity_ship_init(void) {
 #define SHIP_JUMP_VELOCITY_SMALL       350  // Min jump height if button released early
 #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -512 // Max downward velocity
 
-// This "works" ok but doesn't feel as fun
-// TODO: Delete these
-// #define SHIP_JUMP_GRAVITY              70
-// #define SHIP_JUMP_VELOCITY_START       1300 // TODO: 1350?
-// #define SHIP_JUMP_VELOCITY_SMALL       600
-// #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -600
-    // #define SHIP_JUMP_GRAVITY              60
-    // #define SHIP_JUMP_VELOCITY_START       1200
-    // #define SHIP_JUMP_VELOCITY_SMALL       500
-    // #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -600
-// #define SHIP_JUMP_GRAVITY              50
-// #define SHIP_JUMP_VELOCITY_START       1000
-// #define SHIP_JUMP_VELOCITY_SMALL       480
-// #define SHIP_JUMP_VELOCITY_DOWN_LIMIT  -512
-
 
 static void ship_handle_input(void) {
 
@@ -103,7 +88,7 @@ static void ship_handle_input(void) {
         // Jump can only start when ship is on the ground (SHIP_STATE_PLAYING)
         if (ship_state == SHIP_STATE_PLAYING) {
 
-            // TODO: separate jump state from playing state?
+            // TODO: separate jump state from game state
             ship_state = SHIP_STATE_JUMP;
             audio_sfx_play(SFX_SHIP_JUMP);
 
