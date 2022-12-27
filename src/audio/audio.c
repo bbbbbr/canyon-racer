@@ -17,7 +17,7 @@
 #include "sfx/shipland.h"
 #include "sfx/speedup.h"
 #include "sfx/titleexit.h"
-#include "sfx/SFX_05.h"
+// #include "sfx/SFX_05.h"
 
 // Music
 // Demo song
@@ -54,7 +54,7 @@ const uint8_t * sfx_list[] = {
     &SFX_10[0], // shipland  3
     &SFX_11[0], // levelup   4
     &SFX_12[0], // speedup   5
-    &SFX_05[0], // crash     6  // TODO: from cbtfx demos, replace
+    // &SFX_05[0], // crash     6  // Replaced with a gameover crash sound + music track
 };
 
 const hUGESong_t * song_list[] = {

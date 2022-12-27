@@ -10,7 +10,7 @@
 #define SFX_SHIP_LAND  3u
 #define SFX_LEVEL_UP   4u
 #define SFX_SPEED_UP   5u
-#define SFX_SHIP_CRASH 6u
+// #define SFX_SHIP_CRASH 6u // Replaced with a gameover crash sound + music track
 
 
 
