@@ -240,7 +240,7 @@ assets:
 	#  Needs both -bpp 1 -pack_mode 1bpp
 	# $(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -c res/intro_credits_data.c
 	#
-	# Intro credits screen COMPRESSED version of if needed later (saves 300+ bytes)
+	# Intro credits screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
 	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
 	$(GBCOMPRESS) --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
