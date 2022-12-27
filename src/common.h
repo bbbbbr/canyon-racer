@@ -37,9 +37,9 @@
 // #define DEBUG_RESUME_AFTER_CRASH
 
 // Debug option to show level in score
-#define DEBUG_SHOW_LEVEL_IN_SCORE
+// #define DEBUG_SHOW_LEVEL_IN_SCORE
 
-#define DEBUG_SOUND_TEST
+// #define DEBUG_SOUND_TEST
 
 // #define DEBUG_MUSIC_IS_OFF
 
