@@ -215,8 +215,6 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 // audio_sfx_play(SFX_SHIP_CRASH);
 
                 audio_music_pause();
-                // Give playing music 2 frames to settle before starting up next song
-                delay_lowcpu(2u);
                 audio_music_set(MUSIC_GAMEOVER_SONG);
                 audio_music_unpause();
             }

@@ -153,9 +153,16 @@ void audio_music_unpause(void) {
 
 void audio_music_set(uint8_t song_id) {
 
+    // Having hUGE_init() in a critical section causes a noticeable
+    // gfx glitch when starting the game over music right after a
+    // crash. Instead just make sure music is not playing and
+    // call that good enough to avoid problems.
     __critical {
-        hUGE_init(song_list[song_id]);
+        music_is_playing = false;
     }
+
+    hUGE_init(song_list[song_id]);
+
 }
 
 
