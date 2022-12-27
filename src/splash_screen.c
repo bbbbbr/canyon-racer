@@ -30,7 +30,10 @@
 #define WIN_Y_OFFSCREEN  ((SCREENHEIGHT) + 1u)
 
 
-uint8_t splash_init(uint8_t bg_next_free_tile) {
+static uint8_t splash_init(uint8_t bg_next_free_tile);
+static void sfx_test(uint8_t bg_next_free_tile);
+
+static uint8_t splash_init(uint8_t bg_next_free_tile) {
 
     mapfx_set_intro();
     set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
@@ -45,9 +48,6 @@ uint8_t splash_init(uint8_t bg_next_free_tile) {
     // Load Splash BG Font Num tiles and render score
     set_bkg_data(bg_next_free_tile, tiles_font_nums_bg_TILE_COUNT, tiles_font_nums_bg_tiles);
     hi_score_render(get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y), bg_next_free_tile);
-
-    // TODO: Play Intro Splash Music?
-    // audio_music_set(MUSIC_INTRO_SONG);
 
     // Window start off-screen
     WY_REG = (SCREENHEIGHT + 1u);
@@ -105,77 +105,6 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 }
 
 
-// TODO: DEBUG SOUND TEST
-#ifdef DEBUG_SOUND_TEST
-
-    static void sfx_test(uint8_t bg_next_free_tile) {
-
-        // Set default for gameplay
-        song_test_counter = MUSIC_GAMEPLAY;
-
-        // Address for start of numeric score text
-        uint8_t * p_vram_addr = get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y);
-
-        // Show current selected SFX and Song num on startup
-        set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
-        set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
-
-        while (1) {
-
-            // Idle until user presses any button
-            UPDATE_KEYS();
-            while (!KEY_TICKED(J_ANY)) {
-                // Wait till scanline below window top to start
-                // playing music, so glitches are obscured.
-                // Wait in HALT state so that ISR timing is
-                // predictable. The LCD ISR will wake it.
-                wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
-                audio_vbl_isr(); // Update playback manually
-                wait_vbl_done();
-                UPDATE_KEYS();
-            }
-
-            // TODO: if this is going to remain, make it a switch statement
-            // SFX
-            if (KEY_PRESSED(J_UP)) {
-                audio_sfx_test_increment();
-                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
-            }
-            else if (KEY_PRESSED(J_DOWN)) {
-                audio_sfx_test_decrement();
-                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
-            }
-            else if (KEY_PRESSED(J_A)) {
-                audio_sfx_play(sfx_test_counter);
-                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
-            }
-            // Music
-            else if (KEY_PRESSED(J_LEFT)) {
-                audio_song_test_decrement();
-                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
-            }
-            else if (KEY_PRESSED(J_RIGHT)) {
-                audio_song_test_increment();
-                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
-            }
-            else if (KEY_PRESSED(J_B)) {
-                audio_music_set(song_test_counter);
-                audio_music_unpause();
-            }
-            else if (KEY_PRESSED(J_SELECT)) {
-                audio_music_pause();
-            }
-            else
-                break;
-        }
-
-        // Now install the vbl isr so that the exit splash SFX will play
-        __critical {
-            add_VBL(audio_vbl_isr);
-        }
-    }
-#endif
-
 
 // Expects Sprites to be turned off
 void splash_intro_run(uint8_t bg_next_free_tile) {
@@ -220,3 +149,83 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
     HIDE_WIN;
 }
 
+
+
+
+#ifdef DEBUG_SOUND_TEST
+
+static void sfx_test(uint8_t bg_next_free_tile) {
+
+    // Set default for gameplay
+    song_test_counter = MUSIC_GAMEPLAY;
+
+    // Address for start of numeric score text
+    uint8_t * p_vram_addr = get_win_xy_addr(SPLASH_LOGO_WIN_SCORE_X, SPLASH_LOGO_WIN_SCORE_Y);
+
+    // Show current selected SFX and Song num on startup
+    set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+    set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+
+    while (1) {
+
+        // Idle until user presses any button
+        UPDATE_KEYS();
+        while (!KEY_TICKED(J_ANY)) {
+            // Wait till scanline below window top to start
+            // playing music, so glitches are obscured.
+            // Wait in HALT state so that ISR timing is
+            // predictable. The LCD ISR will wake it.
+            wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
+            audio_vbl_isr(); // Update playback manually
+            wait_vbl_done();
+            UPDATE_KEYS();
+        }
+
+        switch (KEYS()) {
+        // SFX
+            // Change selected SFX Counter
+            case J_UP: audio_sfx_test_increment();
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+                break;
+
+            // Change selected SFX Counter
+            case J_DOWN: audio_sfx_test_decrement();
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+                break;
+
+            // Plays selected SFX
+            case J_A: audio_sfx_play(sfx_test_counter);
+                set_vram_byte(p_vram_addr, bg_next_free_tile + (sfx_test_counter));
+                break;
+
+        // Music
+            // Change selected Music Counter
+            case J_LEFT:
+                audio_song_test_decrement();
+                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+                break;
+
+            // Change selected Music Counter
+            case J_RIGHT: audio_song_test_increment();
+                set_vram_byte(p_vram_addr + 1u, bg_next_free_tile + (song_test_counter));
+                break;
+
+            // Plays song
+            case J_B: audio_music_set(song_test_counter);
+                audio_music_unpause();
+                break;
+
+            case J_SELECT: audio_music_pause();
+                break;
+
+        // Exit Title screen, start game
+            case J_START:
+                // Now re-install the vbl isr so that the exit splash SFX will play
+                __critical {
+                    add_VBL(audio_vbl_isr);
+                }
+                return;
+        }
+    }
+}
+#endif
