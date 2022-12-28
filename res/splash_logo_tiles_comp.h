@@ -1,6 +1,6 @@
 
 
-#define splash_logo_tiles_comp_sz_comp 2327
+#define splash_logo_tiles_comp_sz_comp 2336
 #define splash_logo_tiles_comp_sz_decomp 3104
 
 

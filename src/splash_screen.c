@@ -32,12 +32,35 @@
 #define WIN_SPEED_FAST 4u
 
 #define SPLASH_LOGO_TITLE_ONLY_HEIGHT (12u * 8u) // 12 tiles tall. Excludes help text hidden below
-#define WIN_Y_SHOWING    ((SCREENHEIGHT) - (SPLASH_LOGO_TITLE_ONLY_HEIGHT))
-#define WIN_Y_OFFSCREEN  ((SCREENHEIGHT) + 1u)
+#define WIN_Y_SHOWING_TITLE ((SCREENHEIGHT) - (SPLASH_LOGO_TITLE_ONLY_HEIGHT))
+#define WIN_Y_SHOWING_HELP  ((SCREENHEIGHT) - (splash_logo_data_HEIGHT))
+#define WIN_Y_UPDATE_MUSIC_AT ((SCREENHEIGHT) - 36u) // 36 scanlines should be ok for servicing music
+#define WIN_Y_OFFSCREEN     ((SCREENHEIGHT) + 1u)
 
+#define WIN_MOVE_DIR_DOWN 0
+#define WIN_MOVE_DIR_UP   1
+const uint8_t scx_shake_offset[] = {7u, 6u, 5u, 4u, 3u, 2u};
 
+static void wait_vbl_then_midframe_update_music(void);
 static uint8_t splash_init(uint8_t bg_next_free_tile);
-static void sfx_test(uint8_t bg_next_free_tile);
+
+static void window_move_with_shake(uint8_t, uint8_t);
+static void splash_show_help(void);
+static void sfx_test(uint8_t);
+
+
+
+// Waits till scanline N (below window top in this case)
+// to update playing music so that glitches are obscured.
+// Wait in HALT state so that ISR timing is predictable.
+// The LCD ISR will wake it (so must be running).
+static void midframe_update_music_then_waitvbl(void) {
+
+    wait_in_halt_to_scanline(WIN_Y_UPDATE_MUSIC_AT);
+    audio_vbl_isr(); // Update playback manually
+    wait_vbl_done();
+}
+
 
 static uint8_t splash_init(uint8_t bg_next_free_tile) {
 
@@ -71,11 +94,8 @@ static uint8_t splash_init(uint8_t bg_next_free_tile) {
     return bg_next_free_tile;
 }
 
-const uint8_t scx_shake_offset[] = {7u, 6u, 5u, 4u, 3u, 2u};
 
-
-#define WIN_MOVE_DIR_DOWN 0
-#define WIN_MOVE_DIR_UP   1
+// Moves window to desired Y location. Only shakes when moving upward
 static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 
     // Window destination
@@ -112,12 +132,28 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
             WY_REG += scroll_amt;
             if (WY_REG >= win_y_moveto) break;
         }
-        wait_vbl_done();
+        midframe_update_music_then_waitvbl();
     }
     // Make sure Window ends up at desired location
     WX_REG = WIN_X_FINAL;
 }
 
+
+// Reveals help text and waits for any button press before re-hiding it
+// Note: Only call when Window is already at WIN_Y_SHOWING_TITLE
+static void splash_show_help(void) {
+    // Move win up to show help text
+    window_move_with_shake(WIN_Y_SHOWING_HELP, WIN_MOVE_DIR_UP);
+
+    UPDATE_KEYS(); // Clear any pending KEY_TICKED()
+    while (!KEY_TICKED(J_ANY)) {
+
+        midframe_update_music_then_waitvbl();
+        UPDATE_KEYS();
+    }
+    // Move win back down to just title
+    window_move_with_shake(WIN_Y_SHOWING_TITLE, WIN_MOVE_DIR_DOWN);
+}
 
 
 // Expects Sprites to be turned off
@@ -129,22 +165,20 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
     bg_next_free_tile = splash_init(bg_next_free_tile);
 
     fade_in(FADE_DELAY_FX_RUNNING);
-    window_move_with_shake(WIN_Y_SHOWING, WIN_MOVE_DIR_UP);
+    window_move_with_shake(WIN_Y_SHOWING_TITLE, WIN_MOVE_DIR_UP);
 
     #ifdef DEBUG_SOUND_TEST
         sfx_test(bg_next_free_tile);
     #else
         // Idle until user presses any button
         UPDATE_KEYS();
-        while (!KEY_TICKED(J_ANY)) {
-            // Wait till scanline below window top to start
-            // playing music, so glitches are obscured.
-            // Wait in HALT state so that ISR timing is
-            // predictable. The LCD ISR will wake it.
-            wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
-            audio_vbl_isr(); // Update playback manually
-            wait_vbl_done();
+        while (1) {
+
+            midframe_update_music_then_waitvbl();
+
             UPDATE_KEYS();
+            if (KEY_TICKED(J_DOWN | J_UP)) splash_show_help();
+            else if (KEY_TICKED(J_ANY)) break;
         }
         // Now install the vbl isr so that the exit splash SFX will play
         __critical {
@@ -189,7 +223,7 @@ static void sfx_test(uint8_t bg_next_free_tile) {
             // playing music, so glitches are obscured.
             // Wait in HALT state so that ISR timing is
             // predictable. The LCD ISR will wake it.
-            wait_in_halt_to_scanline(WIN_Y_SHOWING + 1u);
+            wait_in_halt_to_scanline(WIN_Y_SHOWING_TITLE + 1u);
             audio_vbl_isr(); // Update playback manually
             wait_vbl_done();
             UPDATE_KEYS();
