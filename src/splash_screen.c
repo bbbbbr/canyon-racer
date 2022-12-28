@@ -6,8 +6,13 @@
 #include <audio.h>
 
 // Graphics
-#include "../res/splash_logo.h"
+#include "../res/splash_logo_data.h"
+#include "../res/splash_logo_map_comp.h"
+#include "../res/splash_logo_tiles_comp.h"
+
 #include "../res/tiles_font_nums_bg.h"
+
+#include <gb/gbdecompress.h>
 
 #include "input.h"
 #include "common.h"
@@ -26,7 +31,8 @@
 #define WIN_SPEED_MED  2u
 #define WIN_SPEED_FAST 4u
 
-#define WIN_Y_SHOWING    ((SCREENHEIGHT) - (splash_logo_HEIGHT))
+#define SPLASH_LOGO_TITLE_ONLY_HEIGHT (12u * 8u) // 12 tiles tall. Excludes help text hidden below
+#define WIN_Y_SHOWING    ((SCREENHEIGHT) - (SPLASH_LOGO_TITLE_ONLY_HEIGHT))
 #define WIN_Y_OFFSCREEN  ((SCREENHEIGHT) + 1u)
 
 
@@ -36,14 +42,22 @@ static void sfx_test(uint8_t bg_next_free_tile);
 static uint8_t splash_init(uint8_t bg_next_free_tile) {
 
     mapfx_set_intro();
-    set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
+    // This doesn't acceot arbitrary tile count, just decompresses until data is used up
+    // Non-compressed version:
+    // set_bkg_data(bg_next_free_tile, splash_logo_TILE_COUNT, splash_logo_tiles);
+    gb_decompress_bkg_data(bg_next_free_tile, splash_logo_tiles_comp);
 
     // Splash logo goes on the Window so it can overlay on top of the scrolling background
+    // Non-compressed version:
+    // set_win_based_tiles(SPLASH_LOGO_WIN_X, SPLASH_LOGO_WIN_Y,
+    //                     splash_logo_WIDTH / splash_logo_TILE_W, splash_logo_HEIGHT / splash_logo_TILE_H,
+    //                     splash_logo_map, bg_next_free_tile);
+    gb_decompress(splash_logo_map_comp, decomp_buf);
     set_win_based_tiles(SPLASH_LOGO_WIN_X, SPLASH_LOGO_WIN_Y,
-                        splash_logo_WIDTH / splash_logo_TILE_W, splash_logo_HEIGHT / splash_logo_TILE_H,
-                        splash_logo_map, bg_next_free_tile);
+                        splash_logo_data_WIDTH / splash_logo_data_TILE_W, splash_logo_data_HEIGHT / splash_logo_data_TILE_H,
+                        decomp_buf, bg_next_free_tile);
 
-    bg_next_free_tile += splash_logo_TILE_COUNT;
+    bg_next_free_tile += splash_logo_data_TILE_COUNT;
 
     // Load Splash BG Font Num tiles and render score
     set_bkg_data(bg_next_free_tile, tiles_font_nums_bg_TILE_COUNT, tiles_font_nums_bg_tiles);

@@ -16,6 +16,8 @@
 
 #define SECONDS_IN_FRAMES(sec) (sec * 60u)
 
+extern uint8_t decomp_buf[];
+
 // GB Sound macros
 #define AUDTERM_ALL_LEFT  (AUDTERM_4_LEFT | AUDTERM_3_LEFT | AUDTERM_2_LEFT | AUDTERM_1_LEFT)
 #define AUDTERM_ALL_RIGHT (AUDTERM_4_RIGHT | AUDTERM_3_RIGHT | AUDTERM_2_RIGHT | AUDTERM_1_RIGHT)

@@ -17,9 +17,6 @@
 #include "../res/intro_credits_tiles_comp.h"
 
 
-// Set array size to whichever is larger (tiles or data)
-uint8_t decomp_buf[MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles_comp_sz_decomp)];
-
 void intro_credits_show(void) {
 
     set_1bpp_colors(DMG_BLACK, DMG_WHITE);

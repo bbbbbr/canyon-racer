@@ -5,6 +5,17 @@
 
 #include "common.h"
 
+#include "../res/intro_credits_data.h"
+#include "../res/intro_credits_map_comp.h"
+#include "../res/intro_credits_tiles_comp.h"
+
+#include "../res/splash_logo_map_comp.h"
+
+// Set array size to whichever is largest
+// Shared decompression array buffer
+uint8_t decomp_buf[MAX(MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles_comp_sz_decomp), intro_credits_map_comp_sz_decomp)];
+
+
 // Options and stats
 settings_rec game_settings;
 

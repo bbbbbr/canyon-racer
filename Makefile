@@ -227,8 +227,16 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
 	# Pause Sprites
 	$(PNG2ASSET) $(RESDIR)/sprite_pause.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/sprite_pause.c
-	# Intro Logo
-	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
+	# Splash Logo
+	# Non-compressed version
+	# $(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
+	#
+	# Splash Logo screen COMPRESSED version (saves ~800 bytes)
+	# -> .bin -> compress -> .c
+	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -noflip -bin -c $(RESDIR)/splash_logo_data.c
+	$(GBCOMPRESS) -v --cout --varname=splash_logo_map_comp   $(RESDIR)/splash_logo_data_map.bin   $(RESDIR)/splash_logo_map_comp.c
+	$(GBCOMPRESS) -v --cout --varname=splash_logo_tiles_comp $(RESDIR)/splash_logo_data_tiles.bin $(RESDIR)/splash_logo_tiles_comp.c
+
 	# Font Numbers used on BG with Intro Logo
 	$(PNG2ASSET) $(RESDIR)/font_nums_bg.png -keep_palette_order -map -tiles_only -c $(RESDIR)/tiles_font_nums_bg.c
 	# Game over Sprites
@@ -243,8 +251,8 @@ assets:
 	# Intro credits screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
 	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
-	$(GBCOMPRESS) --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
-	$(GBCOMPRESS) --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
+	$(GBCOMPRESS) -v --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
+	$(GBCOMPRESS) -v --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
 
 carts:
 	${MAKE} CART_TYPE=31k_1kflash
