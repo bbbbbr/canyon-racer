@@ -5,19 +5,25 @@ Top Down Racing Demo for the Game Boy with a Vertical Parallax Effect.
 
 This project started with wanting to try a vertical parallax effect on the original Game Boy, similar to the kind seen in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
 
+![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
+![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
+
+### Game Play
 A little addictive, a little simplistic, but with cool FX and music. :)
 
 Give your eyes frequent rests, there can be some temporary sensation of visual movement after playing.
 
-If you aren't playing on OEM Game Boy:
-  - Use an accurate emulator (Emulicious, BGB, Sameboy, etc)
-  - The Analogue Pocket does not match OEM hardware for the column scroll effect, so timing is off. 
+- Jump: **A** button (tap or hold)
+- Extend or reduce jumps: **Up / Down** (required for some long jumps)
 
-![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
-![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
+
+### Effect Accuracy
+Some notes about the visual effects if you aren't playing on an actual Game Boy or chip clone:
+  - Use an accurate emulator (Emulicious, BGB, Sameboy, etc) and it should look ok
+  - Currently the Analogue Pocket does not match OEM hardware for the column scroll effect, so timing is off a little
+
 
 ### Credits, Contributors and Thanks
-
 Code & Gameplay: [bbbbbr](https://twitter.com/0xbbbbbr)
 
 Music & SFX: [BeatScribe](https://twitter.com/beatscribemusic)
