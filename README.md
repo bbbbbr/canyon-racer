@@ -15,7 +15,7 @@ Give your eyes frequent rests, there can be some temporary sensation of visual m
 
 - Jump: **A** button (tap or hold)
 - Extend or reduce jumps: **Up / Down** (required for some long jumps)
-
+- Pause: **Start**
 
 ### Effect Accuracy
 Some notes about the visual effects if you aren't playing on an actual Game Boy or chip clone:
@@ -44,7 +44,7 @@ Docs & Tools:
 
 
 ### Building:
-* [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.1.0-Pre+)
+* [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.1.1)
 * For SFX converversion from .sav files use the patched converter:
   - https://github.com/bbbbbr/CBT-FX/blob/length_fix/hammer2cbt.py
 
