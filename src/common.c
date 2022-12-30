@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <rand.h>
 
 #include "common.h"
 
@@ -17,7 +18,11 @@ uint8_t decomp_buf[MAX(MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles
 
 
 // Options and stats
-settings_rec game_settings;
+game_state_data state;
+game_state_data state_copy;
+uint16_t rand_seed_copy;
+uint16_t state_backup_count;
+
 
 void delay_lowcpu(uint16_t num_frames) {
 
@@ -37,4 +42,25 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline) {
             NOP     ; // HALT sometimes skips the next instruction
         __endasm;
     } while (LY_REG != exit_scanline);
+}
+
+
+void game_state_count_reset(void) {
+    state_backup_count = 0;
+}
+
+void game_state_save() {
+    __critical {
+        memcpy(&state_copy, &state, sizeof(game_state_data));
+        rand_seed_copy = __rand_seed;
+    }
+}
+
+
+void game_state_restore() {
+    __critical {
+        memcpy(&state, &state_copy, sizeof(game_state_data));
+        __rand_seed = rand_seed_copy;
+    }
+    state_backup_count++;
 }

@@ -57,7 +57,9 @@
 #define SHIP_COUNTER_STARTUP 60u // 1/2 sec
 
 #define SHIP_COUNTER_CRASH_FRAMES   (SHIP_SPR_CRASH_MAX - SHIP_SPR_CRASH_MIN + 1)  // Should match number of crash frames
-#define SHIP_COUNTER_CRASH_BITSHIFT 4u  // Sets number of frames as power of 2: 4u = 16 frames per (1/4 sec)
+// #define SHIP_COUNTER_CRASH_BITSHIFT 4u  // Sets number of frames as power of 2: 4u = 16 frames per (1/4 sec)
+// Make ship crash segment longer so there is more time to press Restore State button
+#define SHIP_COUNTER_CRASH_BITSHIFT 5u  // Sets number of frames as power of 2: 5u = 32 frames per metaspr frame (1/2 sec)
 #define SHIP_COUNTER_CRASH   (SHIP_COUNTER_CRASH_FRAMES << SHIP_COUNTER_CRASH_BITSHIFT)
 
 #define SHIP_COUNTER_JUMP   30u // 1/2 sec
@@ -70,13 +72,7 @@
 #define SHIP_HITBOX_Y_TOP    ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u)
 #define SHIP_HITBOX_Y_BOTTOM ((sprite_ship_PIVOT_H) + ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u))
 
-extern fixed   ship_x, ship_y;
-extern fixed   ship_z;
-extern uint8_t ship_state;
-
-extern uint8_t ship_state;
-
-#define SHIP_STATE_GET() (ship_state)
+#define SHIP_STATE_GET() (state.ship_state)
 
 void entity_ship_init(void);
 

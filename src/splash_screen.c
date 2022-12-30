@@ -34,7 +34,12 @@
 #define SPLASH_LOGO_TITLE_ONLY_HEIGHT (12u * 8u) // 12 tiles tall. Excludes help text hidden below
 #define WIN_Y_SHOWING_TITLE ((SCREENHEIGHT) - (SPLASH_LOGO_TITLE_ONLY_HEIGHT))
 #define WIN_Y_SHOWING_HELP  ((SCREENHEIGHT) - (splash_logo_data_HEIGHT))
-#define WIN_Y_UPDATE_MUSIC_AT ((SCREENHEIGHT) - 36u) // 36 scanlines should be ok for servicing music
+// 36 scanlines should be ok for servicing music
+// (takes as little as 16, sometimes spikes to an
+// entire frame [less 3/4 of cpu used for LCD ISR],
+// might be wave or pattern reload?)
+#define TITLE_SCREEN_MUSIC_TIME_IN_SCANLINES  36u
+#define WIN_Y_UPDATE_MUSIC_AT ((SCREENHEIGHT) - (TITLE_SCREEN_MUSIC_TIME_IN_SCANLINES))
 #define WIN_Y_OFFSCREEN     ((SCREENHEIGHT) + 1u)
 
 #define WIN_MOVE_DIR_DOWN 0

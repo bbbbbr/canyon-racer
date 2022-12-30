@@ -303,15 +303,33 @@ const uint8_t sprite_ship_tiles[1024] = {
 };
 
 const metasprite_t sprite_ship_metasprite0[] = {
-	METASPR_ITEM(16, 8, 0, 0), METASPR_ITEM(0, 8, 2, 0), METASPR_ITEM(0, 8, 0, 32), METASPR_ITEM(16, -16, 4, 0), METASPR_ITEM(0, 8, 6, 0), METASPR_ITEM(0, 8, 4, 32), METASPR_TERM
+	METASPR_ITEM(16, 8, 0, S_PAL(0)),
+	METASPR_ITEM(0, 8, 2, S_PAL(0)),
+	METASPR_ITEM(0, 8, 0, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(16, -16, 4, S_PAL(0)),
+	METASPR_ITEM(0, 8, 6, S_PAL(0)),
+	METASPR_ITEM(0, 8, 4, S_PAL(0) | S_FLIPX),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite1[] = {
-	METASPR_ITEM(16, 8, 8, 0), METASPR_ITEM(0, 8, 10, 0), METASPR_ITEM(0, 8, 12, 0), METASPR_ITEM(16, -16, 14, 0), METASPR_ITEM(0, 8, 16, 0), METASPR_ITEM(0, 8, 18, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 8, S_PAL(0)),
+	METASPR_ITEM(0, 8, 10, S_PAL(0)),
+	METASPR_ITEM(0, 8, 12, S_PAL(0)),
+	METASPR_ITEM(16, -16, 14, S_PAL(0)),
+	METASPR_ITEM(0, 8, 16, S_PAL(0)),
+	METASPR_ITEM(0, 8, 18, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite2[] = {
-	METASPR_ITEM(16, 8, 12, 32), METASPR_ITEM(0, 8, 10, 32), METASPR_ITEM(0, 8, 8, 32), METASPR_ITEM(16, -16, 18, 32), METASPR_ITEM(0, 8, 16, 32), METASPR_ITEM(0, 8, 14, 32), METASPR_TERM
+	METASPR_ITEM(16, 8, 12, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(0, 8, 10, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(0, 8, 8, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(16, -16, 18, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(0, 8, 16, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(0, 8, 14, S_PAL(0) | S_FLIPX),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite3[] = {
@@ -319,19 +337,43 @@ const metasprite_t sprite_ship_metasprite3[] = {
 };
 
 const metasprite_t sprite_ship_metasprite4[] = {
-	METASPR_ITEM(16, 8, 20, 0), METASPR_ITEM(0, 8, 22, 0), METASPR_ITEM(0, 8, 24, 0), METASPR_ITEM(16, -16, 26, 0), METASPR_ITEM(0, 8, 28, 0), METASPR_ITEM(0, 8, 30, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 20, S_PAL(0)),
+	METASPR_ITEM(0, 8, 22, S_PAL(0)),
+	METASPR_ITEM(0, 8, 24, S_PAL(0)),
+	METASPR_ITEM(16, -16, 26, S_PAL(0)),
+	METASPR_ITEM(0, 8, 28, S_PAL(0)),
+	METASPR_ITEM(0, 8, 30, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite5[] = {
-	METASPR_ITEM(16, 8, 32, 0), METASPR_ITEM(0, 8, 34, 0), METASPR_ITEM(0, 8, 36, 0), METASPR_ITEM(16, -16, 38, 0), METASPR_ITEM(0, 8, 40, 0), METASPR_ITEM(0, 8, 42, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 32, S_PAL(0)),
+	METASPR_ITEM(0, 8, 34, S_PAL(0)),
+	METASPR_ITEM(0, 8, 36, S_PAL(0)),
+	METASPR_ITEM(16, -16, 38, S_PAL(0)),
+	METASPR_ITEM(0, 8, 40, S_PAL(0)),
+	METASPR_ITEM(0, 8, 42, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite6[] = {
-	METASPR_ITEM(16, 8, 44, 0), METASPR_ITEM(0, 8, 46, 0), METASPR_ITEM(0, 8, 48, 0), METASPR_ITEM(16, -16, 50, 0), METASPR_ITEM(0, 8, 52, 0), METASPR_ITEM(0, 8, 54, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 44, S_PAL(0)),
+	METASPR_ITEM(0, 8, 46, S_PAL(0)),
+	METASPR_ITEM(0, 8, 48, S_PAL(0)),
+	METASPR_ITEM(16, -16, 50, S_PAL(0)),
+	METASPR_ITEM(0, 8, 52, S_PAL(0)),
+	METASPR_ITEM(0, 8, 54, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_ship_metasprite7[] = {
-	METASPR_ITEM(16, 8, 56, 0), METASPR_ITEM(0, 8, 58, 0), METASPR_ITEM(0, 8, 56, 32), METASPR_ITEM(16, -16, 60, 0), METASPR_ITEM(0, 8, 62, 0), METASPR_ITEM(0, 8, 60, 32), METASPR_TERM
+	METASPR_ITEM(16, 8, 56, S_PAL(0)),
+	METASPR_ITEM(0, 8, 58, S_PAL(0)),
+	METASPR_ITEM(0, 8, 56, S_PAL(0) | S_FLIPX),
+	METASPR_ITEM(16, -16, 60, S_PAL(0)),
+	METASPR_ITEM(0, 8, 62, S_PAL(0)),
+	METASPR_ITEM(0, 8, 60, S_PAL(0) | S_FLIPX),
+	METASPR_TERM
 };
 
 const metasprite_t* const sprite_ship_metasprites[8] = {

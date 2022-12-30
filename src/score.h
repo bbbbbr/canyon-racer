@@ -17,11 +17,10 @@
 #define SCORE_Y_START ((144u - 16u) + 16u)  // 16 pixel offset for sprites in 8x16 mode
 
 
-extern BCD score;
 extern const BCD score_increment_amt;
 
 
-#define SCORE_INCREMENT() bcd_add(&score, &score_increment_amt)
+#define SCORE_INCREMENT() bcd_add(&state.score, &score_increment_amt)
 
 void score_reset(void);
 void score_update(void);

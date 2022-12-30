@@ -2,6 +2,8 @@
 #ifndef LEVEL_H
 #define LEVEL_H
 
+#include <stdint.h>
+#include <stdbool.h>
 
 #define LEVEL_OBSTACLES_TILL_NEXT  10u // Gets hard a lot faster // TODO: Finalize
 // #define LEVEL_OBSTACLES_TILL_NEXT  20u // This works if there are more levels
@@ -25,23 +27,14 @@ typedef struct level_entry {
 
 } level_entry;
 
-extern level_entry cur_level;
-
-extern uint8_t level_count_till_next;
 
 void level_update_vars(void);
 void level_init(void);
 void level_increment(void);
 
 
-inline void LEVEL_INC_AND_CHECK() {
-
-    level_count_till_next--;
-
-    if (level_count_till_next == 0u)
-        level_increment();
-}
-
+#define LEVEL_INC_AND_CHECK() state.level_count_till_next--; \
+                              if (state.level_count_till_next == 0u) { level_increment(); }
 
 
 #endif

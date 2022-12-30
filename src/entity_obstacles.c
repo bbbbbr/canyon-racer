@@ -19,20 +19,6 @@
 
 
 
-obs_ent obstacles[OBSTACLES_COUNT_TOTAL];
-
-// == Difficulty level related ==
-    // See struct level_entry {}, level_entry settings
-
-// == Active entities related
-uint8_t obstacles_active_first;
-uint8_t obstacles_active_last;
-uint8_t obstacles_active_count;
-
-uint8_t obstacles_next_countdown;
-uint8_t obstacles_next_type;
-uint8_t obstacles_next_isdouble;
-
 const uint8_t obstacles_x_hitbox_left[] = {
     OBSTACLE_HITBOX_X_ST__TYPE_LEFT,
     OBSTACLE_HITBOX_X_ST__TYPE_RIGHT,
@@ -55,18 +41,18 @@ static inline void queue_next(void) {
     // #define OBJECTS_FLAG_BOBBING_BIT 0x08u
 
     uint8_t type = rand();
-    obstacles_next_type      = (type & OBSTACLE_TYPE_MASK);
+    state.obstacles_next_type      = (type & OBSTACLE_TYPE_MASK);
 
     // If random selection is for a double obstacle, space the next one close together
-    if ((type & OBJECTS_FLAG_DOUBLE_BIT) && (!obstacles_next_isdouble)) {
-        obstacles_next_countdown = cur_level.obst_dist_double;
-        obstacles_next_isdouble = true;
+    if ((type & OBJECTS_FLAG_DOUBLE_BIT) && (!state.obstacles_next_isdouble)) {
+        state.obstacles_next_countdown = state.cur_level.obst_dist_double;
+        state.obstacles_next_isdouble = true;
     }
     else {
-        obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + cur_level.obst_dist_min;
+        state.obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + state.cur_level.obst_dist_min;
         // TODO: DEBUG: force distance to min distance
-        // obstacles_next_countdown = cur_level.obst_dist_min;
-        obstacles_next_isdouble = false;
+        // state.obstacles_next_countdown = state.cur_level.obst_dist_min;
+        state.obstacles_next_isdouble = false;
     }
 }
 
@@ -78,11 +64,11 @@ void entity_obstacles_init(void) {
 
     // Some vars are initialized by level_update_vars();
 
-    obstacles_active_count = 0u;
-    obstacles_active_last  = 0u;
-    obstacles_active_first = 0u;
+    state.obstacles_active_count = 0u;
+    state.obstacles_active_last  = 0u;
+    state.obstacles_active_first = 0u;
 
-    obstacles_next_isdouble = false;
+    state.obstacles_next_isdouble = false;
 
     // Seed the initial obstacle
     queue_next();
@@ -96,31 +82,31 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
     // Update all active obstacles
     // Process them in order from top of screen (last) down to bottom (first)
-    uint8_t idx = obstacles_active_last;
-    for (uint8_t c = obstacles_active_count; c != 0; c--) {
+    uint8_t idx = state.obstacles_active_last;
+    for (uint8_t c = state.obstacles_active_count; c != 0; c--) {
 
-        obstacles[idx].y.w += cur_level.obst_speed;
-        uint8_t y_pos = obstacles[idx].y.h;
-        uint8_t object_sprite_sel = obstacles[idx].type;
+        state.obstacles[idx].y.w += state.cur_level.obst_speed;
+        uint8_t y_pos = state.obstacles[idx].y.h;
+        uint8_t object_sprite_sel = state.obstacles[idx].type;
 
         // Obstacle scrolled off-screen?
         if (y_pos > OBSTACLE_REMOVE_Y) {
             // Obstacles are always in linear order. First in is always
             // first out, so the ones further down can be removed just by
             // reducing the total count.
-            obstacles_active_count--;
+            state.obstacles_active_count--;
 
             // Then move head of list to match reduced size (+ handle wraparound)
             // (Again- since it's FIFO ordering: the one to remove will always be
             //  the first entry. So it's sufficient to increment that marker var)
-            obstacles_active_first++;
-            if (obstacles_active_first == OBSTACLES_COUNT_WRAP)
-                obstacles_active_first = 0;
+            state.obstacles_active_first++;
+            if (state.obstacles_active_first == OBSTACLES_COUNT_WRAP)
+                state.obstacles_active_first = 0;
 
             // Record number of obstacles cleared
             // Only count for score if game is not over
             // TODO: HACK: state test here is temporary, improve to single state test
-            if ((ship_state == SHIP_STATE_PLAYING) || (ship_state == SHIP_STATE_JUMP)) {
+            if ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) || (SHIP_STATE_GET() == SHIP_STATE_JUMP)) {
                 SCORE_INCREMENT();
                 score_update();
                 LEVEL_INC_AND_CHECK();
@@ -132,7 +118,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_sprite_sel],
                                              (SPR_TILES_START_OBSTACLES),
                                              oam_high_water,
-                                             CANYON_LEFT_X_BASE - p_scx_table_frame_base[y_pos],
+                                             CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[y_pos],
                                              y_pos);
         }
 
@@ -152,30 +138,30 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
     // Add more obstacles if needed
     // But only when the in normal gameplay -- TODO: Split ship motion state from game state
-    if ((obstacles_active_count != cur_level.obst_qty_max) &&
+    if ((state.obstacles_active_count != state.cur_level.obst_qty_max) &&
         ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) ||
         (SHIP_STATE_GET() == SHIP_STATE_JUMP)) ) {
 
         // Is it time to spawn yet?
-        if (obstacles_next_countdown) {
+        if (state.obstacles_next_countdown) {
             //  If not just increment counter
-            obstacles_next_countdown--;
+            state.obstacles_next_countdown--;
         } else {
             // Spawn a new obstacle
-            obstacles_active_count++;
+            state.obstacles_active_count++;
 
             // Obstacles are stored as a circular buffer, wrap around to start if maxed
-            obstacles_active_last++;
-            if (obstacles_active_last == OBSTACLES_COUNT_WRAP)
-                obstacles_active_last = 0;
+            state.obstacles_active_last++;
+            if (state.obstacles_active_last == OBSTACLES_COUNT_WRAP)
+                state.obstacles_active_last = 0;
 
             // TODO: scroll screen down so starting at zero doesn't cause sprites to pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
-            obstacles[obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
-            obstacles[obstacles_active_last].type = obstacles_next_type;
+            state.obstacles[state.obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
+            state.obstacles[state.obstacles_active_last].type = state.obstacles_next_type;
 
             // If this is first entry added, also set head of list
-            if (obstacles_active_count == 1)
-                obstacles_active_first = obstacles_active_last;
+            if (state.obstacles_active_count == 1)
+                state.obstacles_active_first = state.obstacles_active_last;
 
             // Queue up another now that current is activated
             queue_next();

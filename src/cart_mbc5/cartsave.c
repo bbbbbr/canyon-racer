@@ -12,7 +12,7 @@ settings_rec __at (0xA000) sram_stats;
 void cartsave_restore_data(void) {
 
     ENABLE_RAM_MBC5;
-    memcpy((void *)&game_settings, (void *)&sram_stats, sizeof(game_settings));
+    memcpy((void *)&state.game_settings, (void *)&sram_stats, sizeof(state.game_settings));
     DISABLE_RAM_MBC5;
 }
 
@@ -21,7 +21,7 @@ void cartsave_restore_data(void) {
 void cartsave_save_data(void) {
 
     ENABLE_RAM_MBC5;
-    memcpy((void *)&sram_stats, (void *)&game_settings, sizeof(game_settings));
+    memcpy((void *)&sram_stats, (void *)&state.game_settings, sizeof(state.game_settings));
     DISABLE_RAM_MBC5;
 }
 

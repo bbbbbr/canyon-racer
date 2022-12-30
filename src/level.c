@@ -15,12 +15,6 @@
 #include "entity_obstacles.h"
 
 
-uint8_t      game_level;            // Current game level
-uint8_t      level_count_till_next; // Obstacles to clear until level increment
-level_entry  cur_level;             // Settings data for current level
-uint8_t      level_scx_speed_prev;
-
-
 // "scanlines" is pre-scaled with OBS_COUNT_SCALE_UP(), which multiplies by 256
 #define OBST_COUNT_FROM_SCANLINES(scanlines_pre_scaled_raw, obs_inc_speed) (scanlines_pre_scaled_raw / obs_inc_speed)
 
@@ -84,52 +78,52 @@ void level_update_vars(void) {
     // - Level increment threshold dial in
     // - obstacle up/down (floating / hidden / blacking?)
 
-    // Update cur_level to new level data (includes obstacle cur_level)
-    cur_level = level_data[game_level];
+    // Update state.cur_level to new level data (includes obstacle state.cur_level)
+    state.cur_level = level_data[state.game_level];
 
     // Min distance between next spawned object
-    cur_level.obst_dist_min = OBST_COUNT_FROM_SCANLINES( cur_level.obst_dist_min_raw, cur_level.obst_speed);
+    state.cur_level.obst_dist_min = OBST_COUNT_FROM_SCANLINES( state.cur_level.obst_dist_min_raw, state.cur_level.obst_speed);
     // Distance apart when double objects are spawned
-    cur_level.obst_dist_double = OBST_COUNT_FROM_SCANLINES( OBST_DIST_DBL, cur_level.obst_speed);
+    state.cur_level.obst_dist_double = OBST_COUNT_FROM_SCANLINES( OBST_DIST_DBL, state.cur_level.obst_speed);
 
     // Update Map Canyon Shape difficulty
-    mapfx_level_set(cur_level.mapfx_scx_table_level);
+    mapfx_level_set(state.cur_level.mapfx_scx_table_level);
 }
 
 
 void level_init(void) {
 
-    level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT_RESET;
-    game_level = GAME_LEVEL_RESET;
+    state.level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT_RESET;
+    state.game_level = GAME_LEVEL_RESET;
 
     // TODO: FOR DEBUG
-    // game_level = GAME_LEVEL_MAX;
-    // game_level = GAME_LEVEL_MAX - 6;
-    // game_level = 9; //
+    // state.game_level = GAME_LEVEL_MAX;
+    // state.game_level = GAME_LEVEL_MAX - 6;
+    // state.game_level = 9; //
 
     level_update_vars();
 
     // Init saved SCX wave scrolling speed
-    level_scx_speed_prev = cur_level.mapfx_scx_inc_every_frame;
+    state.level_scx_speed_prev = state.cur_level.mapfx_scx_inc_every_frame;
 }
 
 
 void level_increment(void) {
 
-    level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT;
+    state.level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT;
 
-    if (game_level < GAME_LEVEL_MAX) {
+    if (state.game_level < GAME_LEVEL_MAX) {
 
-        game_level++;
+        state.game_level++;
 
         // Save SCX wave scrolling speed for comparison later
-        level_scx_speed_prev = cur_level.mapfx_scx_inc_every_frame;
+        state.level_scx_speed_prev = state.cur_level.mapfx_scx_inc_every_frame;
         level_update_vars();
     }
 
     // Play "speed up" sound instead of level up if
     // scx wave scrolling increased in speed
-    if (level_scx_speed_prev < cur_level.mapfx_scx_inc_every_frame)
+    if (state.level_scx_speed_prev < state.cur_level.mapfx_scx_inc_every_frame)
         audio_sfx_play(SFX_SPEED_UP);
     else
         audio_sfx_play(SFX_LEVEL_UP);

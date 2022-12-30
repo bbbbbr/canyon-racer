@@ -13,8 +13,13 @@ A little addictive, a little simplistic, but with cool FX and music. :)
 
 Give your eyes frequent rests, there can be some temporary sensation of visual movement after playing.
 
-- Jump: **A** button (tap or hold)
-- Extend or reduce jumps: **Up / Down** (required for some long jumps)
+- Jumping
+  - Jump: **A** button (tap or hold)
+  - Extend or shorten: **Up / Down** (required for some long jumps)
+- Replay
+  - Save State: **B**
+  - Restore State: **SELECT** (if crashed, also **B**)
+  - After crashing there is ~1 second during which the save state can be restored until the game is considered over
 - Pause: **Start**
 
 ### Effect Accuracy

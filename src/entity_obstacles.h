@@ -99,39 +99,6 @@
     #define OBSTACLE_HITBOX_Y_BOTTOM ((sprite_obstacles_PIVOT_H) + ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u))
 
 
-typedef struct obs_ent {
-    fixed   y;
-    uint8_t type;  // how to deal with "bobbing" ?
-} obs_ent;
-
-
-// Need extern access to these for collision detection
-extern obs_ent obstacles[];
-extern uint8_t obstacles_active_last;
-extern uint8_t obstacles_active_first;
-extern uint8_t obstacles_active_count;
-extern uint8_t obstacles_spawn_countdown;
-
-// Extern access for level adjustment via OBSTACLES_LEVEL_SET() macro
-// (less overhead than putting them on the stack)
-extern uint8_t  obstacles_active_max;
-extern uint8_t  obstacles_dist_min;
-extern uint8_t  obstacles_dist_double;
-extern uint16_t obstacles_inc_speed;
-
-
-// Updates Difficulty level related control cars for
-// max num of obstacles and their spawn distance spacing
-#define OBSTACLES_LEVEL_SET(obst_qty_max, obst_dist_min, obst_dist_double, obst_speed) \
-    obstacles_active_max  = obst_qty_max; \
-    obstacles_dist_min    = obst_dist_min; \
-    obstacles_dist_double = obst_dist_double; \
-    obstacles_inc_speed   = obst_speed;
-
-
-
-
-
 extern const uint8_t obstacles_x_hitbox_left[];
 extern const uint8_t obstacles_x_hitbox_right[];
 

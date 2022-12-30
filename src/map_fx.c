@@ -14,19 +14,6 @@
 #include "lookup_tables.h"
 
 
-const uint8_t * p_scx_table_scanline;
-const uint8_t * p_scx_table_frame_base;
-const uint8_t * p_scx_table_stop;
-const uint8_t * p_scx_cur_table;
-
-      uint8_t   mapfx_y_parallax_speed = MAPFX_SCY_SPEED_DEFAULT;
-      uint8_t   mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_DEFAULT;
-      // Matching vars used for save during pause/resume
-      uint8_t   save__mapfx_y_parallax_speed;
-      uint8_t   save__mapfx_scx_table_map_speed;
-
-      uint8_t   mapfx_level_mask;
-      uint8_t   mapfx_level_base;
 
 // Effect pans up from end of SCX table to start to reveal curves
 //
@@ -97,7 +84,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
                 // Load something useful during idle cycles
                 // Adds up to a useful amount of cycles over the whole frame
-                ld  hl, #_p_scx_table_scanline  // 3
+                ld  hl, #(_state + 0)  // equivalent to: #(_state.p_scx_table_scanline) // 3
 
                 // Rendering Center Water Area  (4 tiles) [CENTER]
                 // .rept 4
@@ -119,8 +106,8 @@ void map_fx_stat_isr(void) __interrupt __naked {
     // No need to update SCY, original value has been restored
 
     // Set Y scroll for next line (won't apply to current line due to timing)
-    // SCX_REG = *p_scx_table_scanline++;
-        // ld  hl, #_p_scx_table_scanline  // Loaded above during idle cycle burn instead
+    // SCX_REG = *state.p_scx_table_scanline++;
+        // ld  hl, #_state.p_scx_table_scanline  // Loaded above during idle cycle burn instead
     ld  a, (hl+)
     ld  c, a                      // Low pointer address byte -> C
     ld  a, (hl-)
@@ -144,7 +131,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
     // ~after rendering of scanline is completed
     // (sprites/etc could push timing out)
     // Should be in Mode 0 (HBlank)
-    ldh (_SCX_REG + 0), a    // Load value at (*p_scx_table_scanline)
+    ldh (_SCX_REG + 0), a    // Load value at (*state.p_scx_table_scanline)
 
     pop af
     reti
@@ -180,27 +167,27 @@ void vblank_isr_map_reset (void) {
     // == Y Axis ==
     // Scroll the Outer vertical edges of the canyon map by configured amount.
     // The Inner regions will get scrolled an amount derived from this value.
-    SCY_REG -= mapfx_y_parallax_speed;
+    SCY_REG -= state.mapfx_y_parallax_speed;
 
     // == X Axis ==
     // Update SCX table for start of new frame. Sets the base pointer to an index
     // that has usually been incremented by a small amount deeper in the current table.
     //
-    // * p_scx_table_scanline  : Incremented once per scanline to drive the SCX wave effect
-    // * p_scx_table_frame_base: Updated at start of frame only, used by entities to find map X offset at a given Y position
+    // * state.p_scx_table_scanline  : Incremented once per scanline to drive the SCX wave effect
+    // * state.p_scx_table_frame_base: Updated at start of frame only, used by entities to find map X offset at a given Y position
     //
-    p_scx_table_frame_base = p_scx_table_scanline = p_scx_cur_table;
+    state.p_scx_table_frame_base = state.p_scx_table_scanline = state.p_scx_cur_table;
 
     // Load SCX value for upcoming scanline
     // and increment pointer to prepare for next scanline.
-    SCX_REG = *p_scx_table_scanline++;
+    SCX_REG = *state.p_scx_table_scanline++;
 
     // Determines whether SCX wave table is incremented every frame or every other frame
-    if ((cur_level.mapfx_scx_inc_every_frame) || (sys_time & 0x01)) {
+    if ((state.cur_level.mapfx_scx_inc_every_frame) || (sys_time & 0x01)) {
 
-        p_scx_cur_table -= mapfx_scx_table_map_speed;
+        state.p_scx_cur_table -= state.mapfx_scx_table_map_speed;
         // TODO: optimize: make this less expensive to run in-frame
-        if (p_scx_cur_table == p_scx_table_stop) {
+        if (state.p_scx_cur_table == state.p_scx_table_stop) {
             // End of table reached, transition to next table -> on the next frame
             // TODO: optimize if needed (could just bump a pointer)
             // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
@@ -210,13 +197,13 @@ void vblank_isr_map_reset (void) {
                     // TODO:
                     //  mapfx_scx_next_queued can be overwritten manually outside of ISR to set transition segments
                     //
-                    // p_scx_cur_table  = scx_tables[mapfx_scx_next_queued].start_address;
-                    // p_scx_table_stop = scx_tables[mapfx_scx_next_queued].end_address;
-                    // mapfx_scx_next_queued  =  (rand() & mapfx_level_mask) + mapfx_level_base;
-            uint8_t next     =  (rand() & mapfx_level_mask) + mapfx_level_base;
+                    // state.p_scx_cur_table  = scx_tables[mapfx_scx_next_queued].start_address;
+                    // state.p_scx_table_stop = scx_tables[mapfx_scx_next_queued].end_address;
+                    // mapfx_scx_next_queued  =  (rand() & state.mapfx_level_mask) + state.mapfx_level_base;
+            uint8_t next     =  (rand() & state.mapfx_level_mask) + state.mapfx_level_base;
             // next     =  SCX_TABLE_STR_STR;
-            p_scx_cur_table  = scx_tables[next].start_address;
-            p_scx_table_stop = scx_tables[next].end_address;
+            state.p_scx_cur_table  = scx_tables[next].start_address;
+            state.p_scx_table_stop = scx_tables[next].end_address;
             // ... frame_base set above
         }
     }
@@ -237,8 +224,8 @@ void mapfx_level_set(uint8_t level) {
 
     // TODO: Wrap these in a critical section? It would be good form. Would it throw off interrupt timing much? Prob not.
     // CRITICAL {
-    mapfx_level_mask = scx_table_levels[level].mask;
-    mapfx_level_base = scx_table_levels[level].base;
+    state.mapfx_level_mask = scx_table_levels[level].mask;
+    state.mapfx_level_base = scx_table_levels[level].base;
     // }
 }
 
@@ -246,13 +233,13 @@ void mapfx_level_set(uint8_t level) {
 // Medium Y Parallax, No X Scrolling
 void mapfx_set_intro(void) {
 
-    mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
-    mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
+    state.mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
+    state.mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
 
 
     // SCX table: Set to all Straight
-    p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
-    p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
+    state.p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
+    state.p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
 
     // Below can get overridden by calls to mapfx_level_set()
     mapfx_level_set(SCX_TABLE_LEVEL_MIN);
@@ -263,13 +250,13 @@ void mapfx_set_intro(void) {
 // TODO: selectable speed param
 void mapfx_set_gameplay(void) {
 
-    mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
-    mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_MED;
+    state.mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_MED;
+    state.mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_MED;
 
     // SCX table: Set to all Straight -> Low transition
     // This gives a non-curved initial startup
-    p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
-    p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
+    state.p_scx_cur_table  = scx_tables[SCX_TABLE_STR_LOW].start_address;
+    state.p_scx_table_stop = scx_tables[SCX_TABLE_STR_LOW].end_address;
     // mapfx_level_set(SCX_TABLE_LEVEL_MIN);
     // mapfx_scx_table_reset();
 }
@@ -281,21 +268,21 @@ void mapfx_set_setpause(bool is_paused) {
     if (is_paused) {
         __critical {
             // Save current effect speeds to re-apply during Un-Pause
-            save__mapfx_y_parallax_speed    = mapfx_y_parallax_speed;
-            save__mapfx_scx_table_map_speed = mapfx_scx_table_map_speed;
+            state.save__mapfx_y_parallax_speed    = state.mapfx_y_parallax_speed;
+            state.save__mapfx_scx_table_map_speed = state.mapfx_scx_table_map_speed;
 
             // *Keep* applying SCX wave effect per-scanline
             // Stop incrementing SCY parallax columns
             // Stop incrementing SCX wave scrolling
-            mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_STOP;
-            mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
+            state.mapfx_y_parallax_speed    = MAPFX_SCY_SPEED_STOP;
+            state.mapfx_scx_table_map_speed = MAPFX_SCX_SPEED_STOP;
         }
     }
     else {
         // Resume effect scrolling using saved values
         __critical {
-            mapfx_y_parallax_speed = save__mapfx_y_parallax_speed;
-            mapfx_scx_table_map_speed = save__mapfx_scx_table_map_speed;
+            state.mapfx_y_parallax_speed = state.save__mapfx_y_parallax_speed;
+            state.mapfx_scx_table_map_speed = state.save__mapfx_scx_table_map_speed;
         }
     }
 }
@@ -309,9 +296,9 @@ void mapfx_scx_table_reset(void) {
     // align exactly with being right before vblank
     //
     // Should match what happens in vblank
-    p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
-    p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
-    p_scx_table_frame_base = p_scx_table_scanline = p_scx_cur_table;
+    state.p_scx_cur_table  = scx_tables[SCX_TABLE_STR_STR].start_address;
+    state.p_scx_table_stop = scx_tables[SCX_TABLE_STR_STR].end_address;
+    state.p_scx_table_frame_base = state.p_scx_table_scanline = state.p_scx_cur_table;
 
     // Below can get overridden by calls to mapfx_level_set()
     mapfx_level_set(SCX_TABLE_LEVEL_MIN);

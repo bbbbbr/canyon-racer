@@ -10,11 +10,10 @@
 
 
 
-BCD score;
 const BCD score_increment_amt = MAKE_BCD(000010); // Increment by 10 each time
 
 void score_reset(void) {
-    score = MAKE_BCD(000000);
+    state.score = MAKE_BCD(000000);
 }
 
 
@@ -27,7 +26,7 @@ void score_reset(void) {
 void score_update(void) {
 
     // BCD type is a uint32_t
-    uint8_t * p_score = (uint8_t *) &score;
+    uint8_t * p_score = (uint8_t *) &state.score;
     uint8_t c = SCORE_DIGITS;
     while (c != 0)  {
         // Render two digits into adjacent sprites, right -> left
@@ -52,7 +51,7 @@ void score_update(void) {
 void hi_score_render(uint8_t * p_vram_addr, uint8_t font_base_tile) {
 
     // BCD type is a uint32_t
-    uint8_t * p_score = (uint8_t *) &(game_settings.hi_score);
+    uint8_t * p_score = (uint8_t *) &(state.game_settings.hi_score);
 
     // Move to right-most tile of score
     p_vram_addr += (SCORE_DIGITS - 1u);

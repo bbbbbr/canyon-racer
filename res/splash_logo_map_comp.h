@@ -1,6 +1,6 @@
 
 
-#define splash_logo_map_comp_sz_comp 264
+#define splash_logo_map_comp_sz_comp 263
 #define splash_logo_map_comp_sz_decomp 378
 
 

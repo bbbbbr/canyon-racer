@@ -15,6 +15,8 @@
 #define KEY_TICKED(K)   ((keys & (K)) && !(previous_keys & (K)))
 #define KEY_RELEASED(K) (!(keys & (K)) && (previous_keys & (K)))
 
+#define GET_KEYS_TICKED(K)   ((keys & ~previous_keys) & (K))
+
 #define KEYS()   (keys)
 
 #define ANY_KEY_PRESSED (keys)

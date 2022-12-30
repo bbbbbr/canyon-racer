@@ -57,8 +57,6 @@ extern const uint8_t * p_scx_table_frame_base;
 #define MAPFX_AUDIO_VBL_NO  false
 #define MAPFX_AUDIO_VBL_YES true
 
-extern uint8_t mapfx_scroll_y_parallax_speed;
-extern uint8_t mapfx_scroll_scx_table_map_speed;
 #define MAPFX_Y_PARALLAX_SPEED(NEWVAL) (mapfx_scroll_y_parallax_speed = NEWVAL)
 #define MAPFX_SCX_EFFECT_SPEED(NEWVAL) (mapfx_scroll_scx_table_map_speed = NEWVAL)
 

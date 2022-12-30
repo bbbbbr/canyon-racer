@@ -105,35 +105,51 @@ const uint8_t sprite_obstacles_tiles[320] = {
 };
 
 const metasprite_t sprite_obstacles_metasprite0[] = {
-	METASPR_ITEM(16, 8, 0, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 0, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite1[] = {
-	METASPR_ITEM(16, 32, 0, 0), METASPR_TERM
+	METASPR_ITEM(16, 32, 0, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite2[] = {
-	METASPR_ITEM(16, 16, 0, 0), METASPR_ITEM(0, 8, 2, 0), METASPR_TERM
+	METASPR_ITEM(16, 16, 0, S_PAL(0)),
+	METASPR_ITEM(0, 8, 2, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite3[] = {
-	METASPR_ITEM(16, 8, 4, 0), METASPR_ITEM(0, 8, 6, 0), METASPR_ITEM(0, 8, 2, 0), METASPR_ITEM(0, 8, 8, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 4, S_PAL(0)),
+	METASPR_ITEM(0, 8, 6, S_PAL(0)),
+	METASPR_ITEM(0, 8, 2, S_PAL(0)),
+	METASPR_ITEM(0, 8, 8, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite4[] = {
-	METASPR_ITEM(16, 8, 10, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 10, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite5[] = {
-	METASPR_ITEM(16, 32, 10, 0), METASPR_TERM
+	METASPR_ITEM(16, 32, 10, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite6[] = {
-	METASPR_ITEM(16, 16, 10, 0), METASPR_ITEM(0, 8, 10, 0), METASPR_TERM
+	METASPR_ITEM(16, 16, 10, S_PAL(0)),
+	METASPR_ITEM(0, 8, 10, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t sprite_obstacles_metasprite7[] = {
-	METASPR_ITEM(16, 8, 12, 0), METASPR_ITEM(0, 8, 14, 0), METASPR_ITEM(0, 8, 16, 0), METASPR_ITEM(0, 8, 18, 0), METASPR_TERM
+	METASPR_ITEM(16, 8, 12, S_PAL(0)),
+	METASPR_ITEM(0, 8, 14, S_PAL(0)),
+	METASPR_ITEM(0, 8, 16, S_PAL(0)),
+	METASPR_ITEM(0, 8, 18, S_PAL(0)),
+	METASPR_TERM
 };
 
 const metasprite_t* const sprite_obstacles_metasprites[8] = {

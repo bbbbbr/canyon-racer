@@ -11,7 +11,7 @@
 #define splash_logo_data_TILE_H 8
 #define splash_logo_data_WIDTH 168
 #define splash_logo_data_HEIGHT 144
-#define splash_logo_data_TILE_COUNT 194
+#define splash_logo_data_TILE_COUNT 193
 #define splash_logo_data_PALETTE_COUNT 1
 #define splash_logo_data_COLORS_PER_PALETTE 4
 #define splash_logo_data_TOTAL_COLORS 4
@@ -20,7 +20,7 @@
 BANKREF_EXTERN(splash_logo_data)
 
 extern const palette_color_t splash_logo_data_palettes[4];
-extern const uint8_t splash_logo_data_tiles[3104];
+extern const uint8_t splash_logo_data_tiles[3088];
 
 extern const unsigned char splash_logo_data_map[378];
 

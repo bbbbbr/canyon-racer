@@ -9,6 +9,11 @@
 #include "../res/sprite_obstacles.h"
 #include "../res/tiles_font_nums.h"
 
+// Needed for obstacle array size def
+#include "entity_obstacles.h"
+// Needed for cur_level
+#include "level.h"
+
 #define ARRAY_LEN(A)  sizeof(A) / sizeof(A[0])
 
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
@@ -17,6 +22,12 @@
 #define SECONDS_IN_FRAMES(sec) (sec * 60u)
 
 extern uint8_t decomp_buf[];
+
+#define BUTTON__JUMP          (J_A)
+#define BUTTON__PAUSE         (J_START)
+#define BUTTON__STATE_SAVE    (J_B)
+#define BUTTON__STATE_RESTORE (J_SELECT)
+
 
 // GB Sound macros
 #define AUDTERM_ALL_LEFT  (AUDTERM_4_LEFT | AUDTERM_3_LEFT | AUDTERM_2_LEFT | AUDTERM_1_LEFT)
@@ -112,9 +123,78 @@ typedef struct settings_rec {
 
 } settings_rec;
 
-extern settings_rec game_settings;
+
+typedef struct obs_ent {
+    fixed   y;
+    uint8_t type;
+} obs_ent;
+
+
+typedef struct game_state_data {
+    // Map FX
+        // **MUST** BE FIRST ITEM. DO NOT MOVE OR IT BREAKS ASM ADDRESSING (+ 0) to it
+        const uint8_t * p_scx_table_scanline;
+
+    // Gameplay
+        bool paused;
+
+    // Level
+        uint8_t      game_level;            // Current game level
+        uint8_t      level_count_till_next; // Obstacles to clear until level increment
+        level_entry  cur_level;             // Settings data for current level
+        uint8_t      level_scx_speed_prev;
+
+
+    // Ship
+        fixed   ship_x, ship_y;
+        fixed   ship_z;
+        uint8_t ship_state;
+        uint8_t ship_counter;
+        int16_t ship_jump_velocity;
+
+    // Obstacles
+        obs_ent obstacles[OBSTACLES_COUNT_TOTAL];
+        // == Difficulty level related ==
+            // See struct level_entry {}, level_entry settings
+        // == Active entities related
+        uint8_t obstacles_active_first;
+        uint8_t obstacles_active_last;
+        uint8_t obstacles_active_count;
+
+        uint8_t obstacles_next_countdown;
+        uint8_t obstacles_next_type;
+        uint8_t obstacles_next_isdouble;
+
+    // Common
+        settings_rec game_settings;
+
+    // Map FX
+        const uint8_t * p_scx_table_frame_base;
+        const uint8_t * p_scx_table_stop;
+        const uint8_t * p_scx_cur_table;
+
+        uint8_t   mapfx_y_parallax_speed;
+        uint8_t   mapfx_scx_table_map_speed;
+        // Matching vars used for save during pause/resume
+        uint8_t   save__mapfx_y_parallax_speed;
+        uint8_t   save__mapfx_scx_table_map_speed;
+
+        uint8_t   mapfx_level_mask;
+        uint8_t   mapfx_level_base;
+
+    // Score
+        BCD score;
+
+} game_state_data;
+
+extern game_state_data state;
+
 
 void delay_lowcpu(uint16_t num_frames);
 void wait_in_halt_to_scanline(uint8_t exit_scanline);
+
+void game_state_count_reset(void);
+void game_state_save();
+void game_state_restore();
 
 #endif

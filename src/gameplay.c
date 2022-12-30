@@ -30,6 +30,9 @@ uint8_t oam_high_water_prev;
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
 
+    state.paused = false;
+    game_state_count_reset();
+
     // This must be called before mapfx and others
     level_init();
 
@@ -59,8 +62,31 @@ void gameplay_run(uint8_t spr_next_free_tile) {
 
         UPDATE_KEYS();
 
-        if (KEY_TICKED(J_START)) {
-            gameplay_pause(spr_next_free_tile, oam_high_water);
+        // TODO: consider moving into functions
+        switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__STATE_RESTORE | BUTTON__PAUSE))) {
+            case BUTTON__STATE_SAVE:
+                // If still in game play save the state
+                if (SHIP_STATE_GET() != SHIP_STATE_CRASHED) {
+                    game_state_save();
+                    audio_sfx_play(SFX_PAUSE);
+                    break;
+                }
+                // But if crashed transalte the "save" to a restore to restore
+                // by falling through to next case
+                // ...
+
+            case BUTTON__STATE_RESTORE:
+                game_state_restore();
+                audio_sfx_play(SFX_PAUSE);
+                audio_music_set(MUSIC_GAMEPLAY);
+                audio_music_unpause();
+                score_update();
+                if (state.paused)
+                    gameplay_pause(spr_next_free_tile, oam_high_water);
+                break;
+
+            case BUTTON__PAUSE: gameplay_pause(spr_next_free_tile, oam_high_water);
+                break;
         }
 
         // == Sprites ==
@@ -93,7 +119,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
     }
 
     // Game Over: Update high score if applicable
-    stats_update(score);
+    stats_update(state.score);
 }
 
 
