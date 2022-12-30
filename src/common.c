@@ -54,7 +54,13 @@ void game_state_count_reset(void) {
     state_restore_count = STATE_RESTORE_COUNT_RESET;
 }
 
+
 void game_state_save() {
+    // TODO: Sometimes causes a small noticeable visual glitch
+    //       due to the long duration of the critical section memcpy().
+    //       Can the main copy be moved out of a critical section and
+    //       only be used when copying a couple of sensitive vars, such
+    //       as map_fx ones? (ship, obstacles, etc should be ok)
     __critical {
         memcpy(&state_copy, &state, sizeof(game_state_data));
         rand_seed_copy = __rand_seed;
