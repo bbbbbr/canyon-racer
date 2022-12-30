@@ -56,19 +56,34 @@ void game_state_count_reset(void) {
 
 
 void game_state_save() {
-    // TODO: Sometimes causes a small noticeable visual glitch
-    //       due to the long duration of the critical section memcpy().
-    //       Can the main copy be moved out of a critical section and
-    //       only be used when copying a couple of sensitive vars, such
-    //       as map_fx ones? (ship, obstacles, etc should be ok)
+
+    // Long critical sections may delay scanline ISR from running and
+    // cause small, noticeable visual glitches. Most vars are only
+    // touched by main execution and can be safely copied here.
+    //
+    // So instead of copying the entire state in a critical section,
+    // copy everything, then re-copy just the sensitive vars
+    // (gfx which are modified in ISRs) in a critical section
+
+    // Most of main state var doesn't need exclusive locking to copy
+    memcpy(&state_copy, &state, sizeof(game_state_data));
+    rand_seed_copy = __rand_seed;
+
+    // Now just re-copy individual Map FX vars modified by the ISRs
     __critical {
-        memcpy(&state_copy, &state, sizeof(game_state_data));
-        rand_seed_copy = __rand_seed;
+        state_copy.p_scx_table_scanline   = state.p_scx_table_scanline;
+        state_copy.p_scx_table_frame_base = state.p_scx_table_frame_base;
+        state_copy.p_scx_table_stop       = state.p_scx_table_stop;
+        state_copy.p_scx_cur_table        = state.p_scx_cur_table;
     }
 }
 
 
 void game_state_restore() {
+
+    // Don't care about visual glitches here from a long
+    // critical section since the whole screen often gets
+    // changed anyway during the rewind action.
     __critical {
         memcpy(&state, &state_copy, sizeof(game_state_data));
         __rand_seed = rand_seed_copy;
