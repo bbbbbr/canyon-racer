@@ -22,7 +22,7 @@
 #define STATE_RESTORE_DISPLAY_Y_START ((144u - 32u) + 16u)  // 16 pixel offset for sprites in 8x16 mode
 
 #define STATE_RESTORE_HEADER_X_START ((STATE_RESTORE_DISPLAY_X_START) - (8u + 3u))
-#define STATE_RESTORE_HEADER_Y_START ((STATE_RESTORE_DISPLAY_Y_START) - 2u)
+#define STATE_RESTORE_HEADER_Y_START ((STATE_RESTORE_DISPLAY_Y_START) - 1u)
 
 extern const BCD score_increment_amt;
 
