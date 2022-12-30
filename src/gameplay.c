@@ -26,6 +26,10 @@
 uint8_t oam_high_water;
 uint8_t oam_high_water_prev;
 
+static void gameplay_state_save();
+static bool gameplay_state_restore();
+
+
 
 // Setup before gameplay main loop runs
 void gameplay_prestart(void) {
@@ -49,8 +53,38 @@ void gameplay_prestart(void) {
     entity_ship_init();
     entity_obstacles_init();
 
+    // Create initial save point
+    gameplay_state_save();
+
     delay(50u); // Short delay before fade-in
     fade_in(FADE_DELAY_FX_RUNNING);
+}
+
+
+static void gameplay_state_save() {
+    // Only save state if they haven't used them all up
+    if (STATE_RESTORE_COUNT_GET()) {
+        game_state_save();
+        audio_sfx_play(SFX_PAUSE); // TODO: SFX:State Save OK
+    } else
+        audio_sfx_play(SFX_PAUSE);  // TODO: SFX:State Save Denied/Fail
+}
+
+
+static bool gameplay_state_restore() {
+    // Only restore state if they haven't used them all up
+    if (STATE_RESTORE_COUNT_GET()) {
+        game_state_restore();
+        audio_sfx_play(SFX_PAUSE);  // TODO: SFX:State Restore OK
+        audio_music_set(MUSIC_GAMEPLAY);
+        audio_music_unpause();
+        score_update();
+        if (state.paused)
+            return true;  // Request pause on return
+    } else
+        audio_sfx_play(SFX_PAUSE);  // TODO: SFX:State Restore Denied/Fail
+
+    return false;
 }
 
 
@@ -66,22 +100,16 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__STATE_RESTORE | BUTTON__PAUSE))) {
             case BUTTON__STATE_SAVE:
                 // If still in game play save the state
-                if (SHIP_STATE_GET() != SHIP_STATE_CRASHED) {
-                    game_state_save();
-                    audio_sfx_play(SFX_PAUSE);
-                    break;
+                // But if crashed translate the "save" to a restore to restore
+                if (SHIP_STATE_GET() != SHIP_STATE_CRASHED) gameplay_state_save();
+                else {
+                    if (gameplay_state_restore())
+                        gameplay_pause(spr_next_free_tile, oam_high_water);
                 }
-                // But if crashed transalte the "save" to a restore to restore
-                // by falling through to next case
-                // ...
+                break;
 
             case BUTTON__STATE_RESTORE:
-                game_state_restore();
-                audio_sfx_play(SFX_PAUSE);
-                audio_music_set(MUSIC_GAMEPLAY);
-                audio_music_unpause();
-                score_update();
-                if (state.paused)
+                if (gameplay_state_restore())
                     gameplay_pause(spr_next_free_tile, oam_high_water);
                 break;
 
