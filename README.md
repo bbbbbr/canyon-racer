@@ -9,17 +9,20 @@ This project started with wanting to try a vertical parallax effect on the origi
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
 
 ### Game Play
-A little addictive, a little simplistic, but with cool FX and music. :)
+A little addictive, a little simplistic, kind of hard, but with cool FX and music. :)
 
-Give your eyes frequent rests, there can be some temporary sensation of visual movement after playing.
+Guide the racer through the canyon jumping over rocks. Use the limited number of Save & Rewind actions to instantly recover from a crash and rewind to earlier in the game.
+
+Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
 
 - Jumping
   - Jump: **A** button (tap or hold)
   - Extend or shorten: **Up / Down** (required for some long jumps)
-- Replay
-  - Save State: **B**
-  - Restore State: **SELECT** (if crashed, also **B**)
-  - After crashing there is ~1 second during which the save state can be restored until the game is considered over
+- Save & Rewind
+  - Save State: **B**. Any time during gameplay, as much as you want. Save early, save often!
+  - Rewind: **SELECT** (if crashed, also **B**)
+  - There is a limited supply of Rewinds ("R" readout in lower-right)
+  - After crashing there is ~1 second during which Rewind can be used until the game is considered over
 - Pause: **Start**
 
 ### Effect Accuracy

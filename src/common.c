@@ -1,4 +1,5 @@
 #include <gbdk/platform.h>
+#include <gbdk/bcd.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -20,8 +21,11 @@ uint8_t decomp_buf[MAX(MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles
 // Options and stats
 game_state_data state;
 game_state_data state_copy;
+
 uint16_t rand_seed_copy;
-uint16_t state_backup_count;
+
+BCD state_restore_count; // AKA "Rewind"
+const BCD state_restore_count_decrement_amt = MAKE_BCD(00001); // Decrement by 1 each time
 
 
 void delay_lowcpu(uint16_t num_frames) {
@@ -44,9 +48,10 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline) {
     } while (LY_REG != exit_scanline);
 }
 
+// TODO: move into game_state_restore.c?
 
 void game_state_count_reset(void) {
-    state_backup_count = 0;
+    state_restore_count = STATE_RESTORE_COUNT_RESET;
 }
 
 void game_state_save() {
@@ -62,5 +67,8 @@ void game_state_restore() {
         memcpy(&state, &state_copy, sizeof(game_state_data));
         __rand_seed = rand_seed_copy;
     }
-    state_backup_count++;
+    if (state_restore_count) { // Should be protected from called when 0, but just to be defensive
+        // state_restore_count--;
+        bcd_sub(&state_restore_count, &state_restore_count_decrement_amt);
+    }
 }

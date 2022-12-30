@@ -45,10 +45,20 @@ uint8_t init_gfx_sprites_gameplay(uint8_t spr_next_free_tile) {
 
 
     // TODO: move to after game start
+    // Score digits readout
     for (int c = 0u; c < SCORE_DIGITS; c++) {
         set_sprite_tile(SPR_ID_SCORE_START + c, SPR_TILES_FONTNUMS_DIGIT_0);
-        move_sprite(SPR_ID_SCORE_START + c, SCORE_X_START + c * 8u, SCORE_Y_START);
+        move_sprite(SPR_ID_SCORE_START + c, SCORE_X_START + (c * 8u), SCORE_Y_START);
     }
+
+    // Remaining State Restore Count readout
+    for (int c = 0u; c < STATE_RESTORE_DISPLAY_DIGITS; c++) {
+        set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + c, SPR_TILES_FONTNUMS_DIGIT_0);
+        move_sprite(SPR_ID_STATE_RESTORE_DISPLAY_START + c, STATE_RESTORE_DISPLAY_X_START + (c * 8u), STATE_RESTORE_DISPLAY_Y_START);
+    }
+    // "R" Rewind/Restore count indicator
+    set_sprite_tile(SPR_ID_STATE_RESTORE_HEADER_START, SPR_TILES_FONTNUMS_DIGIT_R);
+    move_sprite(SPR_ID_STATE_RESTORE_HEADER_START, STATE_RESTORE_HEADER_X_START, STATE_RESTORE_HEADER_Y_START);
 
     return spr_next_free_tile;
 }

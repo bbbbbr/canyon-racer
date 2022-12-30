@@ -10,10 +10,10 @@
 
 
 
-const BCD score_increment_amt = MAKE_BCD(000010); // Increment by 10 each time
+const BCD score_increment_amt = MAKE_BCD(00010); // Increment by 10 each time
 
 void score_reset(void) {
-    state.score = MAKE_BCD(000000);
+    state.score = MAKE_BCD(00000);
 }
 
 
@@ -27,24 +27,49 @@ void score_update(void) {
 
     // BCD type is a uint32_t
     uint8_t * p_score = (uint8_t *) &state.score;
-    uint8_t c = SCORE_DIGITS;
-    while (c != 0)  {
-        // Render two digits into adjacent sprites, right -> left
-        // Score is stored as packed BCD in a uint32_t, one digit per nybble
-        // Digits are In memory as 0x10, 0x32, 0x54
-        // 8x16 sprite mode means tile ID's need to be *= 2
-        set_sprite_tile(SPR_ID_SCORE_START + (--c), SPR_TILES_START_FONTNUMS + ((*p_score & 0x0Fu) << 1));
-        set_sprite_tile(SPR_ID_SCORE_START + (--c), SPR_TILES_START_FONTNUMS + ((*p_score >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
 
-        // Move to next pair of digits in next byte
-        p_score++;
-    }
+    // TODO: Delete
+    // uint8_t c = SCORE_DIGITS;
+    // while (c != 0)  {
+    //     // Render two digits into adjacent sprites, right -> left
+    //     // Score is stored as packed BCD in a uint32_t, one digit per nybble
+    //     // Digits are In memory as 0x10, 0x32, 0x54
+    //     // 8x16 sprite mode means tile ID's need to be *= 2
+    //     set_sprite_tile(SPR_ID_SCORE_START + (--c), SPR_TILES_START_FONTNUMS + ((*p_score & 0x0Fu) << 1));
+    //     set_sprite_tile(SPR_ID_SCORE_START + (--c), SPR_TILES_START_FONTNUMS + ((*p_score >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
+
+    //     // Move to next pair of digits in next byte
+    //     p_score++;
+    // }
+
+    // Render score from Right to Left in digit pairs
+    set_sprite_tile(SPR_ID_SCORE_START + 4u, SPR_TILES_START_FONTNUMS + ((*p_score & 0x0Fu) << 1));
+    set_sprite_tile(SPR_ID_SCORE_START + 3u, SPR_TILES_START_FONTNUMS + ((*(p_score++) >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
+
+    set_sprite_tile(SPR_ID_SCORE_START + 2u, SPR_TILES_START_FONTNUMS + ((*p_score & 0x0Fu) << 1));
+    set_sprite_tile(SPR_ID_SCORE_START + 1u, SPR_TILES_START_FONTNUMS + ((*(p_score++) >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
+
+    // Since there are only 5 digits, only extract one from MSByte of BCD score
+    set_sprite_tile(SPR_ID_SCORE_START + 0u, SPR_TILES_START_FONTNUMS + ((*p_score >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
 
     // DEBUG - show game level
     #ifdef DEBUG_SHOW_LEVEL_IN_SCORE
         set_sprite_tile(SPR_ID_SCORE_START, SPR_TILES_START_FONTNUMS + (game_level << 1));
     #endif
 }
+
+
+// Displays number of state restore actions left using sprites
+void state_restore_display_update(void) {
+
+    // Pointer to LSByte of State Restore Count BCD value
+    uint8_t * p_bcd_pair = (uint8_t *) &state_restore_count;
+
+    // Render score from Right to Left in digit pairs
+    set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + 1u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair & 0x0Fu) << 1));
+    set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + 0u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
+}
+
 
 
 // Displays a score on the intro title screen rendered into BG map tiles
@@ -56,17 +81,29 @@ void hi_score_render(uint8_t * p_vram_addr, uint8_t font_base_tile) {
     // Move to right-most tile of score
     p_vram_addr += (SCORE_DIGITS - 1u);
 
-    // SCORE_DIGITS should be a multiple of 2
-    for(uint8_t c = 0u; c < SCORE_DIGITS / 2u; c++)  {
-        // Render two digits into adjacent tile map slots, right -> left
-        // Score is stored as packed BCD in a uint32_t, one digit per nybble
-        // Digits are In memory as 0x10, 0x32, 0x54
-        set_vram_byte(p_vram_addr--, font_base_tile + (*p_score & 0x0Fu));
-        set_vram_byte(p_vram_addr--, font_base_tile + ((*p_score >> 4u) & 0x0Fu));
+    // TODO: Delete
+    // // SCORE_DIGITS should be a multiple of 2
+    // for(uint8_t c = 0u; c < SCORE_DIGITS / 2u; c++)  {
+    //     // Render two digits into adjacent tile map slots, right -> left
+    //     // Score is stored as packed BCD in a uint32_t, one digit per nybble
+    //     // Digits are In memory as 0x10, 0x32, 0x54
+    //     set_vram_byte(p_vram_addr--, font_base_tile + (*p_score & 0x0Fu));
+    //     set_vram_byte(p_vram_addr--, font_base_tile + ((*p_score >> 4u) & 0x0Fu));
 
-        // Move to next pair of digits in next byte
-        p_score++;
-    }
+    //     // Move to next pair of digits in next byte
+    //     p_score++;
+    // }
+
+
+    // Render score from Right to Left in digit pairs
+    set_vram_byte(p_vram_addr--, font_base_tile + (*p_score & 0x0Fu));
+    set_vram_byte(p_vram_addr--, font_base_tile + ((*(p_score++) >> 4u) & 0x0Fu));
+
+    set_vram_byte(p_vram_addr--, font_base_tile + (*p_score & 0x0Fu));
+    set_vram_byte(p_vram_addr--, font_base_tile + ((*(p_score++) >> 4u) & 0x0Fu));
+
+    // Since there are only 5 digits, only extract one from MSByte of BCD score
+    set_vram_byte(p_vram_addr--, font_base_tile + (*p_score & 0x0Fu));
 }
 
 

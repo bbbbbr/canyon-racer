@@ -41,6 +41,10 @@ extern uint8_t decomp_buf[];
 #define GAME_STATE_RUNNING         3u
 #define GAME_STATE_OVER            4u
 
+
+// Initial value for number of times the player can use the "Restore State" action
+#define STATE_RESTORE_COUNT_RESET  MAKE_BCD(30)
+
 // ===========================
 
 // #define VISUAL_DEBUG_BENCHMARK_MAIN
@@ -68,7 +72,7 @@ extern uint8_t decomp_buf[];
 #define FIXED_BITSHIFT 8
 
 // SHIP
-#define SPR_TILES_START_SHIP 0
+#define SPR_TILES_START_SHIP 0u
 #define SPR_TILES_COUNT_SHIP_MAX   (sprite_ship_TILE_COUNT - 1u)
 
 #define SPR_TILES_START_OBSTACLES (SPR_TILES_COUNT_SHIP_MAX + 1u)
@@ -78,9 +82,20 @@ extern uint8_t decomp_buf[];
 #define SPR_TILES_START_FONTNUMS (SPR_TILES_COUNT_OBSTACLES_MAX + 1u)
 #define SPR_TILES_COUNT_FONTNUMS_MAX   ((SPR_TILES_START_FONTNUMS + tiles_font_nums_TILE_COUNT) - 1u)
 #define SPR_TILES_FONTNUMS_DIGIT_0 (SPR_TILES_START_FONTNUMS) // first digit is zero
+#define SPR_TILES_FONTNUMS_DIGIT_R (SPR_TILES_START_FONTNUMS + (10u * 2u)) // Extra character trailing after the digits x 2 for (2 tiles per 8x16 sprite)
 
 
-#define SPR_ID_SCORE_START 0u
+// Single "R" for Restore indicator before text
+#define SPR_ID_STATE_RESTORE_HEADER_START 0u
+#define SPR_ID_STATE_RESTORE_HEADER_COUNT 1u
+#define SPR_ID_STATE_RESTORE_HEADER_MAX   (SPR_ID_STATE_RESTORE_HEADER_START + SPR_ID_STATE_RESTORE_HEADER_COUNT - 1u)
+
+#define SPR_ID_STATE_RESTORE_DISPLAY_START (SPR_ID_STATE_RESTORE_HEADER_MAX + 1u)
+#define SPR_ID_STATE_RESTORE_DISPLAY_COUNT 2u
+#define SPR_ID_STATE_RESTORE_DISPLAY_MAX   (SPR_ID_STATE_RESTORE_DISPLAY_START + SPR_ID_STATE_RESTORE_DISPLAY_COUNT - 1u)
+
+
+#define SPR_ID_SCORE_START (SPR_ID_STATE_RESTORE_DISPLAY_MAX + 1u)
 #define SPR_ID_SCORE_COUNT 6u
 #define SPR_ID_SCORE_MAX   (SPR_ID_SCORE_START + SPR_ID_SCORE_COUNT - 1u)
 
@@ -188,6 +203,9 @@ typedef struct game_state_data {
 } game_state_data;
 
 extern game_state_data state;
+extern BCD state_restore_count;
+
+#define STATE_RESTORE_COUNT_GET() (state_restore_count)
 
 
 void delay_lowcpu(uint16_t num_frames);

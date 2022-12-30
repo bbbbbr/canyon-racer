@@ -36,6 +36,7 @@ void gameplay_prestart(void) {
 
     state.paused = false;
     game_state_count_reset();
+    state_restore_display_update();
 
     // This must be called before mapfx and others
     level_init();
@@ -79,6 +80,7 @@ static bool gameplay_state_restore() {
         audio_music_set(MUSIC_GAMEPLAY);
         audio_music_unpause();
         score_update();
+        state_restore_display_update();
         if (state.paused)
             return true;  // Request pause on return
     } else
