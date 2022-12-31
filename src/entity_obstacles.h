@@ -67,14 +67,30 @@
 
     // #define OBSTACLE_NEXT_TYPE_BITMASK 0x03u  // 4 types of obstacles to spawn
 
-    #define OBSTACLE_TYPE_MASK    0x03u  // Should exactly cover range of values used below
     #define OBSTACLE_TYPE_LEFT    0x00u
     #define OBSTACLE_TYPE_RIGHT   0x01u
     #define OBSTACLE_TYPE_MIDDLE  0x02u
     #define OBSTACLE_TYPE_FULL    0x03u
 
-    #define OBJECTS_FLAG_DOUBLE_BIT  0x04u
-    #define OBJECTS_FLAG_BOBBING_BIT 0x08u
+    #define OBSTACLE_TYPE_MASK    0x03u  // Should exactly cover range of values used above
+
+    // Excluded by the OBSTACLE_TYPE_MASK generation mask
+    #define OBJECT_TYPE_ITEM_PLUS_1  0x04u
+    // Items must have type > 0
+    // For: obstacles_item_queued
+    #define ITEM_NOT_QUEUED 0u
+
+    // Must be large enough to fit all obstacle and item types above
+    #define OBJECT_SPRITE_MASK    0x0Fu
+
+    #define OBJECTS_FLAG_HIDDEN_BIT  0x80u // Should not overlap with any item or obstacle values
+
+    // Can overlap with items as long as > OBSTACLE_TYPE_MASK, used to set obstacles_next_isdouble.
+    // Not actually stored in "type" itself, just sampled from the shared random generation byte
+    #define OBJECTS_RANDOM_DOUBLE_BIT       0x04u
+    // Determines rate of special item spawning (mask match on random number == 0)
+    #define OBJECTS_RANDOM_ITEM_SPAWN_MASK  0xF8u // 0xF0u  // Every ~32th object spawned, subject to random number generation
+    #define OBJECTS_RANDOM_ITEM_SPAWN_OK    0x00u
 
 
 // ========== Hitbox ==========
@@ -93,6 +109,10 @@
 
     #define OBSTACLE_HITBOX_X_ST__TYPE_FULL   ((sprite_obstacles_WIDTH / 4u) * 0u)
     #define OBSTACLE_HITBOX_X_END_TYPE_FULL   ((sprite_obstacles_WIDTH / 4u) * 4u)
+
+
+    #define OBSTACLE_HITBOX_X_ST__TYPE_ITEM_PLUS_1 ((sprite_obstacles_WIDTH / 4u) * 1u)
+    #define OBSTACLE_HITBOX_X_END_TYPE_ITEM_PLUS_1 ((sprite_obstacles_WIDTH / 4u) * 3u)
 
 
     #define OBSTACLE_HITBOX_Y_TOP    ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u)

@@ -179,6 +179,7 @@ typedef struct game_state_data {
         uint8_t obstacles_next_countdown;
         uint8_t obstacles_next_type;
         uint8_t obstacles_next_isdouble;
+        uint8_t obstacles_item_queued;
 
     // Common
         settings_rec game_settings;
@@ -214,5 +215,6 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline);
 void game_state_count_reset(void);
 void game_state_save();
 void game_state_restore();
+void game_state_count_increment();
 
 #endif

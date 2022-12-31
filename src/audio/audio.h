@@ -10,6 +10,17 @@
 #define SFX_SHIP_LAND  3u
 #define SFX_LEVEL_UP   4u
 #define SFX_SPEED_UP   5u
+
+// SFX TO DO:
+#define SFX_GOT_ITEM   (SFX_PAUSE)
+
+#define SFX_STATE_SAVE_OK (SFX_PAUSE)
+#define SFX_STATE_SAVE_FAIL (SFX_PAUSE)
+
+#define SFX_STATE_RESTORE_OK (SFX_PAUSE)
+#define SFX_STATE_RESTORE_FAIL (SFX_PAUSE)
+
+
 // #define SFX_SHIP_CRASH 6u // Replaced with a gameover crash sound + music track
 
 

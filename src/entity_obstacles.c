@@ -23,28 +23,33 @@ const uint8_t obstacles_x_hitbox_left[] = {
     OBSTACLE_HITBOX_X_ST__TYPE_LEFT,
     OBSTACLE_HITBOX_X_ST__TYPE_RIGHT,
     OBSTACLE_HITBOX_X_ST__TYPE_MIDDLE,
-    OBSTACLE_HITBOX_X_ST__TYPE_FULL
+    OBSTACLE_HITBOX_X_ST__TYPE_FULL,
+
+    OBSTACLE_HITBOX_X_ST__TYPE_ITEM_PLUS_1
 };
 
 const uint8_t obstacles_x_hitbox_right[] = {
     OBSTACLE_HITBOX_X_END_TYPE_LEFT,
     OBSTACLE_HITBOX_X_END_TYPE_RIGHT,
     OBSTACLE_HITBOX_X_END_TYPE_MIDDLE,
-    OBSTACLE_HITBOX_X_END_TYPE_FULL
+    OBSTACLE_HITBOX_X_END_TYPE_FULL,
+
+    OBSTACLE_HITBOX_X_END_TYPE_ITEM_PLUS_1
 };
 
 
 static inline void queue_next(void) {
 
-    // TODO:
-    // #define OBJECTS_FLAG_DOUBLE_BIT  0x04u
-    // #define OBJECTS_FLAG_BOBBING_BIT 0x08u
-
     uint8_t type = rand();
     state.obstacles_next_type      = (type & OBSTACLE_TYPE_MASK);
 
+    // Check for queueing an item
+    // Must be a non-zero value to be utilized
+    if ((type & OBJECTS_RANDOM_ITEM_SPAWN_MASK) == OBJECTS_RANDOM_ITEM_SPAWN_OK)
+        state.obstacles_item_queued = OBJECT_TYPE_ITEM_PLUS_1;
+
     // If random selection is for a double obstacle, space the next one close together
-    if ((type & OBJECTS_FLAG_DOUBLE_BIT) && (!state.obstacles_next_isdouble)) {
+    if ((type & OBJECTS_RANDOM_DOUBLE_BIT) && (!state.obstacles_next_isdouble)) {
         state.obstacles_next_countdown = state.cur_level.obst_dist_double;
         state.obstacles_next_isdouble = true;
     }
@@ -69,6 +74,7 @@ void entity_obstacles_init(void) {
     state.obstacles_active_first = 0u;
 
     state.obstacles_next_isdouble = false;
+    state.obstacles_item_queued   = ITEM_NOT_QUEUED;
 
     // Seed the initial obstacle
     queue_next();
@@ -87,7 +93,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
         state.obstacles[idx].y.w += state.cur_level.obst_speed;
         uint8_t y_pos = state.obstacles[idx].y.h;
-        uint8_t object_sprite_sel = state.obstacles[idx].type;
+        uint8_t object_type = state.obstacles[idx].type;
 
         // Obstacle scrolled off-screen?
         if (y_pos > OBSTACLE_REMOVE_Y) {
@@ -104,26 +110,32 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
                 state.obstacles_active_first = 0;
 
             // Record number of obstacles cleared
-            // Only count for score if game is not over
+            // Only count for score if game is not over (i.e. crashed, etc)
             // TODO: HACK: state test here is temporary, improve to single state test
             if ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) || (SHIP_STATE_GET() == SHIP_STATE_JUMP)) {
-                SCORE_INCREMENT();
-                score_update();
-                LEVEL_INC_AND_CHECK();
+
+                // Update for OBSTACLES only no score and level incrementing for ITEMS
+                // (not checked earlier since they still need to get moved off-screen and de-queued)
+                if (object_type & OBSTACLE_TYPE_MASK) {
+                    SCORE_INCREMENT();
+                    score_update();
+                    LEVEL_INC_AND_CHECK();
+                }
             }
         } else {
-            // Obstacle is active and not getting removed - Draw it
+            // Obstacle is active and not getting removed so draw it
 
-            // X position is found in the X scroll effect offset table at the Y position of the obstacle
-            oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_sprite_sel],
-                                             (SPR_TILES_START_OBSTACLES),
-                                             oam_high_water,
-                                             CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[y_pos],
-                                             y_pos);
+            // Skip hidden entries (i.e. consumed items)
+            if (!(object_type & OBJECTS_FLAG_HIDDEN_BIT)) {
+                
+                // X position is found in the X scroll effect offset table at the Y position of the obstacle
+                oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_type & OBJECT_SPRITE_MASK],
+                                                 (SPR_TILES_START_OBSTACLES),
+                                                 oam_high_water,
+                                                 CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[y_pos],
+                                                 y_pos);
+            }
         }
-
-        // TODO: collision, could test and set marker for last index to start on
-        //  if (y_pos > (ship.y + ship
 
         // Obstacles are stored as a circular buffer, wrap around to top if reached bottom
         if (idx == OBSTACLES_COUNT_MIN)
@@ -157,7 +169,14 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
             // TODO: scroll screen down so starting at zero doesn't cause sprites to pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
             state.obstacles[state.obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
-            state.obstacles[state.obstacles_active_last].type = state.obstacles_next_type;
+
+            // Override the obstacle and replace it with the queued item
+            if (state.obstacles_item_queued) {
+                state.obstacles[state.obstacles_active_last].type = state.obstacles_item_queued;
+                state.obstacles_item_queued = ITEM_NOT_QUEUED; // Clear queue
+            }
+            else
+                state.obstacles[state.obstacles_active_last].type = state.obstacles_next_type;
 
             // If this is first entry added, also set head of list
             if (state.obstacles_active_count == 1)

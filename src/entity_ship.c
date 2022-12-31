@@ -103,7 +103,32 @@ static void ship_handle_input(void) {
 }
 
 
-// TODO: split to functions if there is enough overhead left
+static void ship_handle_collisions(void) {
+
+    if (check_collisions() == true) {
+
+        if (COLLISION_GET_LAST_TYPE() == OBJECT_TYPE_ITEM_PLUS_1) {
+            // Flag object as hidden to remove it
+            state.obstacles[COLLISION_GET_LAST_INDEX()].type |= OBJECTS_FLAG_HIDDEN_BIT;
+            audio_sfx_play(SFX_GOT_ITEM); // TODO: SFX Got Item
+            game_state_count_increment();
+            state_restore_display_update();
+        }
+        else {
+            // Will take effect next frame
+            state.ship_state = SHIP_STATE_CRASHED;
+            state.ship_counter = SHIP_COUNTER_CRASH;
+            // audio_sfx_play(SFX_SHIP_CRASH); // Replaced by crashed/gameover audio track
+
+            audio_music_pause();
+            audio_music_set(MUSIC_GAMEOVER_SONG);
+            audio_music_unpause();
+        }
+    }
+}
+
+
+// TODO: split to more functions if there is enough overhead left
 uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     ship_sprite_sel = SHIP_SPR_DEFAULT;
@@ -186,17 +211,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
         case SHIP_STATE_PLAYING:
 
             ship_handle_input();
-
-            if (check_collisions() == true) {
-                // Will take effect next frame
-                state.ship_state = SHIP_STATE_CRASHED;
-                state.ship_counter = SHIP_COUNTER_CRASH;
-                // audio_sfx_play(SFX_SHIP_CRASH);
-
-                audio_music_pause();
-                audio_music_set(MUSIC_GAMEOVER_SONG);
-                audio_music_unpause();
-            }
+            ship_handle_collisions();
             break;
     }
 

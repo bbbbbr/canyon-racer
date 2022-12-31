@@ -16,6 +16,9 @@
 #include "../res/sprite_obstacles.h"
 
 
+// Used for retrieving info about collision if one is detected
+uint8_t collision_last_type;
+uint8_t collision_last_index;
 
 // Checks collisions between:
 // * Ship & Walls
@@ -52,32 +55,39 @@ bool check_collisions(void) {
 
 
         uint8_t obstacle_y_pos = state.obstacles[idx].y.h;
-        uint8_t obstacle_type  = state.obstacles[idx].type;
-
-        // First check if BOTTOM of obstacle is ABOVE top of ship
-        if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_BOTTOM) < (state.ship_y.h + SHIP_HITBOX_Y_TOP)) {
-            // If true then No overlap/collision. Exit the loop since
-            // Obstacles are in Y order and there can be no more collisions
-            return false;
-        }
+        // uint8_t obstacle_type  = state.obstacles[idx].type;
+        collision_last_type  = state.obstacles[idx].type;
 
 
-        // Next check if TOP of obstacle is somewhere ABOVE bottom of ship
-        // If True, then combined with above test, there MUST be Y overlap
-        // (since both non-overlap tests failed)
-        if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_TOP) <= (state.ship_y.h + SHIP_HITBOX_Y_BOTTOM)) {
+        // Skip hidden obstacles
+        if (!(collision_last_type & OBJECTS_FLAG_HIDDEN_BIT)) {
 
-            // // If this is reached then the ship has Y overlap with the obstacle
-            uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[obstacle_y_pos];
+            // First check if BOTTOM of obstacle is ABOVE top of ship
+            if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_BOTTOM) < (state.ship_y.h + SHIP_HITBOX_Y_TOP)) {
+                // If true then No overlap/collision. Exit the loop since
+                // Obstacles are in Y order and there can be no more collisions
+                return false;
+            }
 
-            uint8_t obstacle_x_hitbox_left  = obstacle_x_pos + obstacles_x_hitbox_left[obstacle_type];
-            uint8_t obstacle_x_hitbox_right = obstacle_x_pos + obstacles_x_hitbox_right[obstacle_type];
 
-            // Check X axis Overlap (via non-overlap)
-            if ( ((obstacle_x_hitbox_left) <= (state.ship_x.h + SHIP_HITBOX_X_RIGHT)) &&
-                 ((obstacle_x_hitbox_right) >= (state.ship_x.h + SHIP_HITBOX_X_LEFT)) ) {
-                // Collision with object
-                return true;
+            // Next check if TOP of obstacle is somewhere ABOVE bottom of ship
+            // If True, then combined with above test, there MUST be Y overlap
+            // (since both non-overlap tests failed)
+            if ((obstacle_y_pos + OBSTACLE_HITBOX_Y_TOP) <= (state.ship_y.h + SHIP_HITBOX_Y_BOTTOM)) {
+
+                // // If this is reached then the ship has Y overlap with the obstacle
+                uint8_t obstacle_x_pos = CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[obstacle_y_pos];
+
+                uint8_t obstacle_x_hitbox_left  = obstacle_x_pos + obstacles_x_hitbox_left[collision_last_type];
+                uint8_t obstacle_x_hitbox_right = obstacle_x_pos + obstacles_x_hitbox_right[collision_last_type];
+
+                // Check X axis Overlap (via non-overlap)
+                if ( ((obstacle_x_hitbox_left) <= (state.ship_x.h + SHIP_HITBOX_X_RIGHT)) &&
+                     ((obstacle_x_hitbox_right) >= (state.ship_x.h + SHIP_HITBOX_X_LEFT)) ) {
+                    // Collision with object
+                    collision_last_index = idx;
+                    return true;
+                }
             }
         }
 

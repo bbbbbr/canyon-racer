@@ -9,21 +9,30 @@ This project started with wanting to try a vertical parallax effect on the origi
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
 
 ### Game Play
-A little addictive, a little simplistic, kind of hard, but with cool FX and music. :)
+A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
 
-Guide the racer through the canyon jumping over rocks. Use the limited number of Save & Rewind actions to instantly recover from a crash and rewind to earlier in the game.
+Guide the racer through the canyon jumping over rocks and without touching walls. Use the Save and limited number of Rewind actions to instantly recover from a crash and rewind to earlier in the game. Collect `+1` items to increase the number of Rewind actions available.
 
 Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
 
-- Jumping
+#### Controls
+- **Jumping**
   - Jump: **A** button (tap or hold)
   - Extend or shorten: **Up / Down** (required for some long jumps)
-- Save & Rewind
+- **Save & Rewind**
   - Save State: **B**. Any time during gameplay, as much as you want. Save early, save often!
   - Rewind: **SELECT** (if crashed, also **B**)
-  - There is a limited supply of Rewinds ("R" readout in lower-right)
-  - After crashing there is ~1 second during which Rewind can be used until the game is considered over
+  - There is a limited supply of Rewinds (The top readout in lower-right)
+  - After crashing there is ~1 second during which Rewind can be used until the game is considered over.
 - Pause: **Start**
+
+#### Techniques
+- **Save & Restore:** Get used to using the **Save** button often so that rewind states are near in the past.
+- **Short hops:** Make a series of short, fast taps with **Jump** to hop over several close obstacles in a row.
+- If the D-Pad is not used during jumps the ship will land in the same location it started in.
+- **Extra Long Jump:** Press and hold **Jump** and **Up** to make extra long jumps. The ship will land farther up on the screen if possible.
+- **Shortened Jump:** While jumping, use **Down** to reduce jump distance. The ship will land farther down on the screen if possible.
+
 
 ### Effect Accuracy
 Some notes about the visual effects if you aren't playing on an actual Game Boy or chip clone:
