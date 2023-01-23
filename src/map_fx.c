@@ -117,12 +117,12 @@ void map_fx_stat_isr(void) __interrupt __naked {
 
     // Increment pointer to next line value
     inc (hl)
-    jr  nz, 00103$
+    jr  nz, 1$
 
     // Upper nybble increment
     inc hl
     inc (hl)
-    00103$:
+    1$:
 
     pop bc
     pop hl

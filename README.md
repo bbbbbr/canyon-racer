@@ -11,11 +11,13 @@ This project started with wanting to try a vertical parallax effect on the origi
 ### Game Play
 A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
 
-Guide the racer through the canyon jumping over rocks and without touching walls. Use the Save and limited number of Rewind actions to instantly recover from a crash and rewind to earlier in the game. Collect `+1` items to increase the number of Rewind actions available.
+- Guide the racer through the canyon jumping over rocks and without touching walls.
+- Use unlimited Save and the limited number of Rewind actions to recover from a crash and rewind to earlier in the game.
+- Collect `+1` items to gain more Rewind actions.
 
 Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
 
-#### Controls
+### Controls
 - **Jumping**
   - Jump: **A** button (tap or hold)
   - Extend or shorten: **Up / Down** (required for some long jumps)
@@ -26,12 +28,12 @@ Give your eyes frequent rests. There can be some temporary sensation of visual m
   - After crashing there is ~1 second during which Rewind can be used until the game is considered over.
 - Pause: **Start**
 
-#### Techniques
+### Techniques
 - **Save & Restore:** Get used to using the **Save** button often so that rewind states are near in the past.
 - **Short hops:** Make a series of short, fast taps with **Jump** to hop over several close obstacles in a row.
-- If the D-Pad is not used during jumps the ship will land in the same location it started in.
 - **Extra Long Jump:** Press and hold **Jump** and **Up** to make extra long jumps. The ship will land farther up on the screen if possible.
 - **Shortened Jump:** While jumping, use **Down** to reduce jump distance. The ship will land farther down on the screen if possible.
+- If the D-Pad is not used during jumps the ship will land in the same location it started in.
 
 
 ### Effect Accuracy
