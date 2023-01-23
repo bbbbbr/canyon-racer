@@ -206,7 +206,8 @@ typedef struct game_state_data {
 extern game_state_data state;
 extern BCD state_restore_count;
 
-#define STATE_RESTORE_COUNT_GET() (state_restore_count)
+// Can truncate this to uint8 since value should never be over 99 BCD (0x99)
+#define STATE_RESTORE_COUNT_GET() ((uint8_t)state_restore_count)
 
 
 void delay_lowcpu(uint16_t num_frames);

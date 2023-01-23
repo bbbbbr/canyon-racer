@@ -68,7 +68,9 @@ void game_state_save() {
     // (gfx which are modified in ISRs) in a critical section
 
     // Most of main state var doesn't need exclusive locking to copy
-    memcpy(&state_copy, &state, sizeof(game_state_data));
+    // Struct copy just calls memcpy, but it's easier to read
+    // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
+    state_copy = state;
     rand_seed_copy = __rand_seed;
 
     // Now just re-copy individual Map FX vars modified by the ISRs
@@ -81,23 +83,26 @@ void game_state_save() {
 }
 
 
+// WARNING: Must not be called when state_restore_count is 0
+// Use if (STATE_RESTORE_COUNT_GET()) to check
 void game_state_restore() {
 
-        // Should be protected from called when 0, but just to be defensive
-    if (state_restore_count) {
+    // if ((uint8_t)state_restore_count) {
 
         // Don't care about visual glitches here from a long
         // critical section since the whole screen often gets
         // changed anyway during the rewind action.
         __critical {
-            memcpy(&state, &state_copy, sizeof(game_state_data));
+            // Struct copy just calls memcpy, but it's easier to read
+            // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
+            state = state_copy;
             __rand_seed = rand_seed_copy;
         }
 
         // Deduct one from the number used
         // state_restore_count--;
         bcd_sub(&state_restore_count, &state_restore_bcd_step_size);
-    }
+    // }
 }
 
 
