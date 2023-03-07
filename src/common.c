@@ -57,6 +57,8 @@ void game_state_count_reset(void) {
 }
 
 
+// WARNING: Must not be called when state_restore_count is 0
+// Use if (STATE_RESTORE_COUNT_GET()) to check
 void game_state_save() {
 
     // Long critical sections may delay scanline ISR from running and
@@ -80,6 +82,10 @@ void game_state_save() {
         state_copy.p_scx_table_stop       = state.p_scx_table_stop;
         state_copy.p_scx_cur_table        = state.p_scx_cur_table;
     }
+
+    // Deduct one from the number used
+    // state_restore_count--;
+    bcd_sub(&state_restore_count, &state_restore_bcd_step_size);
 }
 
 

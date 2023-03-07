@@ -8,6 +8,7 @@
 #include "audio.h"
 
 #include "map_fx.h"
+#include "gameplay.h"
 
 #include "../res/sprite_pause.h"
 
@@ -115,7 +116,7 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
 
     // if requested handle the state save AFTER mapfx has had it's settings restored
     if (game_state_save_queued)
-        game_state_save();
+        gameplay_state_save();
 
     state.paused = false;
 }

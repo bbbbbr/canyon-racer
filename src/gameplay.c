@@ -26,9 +26,6 @@
 uint8_t oam_high_water;
 uint8_t oam_high_water_prev;
 
-static void gameplay_state_save();
-static bool gameplay_state_restore();
-
 
 
 // Setup before gameplay main loop runs
@@ -62,17 +59,19 @@ void gameplay_prestart(void) {
 }
 
 
-static void gameplay_state_save() {
+void gameplay_state_save(void) {
     // Only save state if they haven't used them all up
     if (STATE_RESTORE_COUNT_GET()) {
         game_state_save();
         audio_sfx_play(SFX_STATE_SAVE_OK); // TODO: SFX:State Save OK
+        state_restore_display_update();
     } else
         audio_sfx_play(SFX_STATE_SAVE_FAIL);  // TODO: SFX:State Save Denied/Fail
 }
 
 
-static bool gameplay_state_restore() {
+// Returns: True if restore succeeded
+bool gameplay_state_restore(void) {
     // Only restore state if they haven't used them all up
     if (STATE_RESTORE_COUNT_GET()) {
         game_state_restore();
@@ -81,11 +80,12 @@ static bool gameplay_state_restore() {
         audio_music_unpause();
         score_update();
         state_restore_display_update();
-        if (state.paused)
-            return true;  // Request pause on return
-    } else
-        audio_sfx_play(SFX_STATE_RESTORE_FAIL);  // TODO: SFX:State Restore Denied/Fail
 
+        // Set ship to temporary invincibility on restart and center in canyon
+        state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
+        entity_ship_center_in_canyon();
+        return true;
+    }
     return false;
 }
 
@@ -99,23 +99,15 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         UPDATE_KEYS();
 
         // TODO: consider moving into functions
-        switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__STATE_RESTORE | BUTTON__PAUSE))) {
+        switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__PAUSE))) {
             case BUTTON__STATE_SAVE:
                 // If still in game play save the state
-                // But if crashed translate the "save" to a restore to restore
+                // Uses up a life/save state
                 if (SHIP_STATE_GET() != SHIP_STATE_CRASHED) gameplay_state_save();
-                else {
-                    if (gameplay_state_restore())
-                        gameplay_pause(spr_next_free_tile, oam_high_water);
-                }
                 break;
 
-            case BUTTON__STATE_RESTORE:
-                if (gameplay_state_restore())
-                    gameplay_pause(spr_next_free_tile, oam_high_water);
-                break;
-
-            case BUTTON__PAUSE: gameplay_pause(spr_next_free_tile, oam_high_water);
+            case BUTTON__PAUSE:
+                gameplay_pause(spr_next_free_tile, oam_high_water);
                 break;
         }
 
@@ -138,8 +130,17 @@ void gameplay_run(uint8_t spr_next_free_tile) {
 
 
         // If game is over, break out and return to main state select
-        if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER)
-            break;
+        if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER) {
+            // Try to restore if the user has rewinds left
+            if (gameplay_state_restore()) {
+                // TODO: consider displaying a "GET READY" type indicator on restore (and dropping pause support?)
+                if (state.paused)
+                    gameplay_pause(spr_next_free_tile, oam_high_water);
+            }
+            else
+                // Otherwise gameover, break out and game over
+                break;
+        }
 
         #ifdef VISUAL_DEBUG_BENCHMARK_MAIN
             // VISUAL BENCHMARK END

@@ -7,5 +7,7 @@
 
 void gameplay_prestart(void);
 void gameplay_run(uint8_t spr_next_free_tile);
+void gameplay_state_save(void);
+bool gameplay_state_restore();
 
 #endif

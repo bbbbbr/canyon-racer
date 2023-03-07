@@ -29,7 +29,7 @@
 #define SHIP_Z_JUMP_START (SHIP_Z_MIN)
 
 
-#define SHIP_STATE_STARTUP   1u
+// #define SHIP_STATE_STARTUP   1u  // TODO: No longer used
 #define SHIP_STATE_PLAYING   2u
 #define SHIP_STATE_JUMP      3u
 #define SHIP_STATE_CRASHED   4u
@@ -54,7 +54,7 @@
 #define SHIP_SPR_NONE      0xFFu
 
 
-#define SHIP_COUNTER_STARTUP 60u // 1/2 sec
+#define SHIP_COUNTER_STARTUP_INVINCIBLE 90u // 1.5 sec
 
 #define SHIP_COUNTER_CRASH_FRAMES   ((SHIP_SPR_CRASH_MAX - SHIP_SPR_CRASH_MIN) + 1u)  // Should match number of crash frames
 // #define SHIP_COUNTER_CRASH_BITSHIFT 4u  // Sets number of frames as power of 2: 4u = 16 frames per (1/4 sec)
@@ -73,7 +73,9 @@
 #define SHIP_HITBOX_Y_BOTTOM ((sprite_ship_PIVOT_H) + ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u))
 
 #define SHIP_STATE_GET() (state.ship_state)
+#define SHIP_STATE_SET(value) (state.ship_state = value)
 
+void entity_ship_center_in_canyon(void);
 void entity_ship_init(void);
 
 uint8_t entity_ship_update(uint8_t);

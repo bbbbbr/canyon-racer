@@ -27,12 +27,20 @@ void entity_ship_init(void) {
     state.ship_x.w = SHIP_X_INIT;  // X Position on screen
     state.ship_y.w = SHIP_Y_INIT;  // Y Position on screen
     state.ship_z.w = SHIP_Z_INIT;  // Z Jump position (alters Y position)
-    state.ship_state = SHIP_STATE_STARTUP;
-    state.ship_counter = SHIP_COUNTER_STARTUP;
+    state.ship_state = SHIP_STATE_PLAYING;
+    state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
     state.ship_jump_velocity = 0u;
+    // Place ship centered in canyon during startup
+    entity_ship_center_in_canyon();
 }
 
+// Should be called after parallax/etc has been initialized
+void entity_ship_center_in_canyon(void) {
+    uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[state.ship_y.h];
+    state.ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;    
+}
 
+// TODO: move to header
 // Roughly "classic" version
 // All values used with fixed point 8.8
 #define SHIP_JUMP_GRAVITY              32   // Gravity per frame
@@ -135,23 +143,6 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     switch (state.ship_state) {
 
-        case SHIP_STATE_STARTUP:
-            if (state.ship_counter)
-                state.ship_counter--;
-            else
-                state.ship_state = SHIP_STATE_PLAYING;
-
-            // Blink ship on/off to ready player
-            if ((state.ship_counter & 0x03u) == 0)
-                ship_sprite_sel = SHIP_SPR_DEFAULT;
-            else
-                ship_sprite_sel = SHIP_SPR_NONE;
-
-            // Run ship along edge of canyon automatically during startup
-            uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[state.ship_y.h];
-            state.ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
-            break;
-
         case SHIP_STATE_CRASHED:
             // If crashed, render explosion then restart
             if (state.ship_counter) {
@@ -164,8 +155,8 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                 state.ship_state = SHIP_STATE_GAMEOVER;
                 // Debug option to resume gameplay after crashing
                 #ifdef DEBUG_RESUME_AFTER_CRASH
-                    state.ship_state = SHIP_STATE_STARTUP;
-                    state.ship_counter = SHIP_COUNTER_STARTUP;
+                    state.ship_state = SHIP_STATE_PLAYING;
+                    state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
                 #endif
                 ship_sprite_sel = SHIP_SPR_NONE;
             }
@@ -200,18 +191,36 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             }
 
             // Set sprite at main player location to shadow
-            ship_sprite_sel = SHIP_SPR_JUMP; // (state.ship_counter >> (SHIP_COUNTER_CRASH_BITSHIFT)) + SHIP_SPR_CRASH_MIN;
+            ship_sprite_sel = SHIP_SPR_JUMP;
+
+            // Blink ship on/off to ready player if in startup invincibility mode
+            bool flicker_hide_ship = false;
+            if (state.ship_counter) {
+                state.ship_counter--;
+                if ((state.ship_counter & 0x03u) != 0)
+                    flicker_hide_ship = true;
+            }
 
             // And also draw separated ship using Jump Z offset for Y axis
-            oam_high_water += move_metasprite(sprite_ship_metasprites[SHIP_SPR_DEFAULT],
-                                         (SPR_TILES_START_SHIP),
-                                         oam_high_water, state.ship_x.h, state.ship_y.h - state.ship_z.h);
+            if (!flicker_hide_ship)
+                oam_high_water += move_metasprite(sprite_ship_metasprites[SHIP_SPR_DEFAULT],
+                                             (SPR_TILES_START_SHIP),
+                                             oam_high_water, state.ship_x.h, state.ship_y.h - state.ship_z.h);
             break;
 
         case SHIP_STATE_PLAYING:
 
             ship_handle_input();
-            ship_handle_collisions();
+
+            // Blink ship on/off to ready player if in startup invincibility mode
+            // Otherwise handle collisions
+            if (state.ship_counter) {
+                state.ship_counter--;
+                if ((state.ship_counter & 0x03u) != 0)
+                    ship_sprite_sel = SHIP_SPR_NONE; // Overrides default of SHIP_SPR_DEFAULT
+            } else
+                ship_handle_collisions();
+
             break;
     }
 
