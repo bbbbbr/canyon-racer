@@ -52,7 +52,8 @@ void gameplay_prestart(void) {
     entity_obstacles_init();
 
     // Create initial save point
-    gameplay_state_save();
+    // Do it quietly instead of using game_state_save(), without a display update or sound, and before score is shown
+    game_state_save();
 
     delay(50u); // Short delay before fade-in
     fade_in(FADE_DELAY_FX_RUNNING);
@@ -63,6 +64,8 @@ void gameplay_state_save(void) {
     // Only save state if they haven't used them all up
     if (STATE_RESTORE_COUNT_GET()) {
         game_state_save();
+        // Deduct Life / Restore Point (not part of save state)
+        STATE_RESTORE_COUNT_SUBTRACT_ONE();
         audio_sfx_play(SFX_STATE_SAVE_OK); // TODO: SFX:State Save OK
         state_restore_display_update();
     } else
@@ -72,9 +75,14 @@ void gameplay_state_save(void) {
 
 // Returns: True if restore succeeded
 bool gameplay_state_restore(void) {
-    // Only restore state if they haven't used them all up
+    // Only restore state if lives / restore points aren't all used up
     if (STATE_RESTORE_COUNT_GET()) {
+
         game_state_restore();
+
+        // Deduct Life / Restore Point
+        STATE_RESTORE_COUNT_SUBTRACT_ONE();
+
         audio_sfx_play(SFX_STATE_RESTORE_OK);  // TODO: SFX:State Restore OK
         audio_music_set(MUSIC_GAMEPLAY);
         audio_music_unpause();
@@ -134,8 +142,6 @@ void gameplay_run(uint8_t spr_next_free_tile) {
             // Try to restore if the user has rewinds left
             if (gameplay_state_restore()) {
                 // TODO: consider displaying a "GET READY" type indicator on restore (and dropping pause support?)
-                if (state.paused)
-                    gameplay_pause(spr_next_free_tile, oam_high_water);
             }
             else
                 // Otherwise gameover, break out and game over

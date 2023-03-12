@@ -89,41 +89,27 @@ void game_state_save() {
         state_copy.p_scx_table_stop       = state.p_scx_table_stop;
         state_copy.p_scx_cur_table        = state.p_scx_cur_table;
     }
-
-    // Deduct one from the number used
-    // state_restore_count--;
-    bcd_sub(&state_restore_count, &state_restore_bcd_step_size);
 }
 
 
-// WARNING: Must not be called when state_restore_count is 0
-// Use if (STATE_RESTORE_COUNT_GET()) to check
 void game_state_restore() {
 
-    // if ((uint8_t)state_restore_count) {
-
-        // Don't care about visual glitches here from a long
-        // critical section since the whole screen often gets
-        // changed anyway during the rewind action.
-        __critical {
-            // Struct copy just calls memcpy, but it's easier to read
-            // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
-            state = state_copy;
-            __rand_seed = rand_seed_copy;
-        }
-
-        // Deduct one from the number used
-        // state_restore_count--;
-        bcd_sub(&state_restore_count, &state_restore_bcd_step_size);
-    // }
+    // Don't care about visual glitches here from a long
+    // critical section since the whole screen often gets
+    // changed anyway during the rewind action.
+    __critical {
+        // Struct copy just calls memcpy, but it's easier to read
+        // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
+        state = state_copy;
+        __rand_seed = rand_seed_copy;
+    }
 }
 
 
 void game_state_count_increment() {
 
     // Only need to test lsbyte, no need for full BCD test since max is 99
-    if ( *(const uint8_t *)&(state_restore_count) != (uint8_t)STATE_RESTORE_MAX_BCD) {
-        // state_restore_count++;
-        bcd_add(&state_restore_count, &state_restore_bcd_step_size);
+    if ( *(uint8_t *)&(state_restore_count) != (uint8_t)STATE_RESTORE_MAX_BCD) {
+        STATE_RESTORE_COUNT_ADD_ONE();
     }
 }

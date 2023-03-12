@@ -43,8 +43,10 @@ extern uint8_t decomp_buf[];
 #define GAME_STATE_OVER              5u
 
 
-// Initial value for number of times the player can use the "Restore State" action
-#define STATE_RESTORE_COUNT_RESET  MAKE_BCD(30)
+
+#define STATE_RESTORE_COUNT_RESET          MAKE_BCD(10) // Initial number of lives / save states
+#define STATE_RESTORE_COUNT_SUBTRACT_ONE() bcd_sub(&state_restore_count, &state_restore_bcd_step_size)
+#define STATE_RESTORE_COUNT_ADD_ONE()      bcd_add(&state_restore_count, &state_restore_bcd_step_size)
 
 // ===========================
 
@@ -207,6 +209,7 @@ typedef struct game_state_data {
 
 extern game_state_data state;
 extern BCD state_restore_count;
+extern const BCD state_restore_bcd_step_size;
 
 // Can truncate this to uint8 since value should never be over 99 BCD (0x99)
 #define STATE_RESTORE_COUNT_GET() ((uint8_t)state_restore_count)

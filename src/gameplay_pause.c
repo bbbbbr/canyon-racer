@@ -46,8 +46,6 @@ const uint8_t pause_sprite_x_frames[] = {
 
 void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
 
-    bool game_state_save_queued = false;
-
     state.paused = true;
 
     // ====== Pause Effects & Music ======
@@ -89,17 +87,7 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
 
 
     // ====== Wait for Start Button ======
-
-    // waitpadticked_lowcpu(J_START);
-    while (1) {
-
-        wait_vbl_done(); // yield CPU
-        UPDATE_KEYS();
-        if (KEY_TICKED(BUTTON__PAUSE))
-            break;
-        else if (KEY_TICKED(BUTTON__STATE_SAVE))
-            game_state_save_queued = true;
-    };
+    waitpadticked_lowcpu(J_START);
 
     // Prevent passing through any key ticked
     // event that may have just happened
@@ -113,10 +101,6 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
 
     audio_music_unpause();
     mapfx_set_setpause(false);
-
-    // if requested handle the state save AFTER mapfx has had it's settings restored
-    if (game_state_save_queued)
-        gameplay_state_save();
 
     state.paused = false;
 }
