@@ -57,6 +57,8 @@
 
     #define OBSTACLE_NEXT_COUNT_BITMASK (OBSTACLE_NEXT_COUNT_BITMASK_MED) // 0x0Fu
 
+#define OBSTACLE_NEXT_COUNT_GAMEPLAY_START  (60u * 3u) // 3 Second Delay at start of gameplay for extra player breathing room. 255 MAX
+
 // ========== Type / Spawn Location ==========
 
     // TODO: scroll screen down so starting at zero doesn't pop on-screen? if so, adjust OBSTACLE_REMOVE_Y

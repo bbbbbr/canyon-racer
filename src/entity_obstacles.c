@@ -78,6 +78,8 @@ void entity_obstacles_init(void) {
 
     // Seed the initial obstacle
     queue_next();
+    // Override value for "obstacles_next_countdown" in queue_next() to add longer initial delay
+    state.obstacles_next_countdown = OBSTACLE_NEXT_COUNT_GAMEPLAY_START;
 }
 
 
