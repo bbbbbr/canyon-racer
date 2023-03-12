@@ -23,5 +23,6 @@ extern const palette_color_t map_canyon_palettes[4];
 extern const uint8_t map_canyon_tiles[768];
 
 extern const unsigned char map_canyon_map[640];
+#define map_canyon_map_attributes map_canyon_map
 
 #endif

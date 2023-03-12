@@ -23,5 +23,6 @@ extern const palette_color_t intro_credits_data_palettes[2];
 extern const uint8_t intro_credits_data_tiles[760];
 
 extern const unsigned char intro_credits_data_map[360];
+#define intro_credits_data_map_attributes intro_credits_data_map
 
 #endif
