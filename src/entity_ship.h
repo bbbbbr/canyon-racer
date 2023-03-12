@@ -29,11 +29,14 @@
 #define SHIP_Z_JUMP_START (SHIP_Z_MIN)
 
 
-// #define SHIP_STATE_STARTUP   1u  // TODO: No longer used
-#define SHIP_STATE_PLAYING   2u
-#define SHIP_STATE_JUMP      3u
-#define SHIP_STATE_CRASHED   4u
-#define SHIP_STATE_GAMEOVER  0u
+// Used for shared state testing
+#define SHIP_BITS_PLAYER_ACTIVE      0x10u
+#define SHIP_BITS_PLAYER_NOT_ACTIVE  0x20u
+
+#define SHIP_STATE_ON_GROUND     (0u | SHIP_BITS_PLAYER_ACTIVE)
+#define SHIP_STATE_JUMP          (1u | SHIP_BITS_PLAYER_ACTIVE)
+#define SHIP_STATE_CRASHING      (2u | SHIP_BITS_PLAYER_NOT_ACTIVE)
+#define SHIP_STATE_CRASH_ENDED   (3u | SHIP_BITS_PLAYER_NOT_ACTIVE)
 
 
 #define SHIP_SPR_DEFAULT   0u // First sprite is neutral one

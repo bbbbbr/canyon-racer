@@ -27,7 +27,7 @@ void entity_ship_init(void) {
     state.ship_x.w = SHIP_X_INIT;  // X Position on screen
     state.ship_y.w = SHIP_Y_INIT;  // Y Position on screen
     state.ship_z.w = SHIP_Z_INIT;  // Z Jump position (alters Y position)
-    state.ship_state = SHIP_STATE_PLAYING;
+    state.ship_state = SHIP_STATE_ON_GROUND;
     state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE; // TODO: consider ship_invincible_counter
     state.ship_jump_velocity = 0u;
     // Place ship centered in canyon during startup
@@ -37,7 +37,7 @@ void entity_ship_init(void) {
 // Should be called after parallax/etc has been initialized
 void entity_ship_center_in_canyon(void) {
     uint8_t ship_canyon_left_x = CANYON_LEFT_X_BASE - state.p_scx_table_frame_base[state.ship_y.h];
-    state.ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;    
+    state.ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
 }
 
 // TODO: move to header
@@ -87,8 +87,8 @@ static void ship_handle_input(void) {
 
     // Jumping
     if (KEY_TICKED(BUTTON__JUMP)) {
-        // Jump can only start when ship is on the ground (SHIP_STATE_PLAYING)
-        if (state.ship_state == SHIP_STATE_PLAYING) {
+        // Jump can only start when ship is on the ground
+        if (state.ship_state == SHIP_STATE_ON_GROUND) {
 
             // TODO: separate jump state from game state
             state.ship_state = SHIP_STATE_JUMP;
@@ -124,7 +124,7 @@ static void ship_handle_collisions(void) {
         }
         else {
             // Will take effect next frame
-            state.ship_state = SHIP_STATE_CRASHED;
+            state.ship_state = SHIP_STATE_CRASHING;
             state.ship_counter = SHIP_COUNTER_CRASH;
             // audio_sfx_play(SFX_SHIP_CRASH); // Replaced by crashed/gameover audio track
 
@@ -143,7 +143,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     switch (state.ship_state) {
 
-        case SHIP_STATE_CRASHED:
+        case SHIP_STATE_CRASHING:
             // If crashed, render explosion then restart
             if (state.ship_counter) {
                 state.ship_counter--;
@@ -152,10 +152,10 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
             }
             else {
                 // Done showing crash explosion, hide ship and exit gameplay
-                state.ship_state = SHIP_STATE_GAMEOVER;
+                state.ship_state = SHIP_STATE_CRASH_ENDED;
                 // Debug option to resume gameplay after crashing
                 #ifdef DEBUG_RESUME_AFTER_CRASH
-                    state.ship_state = SHIP_STATE_PLAYING;
+                    state.ship_state = SHIP_STATE_ON_GROUND;
                     state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
                 #endif
                 ship_sprite_sel = SHIP_SPR_NONE;
@@ -170,11 +170,10 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
             // If current velocity will cause ship to hit the ground (<= 0)
             // then land it exactly and change state
-            // TODO: use var to speed up past crest of jump testing?
             if ((state.ship_jump_velocity < 0) && ((state.ship_jump_velocity * -1) > state.ship_z.w)) {
                 // Ship landed
                 state.ship_z.w = SHIP_Z_INIT;
-                state.ship_state = SHIP_STATE_PLAYING;
+                state.ship_state = SHIP_STATE_ON_GROUND;
                 audio_sfx_play(SFX_SHIP_LAND);
 
             } else {
@@ -208,7 +207,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
                                              oam_high_water, state.ship_x.h, state.ship_y.h - state.ship_z.h);
             break;
 
-        case SHIP_STATE_PLAYING:
+        case SHIP_STATE_ON_GROUND:
 
             ship_handle_input();
 

@@ -111,7 +111,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
             case BUTTON__STATE_SAVE:
                 // If still in game play save the state
                 // Uses up a life/save state
-                if (SHIP_STATE_GET() != SHIP_STATE_CRASHED) gameplay_state_save();
+                if (SHIP_STATE_GET() & SHIP_BITS_PLAYER_ACTIVE) gameplay_state_save();
                 break;
 
             case BUTTON__PAUSE:
@@ -138,7 +138,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
 
 
         // If game is over, break out and return to main state select
-        if (SHIP_STATE_GET() == SHIP_STATE_GAMEOVER) {
+        if (SHIP_STATE_GET() == SHIP_STATE_CRASH_ENDED) {
             // Try to restore if the user has rewinds left
             if (gameplay_state_restore()) {
                 // TODO: consider displaying a "GET READY" type indicator on restore (and dropping pause support?)

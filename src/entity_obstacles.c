@@ -112,7 +112,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             // Record number of obstacles cleared
             // Only count for score if game is not over (i.e. crashed, etc)
             // TODO: HACK: state test here is temporary, improve to single state test
-            if ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) || (SHIP_STATE_GET() == SHIP_STATE_JUMP)) {
+            if (SHIP_STATE_GET() & SHIP_BITS_PLAYER_ACTIVE) {
 
                 // Update for OBSTACLES only no score and level incrementing for ITEMS
                 // (not checked earlier since they still need to get moved off-screen and de-queued)
@@ -151,8 +151,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     // Add more obstacles if needed
     // But only when the in normal gameplay -- TODO: Split ship motion state from game state
     if ((state.obstacles_active_count != state.cur_level.obst_qty_max) &&
-        ((SHIP_STATE_GET() == SHIP_STATE_PLAYING) ||
-        (SHIP_STATE_GET() == SHIP_STATE_JUMP)) ) {
+        (SHIP_STATE_GET() & SHIP_BITS_PLAYER_ACTIVE)) {
 
         // Is it time to spawn yet?
         if (state.obstacles_next_countdown) {
