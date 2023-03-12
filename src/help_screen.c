@@ -10,7 +10,7 @@
 #include "common.h"
 #include "gfx.h"
 #include "fade.h"
-#include "stats.h"
+#include "cartsave.h"
 
 #include "../res/help_screen_data.h"
 #include "../res/help_screen_map_comp.h"
