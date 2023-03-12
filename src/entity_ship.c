@@ -28,7 +28,7 @@ void entity_ship_init(void) {
     state.ship_y.w = SHIP_Y_INIT;  // Y Position on screen
     state.ship_z.w = SHIP_Z_INIT;  // Z Jump position (alters Y position)
     state.ship_state = SHIP_STATE_PLAYING;
-    state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
+    state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE; // TODO: consider ship_invincible_counter
     state.ship_jump_velocity = 0u;
     // Place ship centered in canyon during startup
     entity_ship_center_in_canyon();
