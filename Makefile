@@ -8,7 +8,7 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
 
-VERSION=0.5.0
+VERSION=0.5.1
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
@@ -242,17 +242,30 @@ assets:
 	# Game over Sprites
 	# -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/game_over.png -tiles_only -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
+	#
 	# Intro credits screen
-	rm -f $(RESDIR)/intro_credits*.c $(RESDIR)/intro_credits*.h $(RESDIR)/intro_credits*.bin
 	# Non-compressed version
 	#  Needs both -bpp 1 -pack_mode 1bpp
 	# $(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -c res/intro_credits_data.c
 	#
 	# Intro credits screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
+	rm -f $(RESDIR)/intro_credits*.c $(RESDIR)/intro_credits*.h $(RESDIR)/intro_credits*.bin
 	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
+	#
+	# Help screen
+	# Non-compressed version
+	#  Needs both -bpp 1 -pack_mode 1bpp
+	# $(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -c res/help_screen_data.c
+	#
+	# Intro credits screen COMPRESSED version (saves ~250 bytes)
+	# -> .bin -> compress -> .c
+	rm -f $(RESDIR)/help_screen*.c $(RESDIR)/help_screen*.h $(RESDIR)/help_screen*.bin
+	$(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/help_screen_data.c
+	$(GBCOMPRESS) -v --cout --varname=help_screen_map_comp   $(RESDIR)/help_screen_data_map.bin   $(RESDIR)/help_screen_map_comp.c
+	$(GBCOMPRESS) -v --cout --varname=help_screen_tiles_comp $(RESDIR)/help_screen_data_tiles.bin $(RESDIR)/help_screen_tiles_comp.c
 
 carts:
 	${MAKE} CART_TYPE=31k_1kflash
@@ -277,6 +290,9 @@ romusage:
 # Needs stock inside gadgets firmware to work, can use flashgbx ui to swap it out if needed
 flashduck:
 	tools/gbxcart_rw_megaduck_32kb_flasher build/duck/canyon_racer_0.5.0_32k_nosave.duck &
+
+save-clear:
+	rm -f build/gb/$(PROJECTNAME).sav
 
 clean:
 	@echo Cleaning

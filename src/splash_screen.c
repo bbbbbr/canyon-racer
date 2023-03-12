@@ -31,9 +31,9 @@
 #define WIN_SPEED_MED  2u
 #define WIN_SPEED_FAST 4u
 
-#define SPLASH_LOGO_TITLE_ONLY_HEIGHT (12u * 8u) // 12 tiles tall. Excludes help text hidden below
+#define SPLASH_LOGO_TITLE_ONLY_HEIGHT (13u * 8u) // 13 tiles tall (12 + 1 line of help text)
 #define WIN_Y_SHOWING_TITLE ((SCREENHEIGHT) - (SPLASH_LOGO_TITLE_ONLY_HEIGHT))
-#define WIN_Y_SHOWING_HELP  ((SCREENHEIGHT) - (splash_logo_data_HEIGHT))
+
 // 36 scanlines should be ok for servicing music
 // (takes as little as 16, sometimes spikes to an
 // entire frame [less 3/4 of cpu used for LCD ISR],
@@ -50,7 +50,6 @@ static void wait_vbl_then_midframe_update_music(void);
 static uint8_t splash_init(uint8_t bg_next_free_tile);
 
 static void window_move_with_shake(uint8_t, uint8_t);
-static void splash_show_help(void);
 static void sfx_test(uint8_t);
 
 
@@ -144,25 +143,13 @@ static void window_move_with_shake(uint8_t win_y_moveto, uint8_t move_dir) {
 }
 
 
-// Reveals help text and waits for any button press before re-hiding it
-// Note: Only call when Window is already at WIN_Y_SHOWING_TITLE
-static void splash_show_help(void) {
-    // Move win up to show help text
-    window_move_with_shake(WIN_Y_SHOWING_HELP, WIN_MOVE_DIR_UP);
-
-    UPDATE_KEYS(); // Clear any pending KEY_TICKED()
-    while (!KEY_TICKED(J_ANY)) {
-
-        midframe_update_music_then_waitvbl();
-        UPDATE_KEYS();
-    }
-    // Move win back down to just title
-    window_move_with_shake(WIN_Y_SHOWING_TITLE, WIN_MOVE_DIR_DOWN);
-}
-
-
 // Expects Sprites to be turned off
-void splash_intro_run(uint8_t bg_next_free_tile) {
+uint8_t splash_intro_run(uint8_t bg_next_free_tile) {
+
+    uint8_t return_keys;
+
+    // Start up effect (Splash screen music is run manually and not by vbl)
+    mapfx_isr_install(MAPFX_AUDIO_VBL_NO);
 
     audio_music_set(MUSIC_TITLE_SCREEN);
     audio_music_unpause();
@@ -182,8 +169,10 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
             midframe_update_music_then_waitvbl();
 
             UPDATE_KEYS();
-            if (KEY_TICKED(J_DOWN | J_UP)) splash_show_help();
-            else if (KEY_TICKED(J_ANY)) break;
+            if (KEY_TICKED(J_ANY)) {
+                return_keys = keys;
+                break;
+            }
         }
         // Now install the vbl isr so that the exit splash SFX will play
         __critical {
@@ -199,7 +188,11 @@ void splash_intro_run(uint8_t bg_next_free_tile) {
 
     fade_out(FADE_DELAY_FX_RUNNING);
 
+    // Remove effect from running after fade-out
+    mapfx_isr_deinstall();
+
     HIDE_WIN;
+    return return_keys;
 }
 
 

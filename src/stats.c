@@ -58,6 +58,7 @@ void stats_reset(void) {
     state.game_settings.save_check1 = STATS_SIG_CHECK_1;
 
     state.game_settings.hi_score = MAKE_BCD(000000);
+    state.game_settings.help_never_shown = true;
 
     state.game_settings.save_checksum = stats_calc_checksum();
 

@@ -17,6 +17,7 @@
 #include "splash_screen.h"
 #include "gameplay.h"
 #include "gameover_screen.h"
+#include "help_screen.h"
 #include "map_fx.h"
 
 
@@ -24,6 +25,7 @@ uint8_t bg_next_free_tile;
 uint8_t spr_next_free_tile;
 uint8_t game_state;
 
+bool return_to_intro;
 
 void init_gfx(void) {
 
@@ -82,32 +84,45 @@ void main() {
                 game_state = GAME_STATE_SHOW_INTRO;
                 break;
 
+            case GAME_STATE_SHOW_HELP:
+                // Expects: screen palettes faded-out. Wipes out BG graphics. No Music right now
+                help_screen_run();
+                if (return_to_intro)
+                    game_state = GAME_STATE_SHOW_INTRO;
+                else
+                    game_state = GAME_STATE_START_GAME;
+
+                break;
 
             case GAME_STATE_SHOW_INTRO:
                 HIDE_SPRITES;
                 // Expects: screen palettes faded-out
+                // Reloads map FX without VBL ISR. Then unloads it again on state done
 
                 // Load up shared BG canyon GFX
-                // TODO: move to gameplay_init_gfx() ?
-                bg_next_free_tile = 0u;
-                spr_next_free_tile = 0u;
-                bg_next_free_tile = init_gfx_bg_mapfx(bg_next_free_tile);
+                bg_next_free_tile = init_gfx_bg_mapfx(0u);  // Load BG gfx starting at tile 0
+                uint8_t return_button = splash_intro_run(bg_next_free_tile);
 
-                // Start up effect
-                // In Splash screen music is run manually, not by vbl
-                mapfx_isr_install(MAPFX_AUDIO_VBL_NO);
-                splash_intro_run(bg_next_free_tile);
-                // Remove effect from running after fade-out
-                mapfx_isr_deinstall();
-                game_state = GAME_STATE_START_GAME;
+                return_to_intro = false; // Default to starting game
+                // Auto show help on very first game start or when user presses A button
+                if (return_button == J_A) {
+                    game_state = GAME_STATE_SHOW_HELP;
+                    return_to_intro = true;
+                }
+                else if (return_button == J_START) {
+                    if (state.game_settings.help_never_shown)
+                        game_state = GAME_STATE_SHOW_HELP;
+                    else
+                        game_state = GAME_STATE_START_GAME;
+                }
                 break;
 
             case GAME_STATE_START_GAME:
                 // Expects: screen palettes faded-out
 
                 mapfx_isr_install(MAPFX_AUDIO_VBL_YES);
-                spr_next_free_tile = 0u; // TODO: fix this up
-                spr_next_free_tile = init_gfx_sprites_gameplay(spr_next_free_tile);
+                spr_next_free_tile = init_gfx_sprites_gameplay(0u);  // Load Sprite gfx starting at tile 0
+                bg_next_free_tile = init_gfx_bg_mapfx(0u);  // Load BG gfx starting at tile 0
                 SHOW_SPRITES;
                 #ifdef DEBUG_SOUND_TEST
                     audio_music_set(song_test_counter);

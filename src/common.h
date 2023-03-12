@@ -35,11 +35,12 @@ extern uint8_t decomp_buf[];
 
 
 
-#define GAME_STATE_STARTUP_CREDITS 0u
-#define GAME_STATE_SHOW_INTRO      1u
-#define GAME_STATE_START_GAME      2u
-#define GAME_STATE_RUNNING         3u
-#define GAME_STATE_OVER            4u
+#define GAME_STATE_STARTUP_CREDITS   0u
+#define GAME_STATE_SHOW_INTRO        1u
+#define GAME_STATE_SHOW_HELP         2u
+#define GAME_STATE_START_GAME        3u
+#define GAME_STATE_RUNNING           4u
+#define GAME_STATE_OVER              5u
 
 
 // Initial value for number of times the player can use the "Restore State" action
@@ -125,6 +126,7 @@ typedef struct settings_rec {
     uint16_t save_check1;
     // Stats
     BCD hi_score;
+    bool help_never_shown;
 
         // Not implemented, set to zero on first run
         uint8_t opt_blank_1;

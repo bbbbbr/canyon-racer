@@ -6,6 +6,6 @@
 #define SPLASH_LOGO_WIN_SCORE_X 14u
 #define SPLASH_LOGO_WIN_SCORE_Y 10u
 
-void splash_intro_run(uint8_t);
+uint8_t splash_intro_run(uint8_t);
 
 #endif

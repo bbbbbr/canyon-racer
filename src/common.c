@@ -11,11 +11,18 @@
 #include "../res/intro_credits_map_comp.h"
 #include "../res/intro_credits_tiles_comp.h"
 
+#include "../res/help_screen_data.h"
+#include "../res/help_screen_map_comp.h"
+#include "../res/help_screen_tiles_comp.h"
+
 #include "../res/splash_logo_map_comp.h"
 
 // Set array size to whichever is largest
 // Shared decompression array buffer
-uint8_t decomp_buf[MAX(MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles_comp_sz_decomp), intro_credits_map_comp_sz_decomp)];
+#define MAX_DECOM_SZ_INTROCREDITS MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles_comp_sz_decomp)
+#define MAX_DECOM_SZ_HELPSCREEN   MAX(help_screen_map_comp_sz_decomp, help_screen_tiles_comp_sz_decomp)
+uint8_t decomp_buf[MAX(MAX_DECOM_SZ_INTROCREDITS, MAX_DECOM_SZ_HELPSCREEN)];
+
 
 
 // Options and stats
