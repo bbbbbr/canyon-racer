@@ -98,8 +98,6 @@ void level_init(void) {
 
     // TODO: FOR DEBUG
     // state.game_level = GAME_LEVEL_MAX;
-    // state.game_level = GAME_LEVEL_MAX - 6;
-    // state.game_level = 9; //
 
     level_update_vars();
 
