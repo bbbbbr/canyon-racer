@@ -60,10 +60,10 @@ void score_update(void) {
 
 
 // Displays number of state restore actions left using sprites
-void state_restore_display_update(void) {
+void lives_display_update(void) {
 
     // Pointer to LSByte of State Restore Count BCD value
-    uint8_t * p_bcd_pair = (uint8_t *) &state_restore_count;
+    uint8_t * p_bcd_pair = (uint8_t *) &lives_count;
 
     // Render score from Right to Left in digit pairs
     set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + 1u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair & 0x0Fu) << 1));

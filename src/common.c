@@ -31,9 +31,8 @@ game_state_data state_copy;
 
 uint16_t rand_seed_copy;
 
-BCD state_restore_count; // AKA "Rewind"
-#define STATE_RESTORE_MAX_BCD  0x99                   // Limit of 99 in BCD
-const BCD state_restore_bcd_step_size = MAKE_BCD(01); // 1 in BCD
+BCD lives_count;                                    // AKA "Rewind"
+const BCD lives_count_bcd_step_size = MAKE_BCD(01); // 1 in BCD
 
 
 void delay_lowcpu(uint16_t num_frames) {
@@ -58,14 +57,20 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline) {
 
 
 // TODO: move into game_state_rewind.c?
-
-void game_state_count_reset(void) {
-    state_restore_count = STATE_RESTORE_COUNT_RESET;
+void lives_count_reset(void) {
+    lives_count = LIVES_COUNT_RESET;
 }
 
 
-// WARNING: Must not be called when state_restore_count is 0
-// Use if (STATE_RESTORE_COUNT_GET()) to check
+void lives_count_increment() {
+
+    // Only need to test lsbyte, no need for full BCD test since max is 99
+    if ( *(uint8_t *)&(lives_count) != (uint8_t)LIVES_COUNT_MAX_BCD) {
+        LIVES_COUNT_ADD_ONE();
+    }
+}
+
+
 void game_state_save() {
 
     // Long critical sections may delay scanline ISR from running and
@@ -105,11 +110,3 @@ void game_state_restore() {
     }
 }
 
-
-void game_state_count_increment() {
-
-    // Only need to test lsbyte, no need for full BCD test since max is 99
-    if ( *(uint8_t *)&(state_restore_count) != (uint8_t)STATE_RESTORE_MAX_BCD) {
-        STATE_RESTORE_COUNT_ADD_ONE();
-    }
-}

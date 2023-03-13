@@ -119,8 +119,8 @@ static void ship_handle_collisions(void) {
             // Flag object as hidden to remove it
             state.obstacles[COLLISION_GET_LAST_INDEX()].type |= OBJECTS_FLAG_HIDDEN_BIT;
             audio_sfx_play(SFX_GOT_ITEM); // TODO: SFX Got Item
-            game_state_count_increment();
-            state_restore_display_update();
+            lives_count_increment();
+            lives_display_update();
         }
         else {
             // Will take effect next frame

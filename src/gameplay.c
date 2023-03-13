@@ -32,8 +32,8 @@ uint8_t oam_high_water_prev;
 void gameplay_prestart(void) {
 
     state.paused = false;
-    game_state_count_reset();
-    state_restore_display_update();
+    lives_count_reset();
+    lives_display_update();
 
     // This must be called before mapfx and others
     level_init();
@@ -62,12 +62,12 @@ void gameplay_prestart(void) {
 
 void gameplay_state_save(void) {
     // Only save state if they haven't used them all up
-    if (STATE_RESTORE_COUNT_GET()) {
+    if (LIVES_COUNT_GET()) {
         game_state_save();
         // Deduct Life / Restore Point (not part of save state)
-        STATE_RESTORE_COUNT_SUBTRACT_ONE();
+        LIVES_COUNT_SUBTRACT_ONE();
         audio_sfx_play(SFX_STATE_SAVE_OK); // TODO: SFX:State Save OK
-        state_restore_display_update();
+        lives_display_update();
     } else
         audio_sfx_play(SFX_STATE_SAVE_FAIL);  // TODO: SFX:State Save Denied/Fail
 }
@@ -76,18 +76,18 @@ void gameplay_state_save(void) {
 // Returns: True if restore succeeded
 bool gameplay_state_restore(void) {
     // Only restore state if lives / restore points aren't all used up
-    if (STATE_RESTORE_COUNT_GET()) {
+    if (LIVES_COUNT_GET()) {
 
         game_state_restore();
 
         // Deduct Life / Restore Point
-        STATE_RESTORE_COUNT_SUBTRACT_ONE();
+        LIVES_COUNT_SUBTRACT_ONE();
 
         audio_sfx_play(SFX_STATE_RESTORE_OK);  // TODO: SFX:State Restore OK
         audio_music_set(MUSIC_GAMEPLAY);
         audio_music_unpause();
         score_update();
-        state_restore_display_update();
+        lives_display_update();
 
         // Set ship to temporary invincibility on restart and center in canyon
         state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;

@@ -33,7 +33,7 @@ extern const BCD score_increment_amt;
 void score_reset(void);
 void score_update(void);
 
-void state_restore_display_update(void);
+void lives_display_update(void);
 
 void hi_score_render(uint8_t * p_vram_addr, uint8_t font_base_tile);
 
