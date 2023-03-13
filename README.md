@@ -3,7 +3,7 @@
 
 Top Down Racing Demo for the Game Boy with a Vertical Parallax Effect.
 
-This project started with wanting to try a vertical parallax effect on the original Game Boy, similar to the kind seen in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
+This project started by expirimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
 
 ![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
@@ -12,20 +12,19 @@ This project started with wanting to try a vertical parallax effect on the origi
 A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
 
 - Guide the racer through the canyon jumping over rocks and without touching walls.
-- Use unlimited Save and the limited number of Rewind actions to recover from a crash and rewind to earlier in the game.
-- Collect `+1` items to gain more Rewind actions.
+- Use a limited number of Lives to create Save states and then Rewind to them after crashing.
+- Collect `+1` items to gain more Lives actions.
 
 Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
 
 ### Controls
 - **Jumping**
-  - Jump: **A** button (tap or hold)
+  - Jump: **A** button (tap  for short or hold for longer)
   - Extend or shorten: **Up / Down** (required for some long jumps)
-- **Save & Rewind**
-  - Save State: **B**. Any time during gameplay, as much as you want. Save early, save often!
-  - Rewind: **SELECT** (if crashed, also **B**)
-  - There is a limited supply of Rewinds (The top readout in lower-right)
-  - After crashing there is ~1 second during which Rewind can be used until the game is considered over.
+- **Save & Rewind / Lives**
+  - Add Save State: **B**. Any time during gameplay, but uses 1 Life
+  - Rewind to Save State: Automatic once crashed
+  - Lives: There is a limited supply of Lives (top readout in lower-right)
 - Pause: **Start**
 
 ### Techniques
