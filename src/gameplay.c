@@ -16,6 +16,7 @@
 #include "stats.h"
 #include "score.h"
 #include "level.h"
+#include "lives.h"
 
 #include "entity_ship.h"
 #include "entity_obstacles.h"

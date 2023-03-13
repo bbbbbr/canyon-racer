@@ -8,6 +8,7 @@
 #include "common.h"
 #include "input.h"
 #include "score.h"
+#include "lives.h"
 
 #include "map_fx.h"
 

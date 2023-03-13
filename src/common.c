@@ -31,9 +31,6 @@ game_state_data state_copy;
 
 uint16_t rand_seed_copy;
 
-BCD lives_count;                                    // AKA "Rewind"
-const BCD lives_count_bcd_step_size = MAKE_BCD(01); // 1 in BCD
-
 
 void delay_lowcpu(uint16_t num_frames) {
 
@@ -53,21 +50,6 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline) {
             NOP     ; // HALT sometimes skips the next instruction
         __endasm;
     } while (LY_REG != exit_scanline);
-}
-
-
-// TODO: move into game_state_rewind.c?
-void lives_count_reset(void) {
-    lives_count = LIVES_COUNT_RESET;
-}
-
-
-void lives_count_increment() {
-
-    // Only need to test lsbyte, no need for full BCD test since max is 99
-    if ( *(uint8_t *)&(lives_count) != (uint8_t)LIVES_COUNT_MAX_BCD) {
-        LIVES_COUNT_ADD_ONE();
-    }
 }
 
 
