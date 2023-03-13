@@ -3,7 +3,7 @@
 
 Top Down Racing Demo for the Game Boy with a Vertical Parallax Effect.
 
-This project started by expirimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
+This project started by experimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
 
 ![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
@@ -11,9 +11,9 @@ This project started by expirimenting with a vertical parallax effect on the ori
 ### Game Play
 A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
 
-- Guide the racer through the canyon jumping over rocks and without touching walls.
-- Use a limited number of Lives to create Save states and then Rewind to them after crashing.
-- Collect `+1` items to gain more Lives actions.
+- Guide the racer through the canyon jumping over rocks and without crashing into walls.
+- Use Lives to create Save States and Rewind to them after crashing.
+- Collect `+1` items to gain more Lives.
 
 Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
 
@@ -23,12 +23,12 @@ Give your eyes frequent rests. There can be some temporary sensation of visual m
   - Extend or shorten: **Up / Down** (required for some long jumps)
 - **Save & Rewind / Lives**
   - Add Save State: **B**. Any time during gameplay, but uses 1 Life
-  - Rewind to Save State: Automatic once crashed
+  - Rewind to Save State: Automatic once crashed, uses 1 Life
   - Lives: There is a limited supply of Lives (top readout in lower-right)
 - Pause: **Start**
 
 ### Techniques
-- **Save & Restore:** Get used to using the **Save** button often so that rewind states are near in the past.
+- **Save & Rewind / Lives:** Creating Save States uses a life each time, so add them carefully.
 - **Short hops:** Make a series of short, fast taps with **Jump** to hop over several close obstacles in a row.
 - **Extra Long Jump:** Press and hold **Jump** and **Up** to make extra long jumps. The ship will land farther up on the screen if possible.
 - **Shortened Jump:** While jumping, use **Down** to reduce jump distance. The ship will land farther down on the screen if possible.
@@ -83,10 +83,10 @@ Horizontal scrolling offsets and sprites will both alter the required Vertical p
 
 There is additional timing variation based on the opcode being executed at the time each scanline interrupt triggers. If it's during an opcode which takes several cycles to complete before the interrupt can jump then the timing may be off by that amount of cycles. The alignment of Vertical parallax timing is sensitive down to 1-2 cycles, so this can also cause artifacts.
 
-This mini game tries to work with those limitations in a way that's visually pleasing when possible and does not try to compensate for artifacts.
+This demo game tries to work with those limitations and does not compensate for artifacts.
 
 ### Sine Waves
-In addition to the Vertical parallax, scrolling horizontal sine waves of various sizes are used to distort the background. This makes it both more visually interesting and gives the canyon a shape to navigate through.
+In addition to the Vertical parallax, scrolling horizontal sine waves of various sizes are used to distort the background. This looks better and gives the canyon a shape to navigate through.
 
 #### How They Look
 The two separate effects used to create the canyon environment:
