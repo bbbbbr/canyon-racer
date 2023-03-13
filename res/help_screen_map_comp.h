@@ -1,6 +1,6 @@
 
 
-#define help_screen_map_comp_sz_comp 162
+#define help_screen_map_comp_sz_comp 157
 #define help_screen_map_comp_sz_decomp 360
 
 
