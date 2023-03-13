@@ -62,7 +62,7 @@ void gameplay_prestart(void) {
 
 
 void gameplay_state_save(void) {
-    // Only save state if they haven't used them all up
+    // Only save state if Lives are not used up
     if (LIVES_COUNT_GET()) {
         game_state_save();
         // Deduct Life / Restore Point (not part of save state)
@@ -76,7 +76,7 @@ void gameplay_state_save(void) {
 
 // Returns: True if restore succeeded
 bool gameplay_state_restore(void) {
-    // Only restore state if lives / restore points aren't all used up
+    // Only restore state if Lives are not used up
     if (LIVES_COUNT_GET()) {
 
         game_state_restore();
@@ -84,7 +84,7 @@ bool gameplay_state_restore(void) {
         // Deduct Life / Restore Point
         LIVES_COUNT_SUBTRACT_ONE();
 
-        audio_sfx_play(SFX_STATE_RESTORE_OK);  // TODO: SFX:State Restore OK
+        audio_sfx_play(SFX_LIVES_OK);  // TODO: SFX:State Restore OK
         audio_music_set(MUSIC_GAMEPLAY);
         audio_music_unpause();
         score_update();

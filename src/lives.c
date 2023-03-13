@@ -30,6 +30,6 @@ void lives_display_update(void) {
     uint8_t * p_bcd_pair = (uint8_t *) &lives_count;
 
     // Render score from Right to Left in digit pairs
-    set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + 1u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair & 0x0Fu) << 1));
-    set_sprite_tile(SPR_ID_STATE_RESTORE_DISPLAY_START + 0u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
+    set_sprite_tile(SPR_ID_LIVES_DISPLAY_START + 1u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair & 0x0Fu) << 1));
+    set_sprite_tile(SPR_ID_LIVES_DISPLAY_START + 0u, SPR_TILES_START_FONTNUMS + ((*p_bcd_pair >> (4 - 1)) & (0x0Fu << 1)));  // downshift by 3 instead of 4 to get the (<< 1) at no cost
 }
