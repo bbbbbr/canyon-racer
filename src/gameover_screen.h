@@ -41,6 +41,15 @@
 #define GAME_OVER_SPR_COUNT_START  (SPR_ID_FREE_START)
 #define GAME_OVER_SPR_COUNT_MAX    (SPR_ID_FREE_START +  GAME_OVER_SPR_COUNT)
 
+#if (GAME_OVER_SPR_COUNT_MAX  > 40)
+    #error "COMPILE FAIL:START OF SPRITE RANGE TOO LARGE TO FIT GAMEOVER SCREEN SPRITES"
+    // Below is optional override
+    #undef GAME_OVER_SPR_COUNT_START
+    #undef GAME_OVER_SPR_COUNT_MAX
+    #define GAME_OVER_SPR_COUNT_START  (40u - GAME_OVER_SPR_COUNT)
+    #define GAME_OVER_SPR_COUNT_MAX    (40u)
+#endif
+
 #define GAME_OVER_X_START          ((160u - (GAME_OVER_LETTER_RADIUS * 2u)) + 8u) // + 8u is just a shade to the right of center due to wave-offset //(160u - (GAME_OVER_LETTER_RADIUS * 2u))
 
 // This would start as far up off-screen as possible

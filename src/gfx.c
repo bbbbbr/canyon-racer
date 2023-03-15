@@ -102,6 +102,11 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water,
     // Reduce tile count to number of sprites
     uint8_t sprite_count = tile_count / GAMEPLAY_NOTICE_TILES_PER_SPRITE;
 
+    // Clamp start of oam sprite range to use, ensure it doesn't overflow and cause a crash/etc
+    // Might result in a couple clipped sprites in game screen if needed
+    // (oam_high_water is first free OAM entry after player and on screen items)
+    if (oam_high_water > (40u - sprite_count)) oam_high_water = (40u - sprite_count);
+
     // Assign tiles to sprites, hide all sprites to start with
     // Sprites are assumed to be hidden from previous frame oam cleanup
     for (uint8_t c = 0; c < sprite_count; c++) {
