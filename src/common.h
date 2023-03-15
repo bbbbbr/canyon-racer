@@ -93,7 +93,7 @@ extern uint8_t decomp_buf[];
 
 
 #define SPR_ID_SCORE_START (SPR_ID_LIVES_DISPLAY_MAX + 1u)
-#define SPR_ID_SCORE_COUNT 6u
+#define SPR_ID_SCORE_COUNT 5u  // Score is now truncated to 5 digits // 6u
 #define SPR_ID_SCORE_MAX   (SPR_ID_SCORE_START + SPR_ID_SCORE_COUNT - 1u)
 
 #define SPR_ID_FREE_START  (SPR_ID_SCORE_MAX + 1u)
