@@ -168,6 +168,8 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
             // Ship movement is allowed during jumping
             ship_handle_input();
+            // Save selected sprite for use in air (ground one is replaced by shadow)
+            uint8_t ship_sprite_sel_jump = ship_sprite_sel;
 
             // If current velocity will cause ship to hit the ground (<= 0)
             // then land it exactly and change state
@@ -203,7 +205,7 @@ uint8_t entity_ship_update(uint8_t oam_high_water) {
 
             // And also draw separated ship using Jump Z offset for Y axis
             if (!flicker_hide_ship)
-                oam_high_water += move_metasprite(sprite_ship_metasprites[SHIP_SPR_DEFAULT],
+                oam_high_water += move_metasprite(sprite_ship_metasprites[ship_sprite_sel_jump],
                                              (SPR_TILES_START_SHIP),
                                              oam_high_water, state.ship_x.h, state.ship_y.h - state.ship_z.h);
             break;
