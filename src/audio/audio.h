@@ -17,8 +17,7 @@
 #define SFX_STATE_SAVE_OK (SFX_PAUSE)
 #define SFX_STATE_SAVE_FAIL (SFX_PAUSE)
 
-#define SFX_LIVES_OK (SFX_PAUSE)
-#define SFX_LIVES_FAIL (SFX_PAUSE)
+#define SFX_STATE_RESTORE (SFX_PAUSE)
 
 
 // #define SFX_SHIP_CRASH 6u // Replaced with a gameover crash sound + music track

@@ -6,14 +6,15 @@
 #include <stdbool.h>
 #include <rand.h>
 
-// Graphics
-#include "../res/map_canyon.h"
-#include "../res/sprite_ship.h"
-
+#include "gfx.h"
 #include "common.h"
 #include "score.h"
 #include "lives.h"
 #include "map_fx.h"
+
+// Graphics
+#include "../res/map_canyon.h"
+#include "../res/sprite_ship.h"
 
 
 // TODO: move to gfx.x
@@ -62,4 +63,66 @@ uint8_t init_gfx_sprites_gameplay(uint8_t spr_next_free_tile) {
     move_sprite(SPR_ID_LIVES_HEADER_START, LIVES_HEADER_X_START, LIVES_HEADER_Y_START);
 
     return spr_next_free_tile;
+}
+
+
+// Centering derived from:
+// 52u, 52u + (16u * 1u), 52u + (16u * 2u), 52u + (16u * 3u), 52u + (16u * 4u),
+// #define PAUSE_SPRITE_COUNT     (sprite_pause_TILE_COUNT / 2) // Divide by 2 for 8x16 sprite mode = number of sprites
+// 52u = ((DEVICE_SCREEN_PX_WIDTH - (sprite_pause_WIDTH * (PAUSE_SPRITE_COUNT + PAUSE_SPRITE_COUNT - 1)) / 2u)
+const uint8_t gameplay_notice_sprite_x_frames[] = {
+
+    // Mostly Linear version - (maybe looks a little better)
+    // First frame with sprites moving in from edges
+/*    0u, 8u, 144u, 160u, 168u,
+    20u, 28u, 124u, 140u, 156u,
+    44u, 52u, 100u, 116u, 132u,
+    // Last frame, Centered
+    52u, 68u, 84u, 100u, 116u,
+*/
+    // Non-Linear version
+    // First frame with sprites moving in from edges
+    0u,   8u, 144u, 168u, 168u,
+    0u,  28u, 124u, 160u, 168u,
+    20u, 52u, 100u, 116u, 140u,
+    35u, 60u,  92u, 110u, 128u,
+    // Last frame, Centered
+    52u, 68u,  84u, 100u, 116u,
+
+};
+
+
+
+void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water, uint8_t tile_count, uint8_t * tiles_addr) {
+
+
+    // Load notice sprite tile data (8x16)
+    set_sprite_data(spr_next_free_tile, tile_count, tiles_addr);
+
+    // Reduce tile count to number of sprites
+    uint8_t sprite_count = tile_count / GAMEPLAY_NOTICE_TILES_PER_SPRITE;
+
+    // Assign tiles to sprites, hide all sprites to start with
+    // Sprites are assumed to be hidden from previous frame oam cleanup
+    for (uint8_t c = 0; c < sprite_count; c++) {
+        set_sprite_prop(oam_high_water + c, 0u); // Clear sprite attributes
+        set_sprite_tile(oam_high_water + c, spr_next_free_tile + (c * GAMEPLAY_NOTICE_TILES_PER_SPRITE));
+    }
+
+    // Short animation of PAUSE letters flying in from Left and Right edges
+    const uint8_t * p_sprite_x = &gameplay_notice_sprite_x_frames[0];
+    for (uint8_t frame = 0; frame < (ARRAY_LEN(gameplay_notice_sprite_x_frames) / sprite_count); frame++) {
+
+        // Show sprites in next frame location
+        for (uint8_t c = 0; c < sprite_count; c++) {
+            move_sprite(oam_high_water + c, *p_sprite_x++, GAMEPLAY_NOTICE_SPRITE_Y);
+        }
+        // Wait 3 frames :)
+        wait_vbl_done();
+        wait_vbl_done();
+        wait_vbl_done();
+    }
+
+    // Hide all other non-score sprites * AFTER * animating the display
+    hide_sprites_range(SPR_ID_FREE_START, oam_high_water);
 }

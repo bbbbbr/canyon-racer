@@ -227,6 +227,8 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/font_nums.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/tiles_font_nums.c
 	# Pause Sprites
 	$(PNG2ASSET) $(RESDIR)/sprite_pause.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/sprite_pause.c
+	# Ready Sprites
+	$(PNG2ASSET) $(RESDIR)/sprite_ready.png -keep_duplicate_tiles -keep_palette_order -sw 8 -sh 16 -noflip -tiles_only -spr8x16 -c $(RESDIR)/sprite_ready.c
 	# Splash Logo
 	# Non-compressed version
 	# $(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c

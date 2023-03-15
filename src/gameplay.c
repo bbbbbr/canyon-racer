@@ -8,6 +8,7 @@
 #include "common.h"
 #include "fade.h"
 #include "audio.h"
+#include "gfx.h"
 
 #include "map_fx.h"
 
@@ -22,6 +23,8 @@
 #include "entity_obstacles.h"
 
 #include "gameplay.h"
+
+#include "../res/sprite_ready.h"
 
 // TODO: make global?
 uint8_t oam_high_water;
@@ -75,20 +78,36 @@ void gameplay_state_save(void) {
 
 
 // Returns: True if restore succeeded
-bool gameplay_state_restore(void) {
+bool gameplay_state_restore(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
     // Only restore state if Lives are not used up
     if (LIVES_COUNT_GET()) {
 
+        // Temporarily pause music so the rest of the gameover track doesn't play after the crash sound // TODO: split crash sound and gameover music?
+        audio_music_pause();
+        fade_out(FADE_DELAY_STATE_RESTORE_OUT);
+
+        // Restore state and pause map FX
+        // Pause must happen AFTER State Restore!
         game_state_restore();
+        mapfx_set_setpause(true);
 
-        // Deduct Life / Restore Point
+        // Fade in and display animated "READY" notice
+        fade_in(FADE_DELAY_STATE_RESTORE_IN);
+        gameplay_display_notice(spr_next_free_tile, oam_high_water, sprite_ready_TILE_COUNT, sprite_ready_tiles);
+
+        // Deduct Life / Restore Point and update display counters
         LIVES_COUNT_SUBTRACT_ONE();
+        lives_display_update();
+        score_update();
 
-        audio_sfx_play(SFX_LIVES_OK);  // TODO: SFX:State Restore OK
+        // Give the player a moment, then unpause the music and map FX
+        delay_lowcpu(GAMEPLAY_DELAY_AFTER_RESTORE);
+
+        audio_sfx_play(SFX_STATE_RESTORE);  // TODO: SFX:State Restore OK
         audio_music_set(MUSIC_GAMEPLAY);
         audio_music_unpause();
-        score_update();
-        lives_display_update();
+
+        mapfx_set_setpause(false);
 
         // Set ship to temporary invincibility on restart and center in canyon
         state.ship_counter = SHIP_COUNTER_STARTUP_INVINCIBLE;
@@ -141,7 +160,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         // If game is over, break out and return to main state select
         if (SHIP_STATE_GET() == SHIP_STATE_CRASH_ENDED) {
             // Try to restore if the user has rewinds left
-            if (gameplay_state_restore()) {
+            if (gameplay_state_restore(spr_next_free_tile, oam_high_water)) {
                 // TODO: consider displaying a "GET READY" type indicator on restore (and dropping pause support?)
             }
             else
