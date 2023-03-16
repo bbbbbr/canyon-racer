@@ -11,34 +11,35 @@ This project started by experimenting with a vertical parallax effect on the ori
 ### Game Play
 A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
 
-- Guide the racer through the canyon jumping over rocks and without crashing into walls.
-- Use Lives to create Save States and Rewind to them after crashing.
+- Guide the racer through the canyon without crashing into walls and jump over rocks.
+- Create Save States and Rewind to them after crashing (both actions use up a Life).
 - Collect `+1` items to gain more Lives.
 
-Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing.
+Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing due to the vertical parallax.
 
 ### Controls
 - **Jumping**
-  - Jump: **A** button (tap  for short or hold for longer)
-  - Extend or shorten: **Up / Down** (required for some long jumps)
+  - Jump: **A** button (tap for short or hold for longer)
+  - Extra Long Jump: **A** + **Up** (required for some long jumps)
 - **Save & Rewind / Lives**
-  - Add Save State: **B**. Any time during gameplay, but uses 1 Life
-  - Rewind to Save State: Automatic once crashed, uses 1 Life
+  - Add Save State: **B** (any time during gameplay, but uses 1 Life)
+  - Rewind to Save State: Automatic once crashed (uses 1 Life)
   - Lives: There is a limited supply of Lives (top readout in lower-right)
 - Pause: **Start**
 
 ### Techniques
-- **Save & Rewind / Lives:** Creating Save States uses a life each time, so add them carefully.
+- **Save & Rewind:** Creating Save States uses 1 life each time, so add them carefully.
 - **Short hops:** Make a series of short, fast taps with **Jump** to hop over several close obstacles in a row.
-- **Extra Long Jump:** Press and hold **Jump** and **Up** to make extra long jumps. The ship will land farther up on the screen if possible.
+- **Longer Jump:** Press and hold **Jump**.
+- **Extra Long Jump:** Press and hold **Jump** + **Up** to make extra long jumps. The ship will land farther up on the screen if possible.
 - **Shortened Jump:** While jumping, use **Down** to reduce jump distance. The ship will land farther down on the screen if possible.
 - If the D-Pad is not used during jumps the ship will land in the same location it started in.
 
 
 ### Effect Accuracy
 Some notes about the visual effects if you aren't playing on an actual Game Boy or chip clone:
-  - Use an accurate emulator (Emulicious, BGB, Sameboy, etc) and it should look ok
-  - Currently the Analogue Pocket does not match OEM hardware for the column scroll effect, so timing is off a little
+  - Use an accurate emulator (Emulicious, BGB, Sameboy, etc) and it should look ok.
+  - Currently the Analogue Pocket does not match OEM hardware for the column scroll effect, so timing is off a little.
 
 
 ### Credits, Contributors and Thanks
