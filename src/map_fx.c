@@ -10,6 +10,7 @@
 
 #include "audio.h"
 
+#include "ram_lcd_isr.h"
 #include "map_fx.h"
 #include "lookup_tables.h"
 
@@ -136,12 +137,17 @@ void map_fx_stat_isr(void) __interrupt __naked {
     pop af
     reti
 
-
     __endasm;
 }
 
-// Register scanline / STAT ISR handler function for the STAT interrupt
-ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
+// For calculating map fx ISR function length
+void map_fx_stat_isr__end (void) __naked {}
+
+// See ram_lcd_isr.c
+// - The ISR now points to ram and the handler gets copied in
+//
+// // Register scanline / STAT ISR handler function
+// // ISR_VECTOR(VECTOR_STAT, map_fx_stat_isr)
 
 
 
@@ -311,6 +317,9 @@ void mapfx_scx_table_reset(void) {
 // * mapfx_set_*() has been used to init Map Effect control vars
 // * audio_init() has been called to init Audio control vars
 void mapfx_isr_install(bool add_audio_isr) {
+
+    // Copy the Map FX LCD ISR into the RAM buffer which the interrupt uses
+    copy_lcd_isr_to_isr_ram((void *)&map_fx_stat_isr, (void *)&map_fx_stat_isr__end);
 
     // Enable STAT ISR
     __critical {
