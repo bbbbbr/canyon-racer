@@ -57,7 +57,7 @@
 // * Does not use equivalent of wait_int_handler() to avoid GFX
 //   corruption in main code since always exits ,midway in Mode 0/HBLANK
 //   NOTE: if this behavior changes then start guarding GFX loading
-void map_fx_stat_isr(void) __interrupt __naked {
+static void map_fx_stat_isr(void) __interrupt __naked {
     __asm \
 
     push af // 4
@@ -141,7 +141,7 @@ void map_fx_stat_isr(void) __interrupt __naked {
 }
 
 // For calculating map fx ISR function length
-void map_fx_stat_isr__end (void) __naked {}
+static void map_fx_stat_isr__end (void) __naked {}
 
 // See ram_lcd_isr.c
 // - The ISR now points to ram and the handler gets copied in
@@ -318,7 +318,7 @@ void mapfx_scx_table_reset(void) {
 // * audio_init() has been called to init Audio control vars
 void mapfx_isr_install(bool add_audio_isr) {
 
-    // Copy the Map FX LCD ISR into the RAM buffer which the interrupt uses
+    // Copy the Map FX LCD ISR into the RAM buffer the interrupt executes from
     copy_lcd_isr_to_isr_ram((void *)&map_fx_stat_isr, (void *)&map_fx_stat_isr__end);
 
     // Enable STAT ISR
