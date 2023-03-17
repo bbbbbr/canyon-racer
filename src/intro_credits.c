@@ -98,26 +98,84 @@ static void intro_credits_effect_vbl_isr() {
     IF_REG = IF_REG & ~LCD_IFLAG;
 }
 
+#define INTRO_EFFECT_ASM_VERSION
 
 // LCD ISR Horizontal wave reveal effect
 //
 // Every line after [effect_y_line] scroll left/right by
 // by the num lines since [effect_y_line] * 4, alternate
 // left/right every other line.
-static void intro_credits_effect_lcd_isr(void) __interrupt {
+#ifndef INTRO_EFFECT_ASM_VERSION
+    static void intro_credits_effect_lcd_isr(void) __interrupt {
 
-    // Hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
-    if (LY_REG > (effect_y_line + EFFECT_TRANSITION_HEIGHT)) {
-        SCY_REG = -LY_REG; // Scroll to empty line at top of screen
+        // Hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
+        if (LY_REG > (effect_y_line + EFFECT_TRANSITION_HEIGHT)) {
+            SCY_REG = -LY_REG; // Scroll to empty line at top of screen
+        }
+        else if (LY_REG > effect_y_line) {
+            scroll_x_amount += EFFECT_SCX_AMOUNT;
+
+            if (LY_REG & 0x01U) SCX_REG = scroll_x_amount;
+            else SCX_REG = 255U - scroll_x_amount;
+         }
     }
-    else if (LY_REG > effect_y_line) {
-        scroll_x_amount += EFFECT_SCX_AMOUNT;
+#else
+    // ASM version ensure it has no absolute jumps and can be relocated
+    static void intro_credits_effect_lcd_isr(void) __interrupt __naked {
+        __asm \
 
-        if (LY_REG & 0x01U) SCX_REG = scroll_x_amount;
-        else SCX_REG = 255U - scroll_x_amount;
-     }
-}
+        push af
+        push hl
 
+        ld  a, (#_effect_y_line)
+        ld  l, a
+        ldh a, (_LY_REG + 0)
+        sub a, l
+        jr  c, 3$  // ; exit
+        // ; if (LY_REG > effect_y_line) {
+            sub a, #0x20  // ; _A_ has LY_REG - effect_y_line from above
+            jr  c, 1$
+            // ; if (LY_REG > (effect_y_line + EFFECT_TRANSITION_HEIGHT)) {
+                // ; SCY_REG = -LY_REG; // Scroll to empty line at top of screen
+                ldh a, (_LY_REG + 0)
+                cpl
+                inc a
+                ldh (_SCY_REG + 0), a
+                jr 3$ // ; exit
+
+            // ; } else {
+            1$:
+                // ; scroll_x_amount += EFFECT_SCX_AMOUNT (0x04);
+                ld  hl, #_scroll_x_amount
+                inc (hl)
+                inc (hl)
+                inc (hl)
+                inc (hl)
+
+                ldh a, (_LY_REG + 0)
+                rrca
+                jr nc, 2$
+                    // ; src/intro_credits.c:115: if (LY_REG & 0x01U) SCX_REG = scroll_x_amount;
+                    ld  a, (#_scroll_x_amount)
+                    ldh (_SCX_REG + 0), a
+                    jr 3$ // ; exit
+                2$:
+                    // ; src/intro_credits.c:116: else SCX_REG = 255U - scroll_x_amount;
+                    ld  a, #0xff
+                    ld  hl, #_scroll_x_amount
+                    sub a, (hl)
+                    ldh (_SCX_REG + 0), a
+
+            // ; }
+        // ; }
+        3$:
+        pop hl
+        pop af
+        reti
+
+        __endasm;
+    }
+#endif // #ifdef INTRO_EFFECT_ASM_VERSION
 
 // For calculating Effect ISR function length
 static void intro_credits_effect_lcd_isr__end(void) __naked { }
@@ -134,8 +192,13 @@ static void intro_credits_effect_init(void) {
     copy_lcd_isr_to_isr_ram((void *)&intro_credits_effect_lcd_isr, (void *)&intro_credits_effect_lcd_isr__end);
 
     __critical {
-        // Fire interrupt at start of OAM SCAN (Mode 2) right before rendering
-        STAT_REG = STATF_MODE10;
+        #ifndef INTRO_EFFECT_ASM_VERSION
+            // Fire interrupt at start of OAM SCAN (Mode 2) right before rendering
+            STAT_REG = STATF_MODE10;
+        #else
+            // Fire interrupt at start of HBlank (Mode 0) right before rendering
+            STAT_REG = STATF_MODE00;
+        #endif
         add_VBL(intro_credits_effect_vbl_isr); // Resets scroll counters each frame + allows trailing music ISR to be interrupted
         add_VBL(audio_vbl_isr);       // Make sure music is installed after Effect ISR
     }
