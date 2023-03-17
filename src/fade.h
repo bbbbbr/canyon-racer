@@ -7,7 +7,7 @@
 
 #define FADE_DELAY_NORM       (70u)
 #define FADE_DELAY_HELP       (120u)
-#define FADE_DELAY_INTRO      (200u) // Slower to match fade in intro sound
+#define FADE_DELAY_INTRO      (40u)  // Little faster than usual
 #define FADE_DELAY_FX_RUNNING (15u)  // BG FX use a lot of CPU idle time, so delay between fade steps is smaller
 #define FADE_DELAY_STATE_RESTORE_OUT (15u) // Short delay fading out
 #define FADE_DELAY_STATE_RESTORE_IN  (5u)  // Very short delay fading in
