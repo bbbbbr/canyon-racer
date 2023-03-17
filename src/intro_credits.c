@@ -130,21 +130,28 @@ static void intro_credits_effect_vbl_isr() {
         ld  a, (#_effect_y_line)
         ld  l, a
         ldh a, (_LY_REG + 0)
+        ld  h, a   // ; Save LY_REG in H
+
         sub a, l
-        jr  c, 3$  // ; exit
+        jr  c, 3$  // ; Exit
         // ; if (LY_REG > effect_y_line) {
-            sub a, #0x20  // ; _A_ has LY_REG - effect_y_line from above
-            jr  c, 1$
+            // ; A has (LY_REG - effect_y_line) from above
+            sub a, #0x20
+            jr  c, 1$ // ; Skip hide trailing effect and do visible effect area
             // ; if (LY_REG > (effect_y_line + EFFECT_TRANSITION_HEIGHT)) {
+
+                // ; Hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
                 // ; SCY_REG = -LY_REG; // Scroll to empty line at top of screen
-                ldh a, (_LY_REG + 0)
+                ld a, h  // ; H has LY_REG
                 cpl
                 inc a
                 ldh (_SCY_REG + 0), a
-                jr 3$ // ; exit
+                jr 3$ // ; Exit
 
             // ; } else {
             1$:
+                ld a, h // ; A now has LY_REG
+
                 // ; scroll_x_amount += EFFECT_SCX_AMOUNT (0x04);
                 ld  hl, #_scroll_x_amount
                 inc (hl)
@@ -152,20 +159,15 @@ static void intro_credits_effect_vbl_isr() {
                 inc (hl)
                 inc (hl)
 
-                ldh a, (_LY_REG + 0)
-                rrca
-                jr nc, 2$
-                    // ; src/intro_credits.c:115: if (LY_REG & 0x01U) SCX_REG = scroll_x_amount;
-                    ld  a, (#_scroll_x_amount)
-                    ldh (_SCX_REG + 0), a
-                    jr 3$ // ; exit
+                bit 0, a  // ; A has LY_REG
+                ld a, (hl)  // ; Reload scroll_x_amount
+                jr nz, 2$ // ; Skip negate scroll_x_amount
+                    // ; src/intro_credits.c:116: else SCX_REG = -scroll_x_amount;
+                    cpl
+                    inc a
                 2$:
-                    // ; src/intro_credits.c:116: else SCX_REG = 255U - scroll_x_amount;
-                    ld  a, #0xff
-                    ld  hl, #_scroll_x_amount
-                    sub a, (hl)
-                    ldh (_SCX_REG + 0), a
-
+                // ; src/intro_credits.c:115: if (LY_REG & 0x01U) SCX_REG = scroll_x_amount;
+                ldh (_SCX_REG + 0), a
             // ; }
         // ; }
         3$:
