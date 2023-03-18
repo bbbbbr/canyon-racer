@@ -128,42 +128,40 @@ static void intro_credits_effect_vbl_isr() {
 
         ld  a, (#_effect_y_line)
         ld  l, a
-        ldh a, (_LY_REG + 0)
+        ldh a, (_LY_REG)
         ld  h, a           // ; Save LY_REG in H
 
         sub a, l
-        jr  c, 3$          // ; if (LY_REG <= effect_y_line) -> Exit
+        jr  c, .isr_done   // ; if (LY_REG <= effect_y_line) -> Exit
 
-            sub a, #0x20   // ; A has (LY_REG - effect_y_line) from above
-            jr  c, 1$      // ; if ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT)) -> jump to effect
+            sub a, #0x20               // ; A has (LY_REG - effect_y_line) from above
+            jr  c, .apply_scx_effect   // ; if ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT)) -> jump to effect
 
-                           // ; Otherwise hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
-                           // ; SCY_REG = -LY_REG; // Scroll to empty line at top of screen
-                ld a, h    // ; H has LY_REG
+            // ; Hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
+            // ; SCY_REG = -LY_REG; // Scroll to empty line at top of screen
+            .scy_hide_trailing_lines:
+            ld a, h    // ; H has LY_REG
+            cpl
+            inc a
+            ldh (_SCY_REG), a
+            jr .isr_done // ; Done -> Exit
+
+            // ; if ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT))
+            // ; scroll_x_amount += EFFECT_SCX_AMOUNT (0x04);
+            .apply_scx_effect:
+            ld  a, (#_scroll_x_amount)
+            add  a, #4
+            ld  (#_scroll_x_amount), a
+
+            bit 0, h    // ; H has LY_REG
+            jr nz, .update_scx   // ; if !(LY_REG & 0x01U) -> Don't negate
                 cpl
-                inc a
-                ldh (_SCY_REG + 0), a
-                jr 3$      // ; Done -> Exit
+                inc a  // ; SCX_REG = -scroll_x_amount;
 
-            1$:            // ; ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT))
-                ld a, h    // ; Reload saved LY_REG from H
+            .update_scx:
+            ldh (_SCX_REG), a  // ; SCX_REG = scroll_x_amount;
 
-                           // ; scroll_x_amount += EFFECT_SCX_AMOUNT (0x04);
-                ld  hl, #_scroll_x_amount
-                inc (hl)
-                inc (hl)
-                inc (hl)
-                inc (hl)
-
-                bit 0, a    // ; A has LY_REG
-                ld a, (hl)  // ; Reload scroll_x_amount (doesn't affect flag test below)
-                jr nz, 2$   // ; if !(LY_REG & 0x01U) -> Don't negate
-
-                    cpl
-                    inc a  // ; SCX_REG = -scroll_x_amount;
-                2$:
-                ldh (_SCX_REG + 0), a  // ; SCX_REG = scroll_x_amount;
-        3$:
+        .isr_done:
         pop hl
         pop af
         reti
