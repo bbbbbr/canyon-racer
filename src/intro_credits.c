@@ -126,29 +126,76 @@ static void intro_credits_effect_vbl_isr() {
         push af
         push hl
 
+        // ; Cache the line that the effect starts on for later.
+        ld a, (#_effect_y_line)
+        ld l, a
+        // ; Compute how far into the effect we are.
+        ldh a, (_LY_REG)
+        sub l
+        jr c, .done // ; Above the effect, leave SCY and SCX untouched.
+        // ; Only perform the effect for the first 32 scanlines.
+        cp #32
+        jr c, .alternateScanlines
+
+    .repeatSameScanline:
+        add a, l // ; a is back to equalling `[rLY]` now.
+        cpl
+        inc a
+        ldh (_SCY_REG), a
+        jr .done
+
+    .alternateScanlines:
+        add a, l // ; a is back to equalling `(_LY_REG)` now.
+        rra
+        sbc a, a // ; a = $00 if LY was even, $FF if it was odd.
+        ld h, a // ; Cache this mask for later.
+        // ; Increase the scroll amount.
+        ld a, (#_scroll_x_amount)
+        add a, #4
+        ld (#_scroll_x_amount), a
+        // ; Write the amount, negated on every other scanline, to SCX.
+        xor h // ; Either a no-op, or `cpl`.
+        sub h // ; `sub $FF` is equivalent to `add 1`, i.e. `inc a`.
+        ldh (_SCX_REG), a
+
+    .done:
+        pop hl
+        pop af
+        reti
+        __endasm;
+}
+
+#endif // #ifdef INTRO_EFFECT_ASM_VERSION
+
+
+/*
+        push af
+        push hl
+
         ld  a, (#_effect_y_line)
         ld  l, a
-        ldh a, (_LY_REG + 0)
+        ldh a, (_LY_REG)
         ld  h, a           // ; Save LY_REG in H
 
         sub a, l
-        jr  c, 3$          // ; if (LY_REG <= effect_y_line) -> Exit
+        jr  c, .isr_done   // ; if (LY_REG <= effect_y_line) -> Exit
 
-            sub a, #0x20   // ; A has (LY_REG - effect_y_line) from above
-            jr  c, 1$      // ; if ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT)) -> jump to effect
+            sub a, #0x20           // ; A has (LY_REG - effect_y_line) from above
+            jr  c, .apply_effect   // ; if ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT)) -> jump to effect
 
+            .hide_trailing_lines:
                            // ; Otherwise hide trailing lines after EFFECT_TRANSITION_HEIGHT lines below effect_y_line
                            // ; SCY_REG = -LY_REG; // Scroll to empty line at top of screen
                 ld a, h    // ; H has LY_REG
                 cpl
                 inc a
-                ldh (_SCY_REG + 0), a
-                jr 3$      // ; Done -> Exit
+                ldh (_SCY_REG), a
+                jr .isr_done      // ; Done -> Exit
 
-            1$:            // ; ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT))
-                ld a, h    // ; Reload saved LY_REG from H
-
+            .apply_effect:
+                           // ; ((LY_REG - effect_y_line) < EFFECT_TRANSITION_HEIGHT))
                            // ; scroll_x_amount += EFFECT_SCX_AMOUNT (0x04);
+                ld a, h    // ; Reload saved LY_REG from H
                 ld  hl, #_scroll_x_amount
                 inc (hl)
                 inc (hl)
@@ -157,20 +204,21 @@ static void intro_credits_effect_vbl_isr() {
 
                 bit 0, a    // ; A has LY_REG
                 ld a, (hl)  // ; Reload scroll_x_amount (doesn't affect flag test below)
-                jr nz, 2$   // ; if !(LY_REG & 0x01U) -> Don't negate
-
+                jr nz, .update_scx   // ; if !(LY_REG & 0x01U) -> Don't negate
                     cpl
                     inc a  // ; SCX_REG = -scroll_x_amount;
-                2$:
-                ldh (_SCX_REG + 0), a  // ; SCX_REG = scroll_x_amount;
-        3$:
+
+                .update_scx:
+                ldh (_SCX_REG), a  // ; SCX_REG = scroll_x_amount;
+
+        .isr_done:
         pop hl
         pop af
         reti
-
         __endasm;
     }
 #endif // #ifdef INTRO_EFFECT_ASM_VERSION
+*/
 
 // For calculating Effect ISR function length
 static void intro_credits_effect_lcd_isr__end(void) __naked { }
