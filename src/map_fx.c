@@ -68,6 +68,7 @@ static void map_fx_stat_isr(void) __interrupt __naked {
 
     // Rendering Outer V Scroll Area (4 tiles) + Mode 2 OAM Scan [LEFT]
 
+    .vertical_parallax_rendering:
     // Was .rept 9 before moving pushes to above
     .rept 1
         nop
@@ -106,6 +107,7 @@ static void map_fx_stat_isr(void) __interrupt __naked {
     // Rendering Outer V Scroll Area (4 tiles) [RIGHT]
     // No need to update SCY, original value has been restored
 
+    .set_scx_for_next_frame:
     // Set Y scroll for next line (won't apply to current line due to timing)
     // SCX_REG = *state.p_scx_table_scanline++;
         // ld  hl, #_state.p_scx_table_scanline  // Loaded above during idle cycle burn instead
@@ -118,12 +120,12 @@ static void map_fx_stat_isr(void) __interrupt __naked {
 
     // Increment pointer to next line value
     inc (hl)
-    jr  nz, 1$
+    jr  nz, .scx_table_ptr_no_upper_inc
 
     // Upper nybble increment
     inc hl
     inc (hl)
-    1$:
+    .scx_table_ptr_no_upper_inc:
 
     pop bc
     pop hl
