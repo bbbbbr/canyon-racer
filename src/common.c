@@ -65,7 +65,6 @@ void game_state_save() {
 
     // Most of main state var doesn't need exclusive locking to copy
     // Struct copy just calls memcpy, but it's easier to read
-    // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
     state_copy = state;
     rand_seed_copy = __rand_seed;
 
@@ -86,7 +85,6 @@ void game_state_restore() {
     // changed anyway during the rewind action.
     __critical {
         // Struct copy just calls memcpy, but it's easier to read
-        // TODO: optimize to faster small memcpy (struct size fits in 8 bits)
         state = state_copy;
         __rand_seed = rand_seed_copy;
     }
