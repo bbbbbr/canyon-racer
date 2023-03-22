@@ -21,7 +21,8 @@ VERSION=0.5.1
 # make CART_TYPE=<cart type>
 ifndef CART_TYPE
 #	CART_TYPE=32k_nosave
-	CART_TYPE=mbc5
+#	CART_TYPE=mbc5
+	CART_TYPE=mbc5_rumble
 #	CART_TYPE=31k_1kflash
 endif
 
@@ -59,10 +60,20 @@ LCCFLAGS_gg      =
 
 ### Handle cart specific flags
 
+# MBC5 - *NO* Rumble
 ifeq ($(CART_TYPE),mbc5)
 	TARGETS=gb # pocket  # Turn of .pocket during development for faster compile times
-	LCCFLAGS_gb      += -Wl-yt0x1B -Wl-ya1 # Set an MBC for banking (1B-ROM+MBC5+RAM+BATT)
+	LCCFLAGS_gb      += -Wl-yt0x1B -Wl-ya1 # Set an MBC for banking:0x1B 	MBC-5 	SRAM 	BATTERY 		8 MB
 	LCCFLAGS_pocket  += -Wl-yt0x1B -Wl-ya1 # Same as for .gb
+	CART_TYPE_INC_DIR = mbc5
+endif
+
+# MBC5 - *WITH* Rumble
+ifeq ($(CART_TYPE),mbc5_rumble)
+	TARGETS=gb # pocket  # Turn of .pocket during development for faster compile times
+	LCCFLAGS_gb      += -Wl-yt0x1E -Wl-ya1 # Set an MBC for banking:0x1E   MBC-5   SRAM   BATTERY   RUMBLE   8 MB
+	LCCFLAGS_pocket  += -Wl-yt0x1E -Wl-ya1 # Same as for .gb
+	CART_TYPE_INC_DIR = mbc5
 endif
 
 # 31K+1k cart loses 1024 bytes at the end for flash storage
@@ -71,11 +82,13 @@ ifeq ($(CART_TYPE),31k_1kflash)
 	TARGETS=gb
 	# Add the flash 1K region as an exclusive no-use area for rom usage calcs
 	ROMUSAGE_flags = -e:FLASH_SAVE:7C00:400
+	CART_TYPE_INC_DIR = 31k_1kflash
 endif
 
 # Generic 32 Cart with no save support
 ifeq ($(CART_TYPE),32k_nosave)
 	TARGETS=gb pocket megaduck
+	CART_TYPE_INC_DIR = 32k_nosave
 endif
 
 
@@ -121,7 +134,7 @@ SRCDIR         = src
 AUDIODIR       = $(SRCDIR)/audio
 SFXDIR         = $(SRCDIR)/audio/sfx
 SONGSDIR       = $(SRCDIR)/audio/songs
-CART_TYPE_DIR  = $(SRCDIR)/cart_$(CART_TYPE)
+CART_TYPE_DIR  = $(SRCDIR)/cart_$(CART_TYPE_INC_DIR)
 
 # Add audio dir to include path
 CFLAGS += -Wf-I"$(AUDIODIR)/"
@@ -272,12 +285,14 @@ assets:
 carts:
 	${MAKE} CART_TYPE=31k_1kflash
 	${MAKE} CART_TYPE=mbc5
+	${MAKE} CART_TYPE=mbc5_rumble
 	${MAKE} CART_TYPE=32k_nosave
 
 
 carts-clean:
 	${MAKE} CART_TYPE=31k_1kflash clean
 	${MAKE} CART_TYPE=mbc5 clean
+	${MAKE} CART_TYPE=mbc5_rumble clean
 	${MAKE} CART_TYPE=32k_nosave clean
 
 

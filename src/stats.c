@@ -29,7 +29,7 @@ static uint8_t stats_calc_checksum(void) {
 // Initialize settings and stats on power-up, try to load values from cart sram/flash
 void stats_load(void) {
 
-    #if defined(CART_31k_1kflash) || defined(CART_mbc5)
+    #if defined(CART_31k_1kflash) || defined(CART_mbc5) || defined(CART_mbc5_rumble)
         // Check signature, reset stats and notify if signature failed
         // It is expected to fail on first power-up
         cartsave_restore_data();
@@ -63,7 +63,7 @@ void stats_reset(void) {
     state.game_settings.save_checksum = stats_calc_checksum();
 
     // For relevant carts, save the reset stats
-    #if defined(CART_31k_1kflash) || defined(CART_mbc5)
+    #if defined(CART_31k_1kflash) || defined(CART_mbc5) || defined(CART_mbc5_rumble)
         cartsave_save_data();
     #endif
 }
@@ -81,7 +81,7 @@ void stats_update(BCD latest_score) {
         state.game_settings.save_checksum = stats_calc_checksum();
 
         // For relevant carts, save the reset stats
-        #if defined(CART_31k_1kflash) || defined(CART_mbc5)
+        #if defined(CART_31k_1kflash) || defined(CART_mbc5) || defined(CART_mbc5_rumble)
             cartsave_save_data();
         #endif
     }

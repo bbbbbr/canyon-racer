@@ -24,7 +24,7 @@ void help_screen_run(void) {
     // Clear flag that shows help very first time user plays game
     if (state.game_settings.help_never_shown) {
         state.game_settings.help_never_shown = false;
-        #if defined(CART_31k_1kflash) || defined(CART_mbc5)
+        #if defined(CART_31k_1kflash) || defined(CART_mbc5) || defined(CART_mbc5_rumble)
             cartsave_save_data();
         #endif
     }

@@ -8,6 +8,7 @@
 #include <cbtfx.h>
 
 #include "audio.h"
+#include "../mbc5_rumble.h"
 
 
 // Sound FX
@@ -116,6 +117,15 @@ void audio_vbl_isr() {
         CBTFX_update();
     }
 
+    #if defined(CART_mbc5_rumble)
+        // Check if Rumble is running and needs to be turned off
+        if (rumble_counter) {
+            rumble_counter--;
+            if (rumble_counter == RUMBLE_COUNT_DONE)
+                MBC5_RUMBLE_OFF;
+        }
+    #endif
+
     #ifdef VISUAL_DEBUG_BENCHMARK_AUDIO
         // VISUAL BENCHMARK START
         // Debug: Benchmark time left by toggling background on/off
@@ -157,7 +167,15 @@ void audio_music_set(uint8_t song_id) {
     // gfx glitch when starting the game over music right after a
     // crash. Instead just make sure music is not playing and
     // call that good enough to avoid problems.
+
     __critical {
+        #if defined(CART_mbc5_rumble)
+            if (song_id == MUSIC_GAMEOVER_SONG) {
+                rumble_counter = RUMBLE_COUNT_CRASH;
+                MBC5_RUMBLE_ON;
+            }
+        #endif
+
         music_is_playing = false;
     }
 
@@ -175,9 +193,15 @@ void audio_start_fadeout(void) {
 
 void audio_sfx_play(uint8_t sfx_id) {
 
-    // Optional safety test
     if (sfx_id < ARRAY_LEN(sfx_list)) {
         __critical {
+            #if defined(CART_mbc5_rumble)
+                if (sfx_id == SFX_SHIP_LAND) {
+                    rumble_counter = RUMBLE_COUNT_SHIP_LAND;
+                    MBC5_RUMBLE_ON;
+                }
+            #endif
+
             SFX_ENQUE(sfx_id);
         }
     }

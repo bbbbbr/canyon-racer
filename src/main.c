@@ -41,7 +41,7 @@ void init_gfx(void) {
 
 void init(void) {
 
-    #if defined(CART_mbc5)
+    #if defined(CART_mbc5) || defined(CART_mbc5_rumble)
         // Initialize MBC bank defaults
         // Upper ROM bank to 1, And SRAM/XRAM bank to 0
         SWITCH_ROM_MBC5(1);
@@ -50,7 +50,7 @@ void init(void) {
     #endif
 
     // if (_cpu == CGB_TYPE) {
-        // Don't use CGB 2x mode, it throws off timing (unless an additional ISR is implemented)
+        // Don't use CGB 2x mode, it throws off vertical parallax timing (unless an alternate ISR is implemented)
         // Use 2x CGB speed if available
         // cpu_fast();
     // }
