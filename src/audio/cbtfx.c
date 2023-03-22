@@ -78,7 +78,7 @@ void CBTFX_update(void) NONBANKED {
             if(*CBTFX_pointer++ & CBTFX_REPEAT_PAN_BIT) {
                 uint8_t mask = 0; // Mask to avoid muting an unused channel
                 if (CBTFX_ch_used & CBTFX_CH2) mask |= (AUDTERM_2_LEFT | AUDTERM_2_RIGHT); // 0x22;
-                if (CBTFX_ch_used & CBTFX_CH4) mask |= (AUDTERM_4_LEFT | AUDTERM_4_RIGHT)// 0x88;
+                if (CBTFX_ch_used & CBTFX_CH4) mask |= (AUDTERM_4_LEFT | AUDTERM_4_RIGHT);// 0x88;
                 NR51_REG  = (NR51_REG &= ~mask) | (mask & *CBTFX_pointer++); // Mask out the CH2 and CH4 pan values and write ours
             }
 
