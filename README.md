@@ -1,15 +1,21 @@
 
 # Canyon Racer
 
-Top Down Racing Demo for the Game Boy with a Vertical Parallax Effect.
+A small Game Boy Racing Demo with Vertical Parallax Effect.
 
 This project started by experimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
 
 ![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
 
+### Download ROMs and Play Online
+
+Downloads and online playable version are at:
+* https://bbbbbr.itch.io/canyon-racer
+
+
 ### Game Play
-A short (yet infinite), very simple, kind of hard game with cool FX and music. :)
+A short (yet infinite), very simple, kinda hard demo game with cool FX and music.
 
 - Guide the racer through the canyon without crashing into walls and jump over rocks.
 - Create Save States and Rewind to them after crashing (both actions use up a Life).
@@ -23,7 +29,7 @@ Give your eyes frequent rests. There can be some temporary sensation of visual m
   - Extra Long Jump: **A** + **Up** (required for some long jumps)
 - **Save & Rewind / Lives**
   - Add Save State: **B** (any time during gameplay, but uses 1 Life)
-  - Rewind to Save State: Automatic once crashed (uses 1 Life)
+  - Crash -> Rewind to Save State: Automatic when crashed (uses 1 Life, also rewinds Score)
   - Lives: There is a limited supply of Lives (top readout in lower-right)
 - Pause: **Start**
 
