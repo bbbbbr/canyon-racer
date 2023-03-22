@@ -3,6 +3,7 @@
 #define _MBC5_RUMBLE_H
 
 #include <gbdk/platform.h>
+#include <cartsave.h>
 
 // Rumble requires MBC set to one of the following:
 // 0x1C   MBC-5                    RUMBLE   8 MB
@@ -15,9 +16,10 @@
 
 #define RUMBLE_COUNT_DONE      0u
 
-#define MBC_RUMBLE_BIT  0b00001000u
-#define MBC5_RUMBLE_ON  (rRAMB |= (MBC_RUMBLE_BIT))
-#define MBC5_RUMBLE_OFF (rRAMB = rRAMB & ~(MBC_RUMBLE_BIT))
+#define MBC_RUMBLE_BIT_ON   0b00001000u
+#define MBC_RUMBLE_BIT_OFF  0b00000000u
+#define MBC5_RUMBLE_ON  SWITCH_RAM(MBC_RAM_BANK_0 | MBC_RUMBLE_BIT_ON)
+#define MBC5_RUMBLE_OFF SWITCH_RAM(MBC_RAM_BANK_0 | MBC_RUMBLE_BIT_OFF)
 
 extern uint8_t rumble_counter;
 

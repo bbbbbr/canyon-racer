@@ -12,6 +12,7 @@
 #include "gfx.h"
 #include "fade.h"
 #include "stats.h"
+#include <cartsave.h>
 
 #include "intro_credits.h"
 #include "splash_screen.h"
@@ -45,7 +46,7 @@ void init(void) {
         // Initialize MBC bank defaults
         // Upper ROM bank to 1, And SRAM/XRAM bank to 0
         SWITCH_ROM_MBC5(1);
-        SWITCH_RAM(0);
+        SWITCH_RAM(MBC_RAM_BANK_0);
         DISABLE_RAM_MBC5;
     #endif
 
