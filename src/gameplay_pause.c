@@ -38,7 +38,7 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
     UPDATE_KEYS();
 
     // Clear out the pause sprites
-    hide_sprites_range(oam_high_water, 40u);
+    hide_sprites_range(oam_high_water, MAX_HARDWARE_SPRITES);
 
 
     // ====== Resume Effects & Music ======

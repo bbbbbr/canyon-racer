@@ -88,7 +88,7 @@ const uint8_t gameover_sprite_map[] = {0u,  2u, 4u,  6u,  // "GAME"
 static void gameover_screen_initgfx(uint8_t spr_next_free_tile) {
 
     // Make sure sprites are hidden (may be redundant)
-    hide_sprites_range(GAME_OVER_SPR_COUNT_START, 40u);
+    hide_sprites_range(GAME_OVER_SPR_COUNT_START, MAX_HARDWARE_SPRITES);
 
     // Set sprite tile ID's and clear properties
     // TODO: use a map for this instead so E can be de-duplicated?
@@ -179,6 +179,6 @@ void gameover_screen_show(uint8_t spr_next_free_tile) {
     fade_out(FADE_DELAY_FX_RUNNING);
 
     // Hide all sprites
-    hide_sprites_range(0u, 40u);
+    hide_sprites_range(0u, MAX_HARDWARE_SPRITES);
 }
 
