@@ -121,7 +121,11 @@ void audio_vbl_isr() {
         // Check if Rumble is running and needs to be turned off
         if (rumble_counter) {
             rumble_counter--;
-            if (rumble_counter == RUMBLE_COUNT_DONE)
+
+            // if (rumble_counter & 0x04u)
+            if ((rumble_counter & 0x07u) > 02u)  // 5/8ths duty cycle
+                MBC5_RUMBLE_ON;
+            else
                 MBC5_RUMBLE_OFF;
         }
     #endif

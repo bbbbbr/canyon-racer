@@ -12,7 +12,7 @@
 
 #define RUMBLE_FRAMES(N) (N + 1u)
 #define RUMBLE_COUNT_CRASH     RUMBLE_FRAMES(70) // Matches crashing sound duration
-#define RUMBLE_COUNT_SHIP_LAND RUMBLE_FRAMES(5)  // 4 is a little more subtle
+#define RUMBLE_COUNT_SHIP_LAND RUMBLE_FRAMES(7)  // Short, single pulse with the 5/8ths duty cycle
 
 #define RUMBLE_COUNT_DONE      0u
 
