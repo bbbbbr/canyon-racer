@@ -67,17 +67,19 @@
 
     #define OBSTACLE_REMOVE_Y     144u    // Remove obstacles after they exceed this threshold (Then added to the score. obstacle_y is top edge)
 
-    // #define OBSTACLE_NEXT_TYPE_BITMASK 0x03u  // 4 types of obstacles to spawn
 
     #define OBSTACLE_TYPE_LEFT    0x00u
     #define OBSTACLE_TYPE_RIGHT   0x01u
     #define OBSTACLE_TYPE_MIDDLE  0x02u
     #define OBSTACLE_TYPE_FULL    0x03u
 
-    #define OBSTACLE_TYPE_MASK    0x03u  // Should exactly cover range of values used above
+    #define OBSTACLE_TYPE_MASK    0x03u  // Should exactly cover range of values used above, subset of OBJECT_TYPE
 
     // Excluded by the OBSTACLE_TYPE_MASK generation mask
     #define OBJECT_TYPE_ITEM_PLUS_1  0x04u
+
+    #define OBJECT_TYPE_ITEM_MASK  0x07u // Should include OBSTACLE_TYPE_MASK and OBJECT_TYPE_ITEM_PLUS_1
+
     // Items must have type > 0
     // For: obstacles_item_queued
     #define ITEM_NOT_QUEUED 0u

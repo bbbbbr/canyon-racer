@@ -113,12 +113,11 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
             // Record number of obstacles cleared
             // Only count for score if game is not over (i.e. crashed, etc)
-            // TODO: HACK: state test here is temporary, improve to single state test
             if (SHIP_STATE_GET() & SHIP_BITS_PLAYER_ACTIVE) {
 
                 // Update for OBSTACLES only no score and level incrementing for ITEMS
                 // (not checked earlier since they still need to get moved off-screen and de-queued)
-                if (object_type & OBSTACLE_TYPE_MASK) {
+                if ((object_type & OBJECT_TYPE_ITEM_MASK) <= OBSTACLE_TYPE_FULL) {
                     SCORE_INCREMENT();
                     score_update();
                     LEVEL_INC_AND_CHECK();
@@ -129,7 +128,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
             // Skip hidden entries (i.e. consumed items)
             if (!(object_type & OBJECTS_FLAG_HIDDEN_BIT)) {
-                
+
                 // X position is found in the X scroll effect offset table at the Y position of the obstacle
                 oam_high_water += move_metasprite(sprite_obstacles_metasprites[object_type & OBJECT_SPRITE_MASK],
                                                  (SPR_TILES_START_OBSTACLES),
