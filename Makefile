@@ -12,7 +12,14 @@ VERSION=0.5.1
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
-# LCCFLAGS = -debug
+# LCCFLAGS += -debug
+
+# LCC Verbose
+LCCFLAGS += -v
+
+# TODO: For Debug testing and watchpoint trigger, remove when done to free up RAM
+# Move data a little furter after shadow oam to try and catch overflows
+LCCFLAGS += -Wl-b_DATA=0xC100
 
 # Alternate languages can be passed in as follows
 # - 32k_nosave

@@ -248,10 +248,12 @@ void audio_song_test_decrement(void) {
 // Call this BEFORE mapfx_isr_install()
 void audio_init() {
 
-    // Music not playing by default
-    music_is_playing = false;
-    sfx_enqueued     = SFX_ENQUED_NONE;
-    audio_fading_out = AUDIO_FADE_DONE;
+    __critical {
+        // Music not playing by default
+        music_is_playing = false;
+        sfx_enqueued     = SFX_ENQUED_NONE;
+        audio_fading_out = AUDIO_FADE_DONE;
+    }
 
     // Enable audio output
     NR52_REG = AUDENA_ON;
