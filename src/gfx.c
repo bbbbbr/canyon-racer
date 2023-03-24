@@ -102,16 +102,14 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water,
     // Reduce tile count to number of sprites
     uint8_t sprite_count = tile_count / GAMEPLAY_NOTICE_TILES_PER_SPRITE;
 
-    // Clamp start of oam sprite range to use, ensure it doesn't overflow and cause a crash/etc
-    // Might result in a couple clipped sprites in game screen if needed
-    // (oam_high_water is first free OAM entry after player and on screen items)
-    if (oam_high_water > (40u - sprite_count)) oam_high_water = (40u - sprite_count);
+    // Use sprites at end of hardware range
+    uint8_t message_start_sprite = (MAX_HARDWARE_SPRITES - sprite_count);
 
     // Assign tiles to sprites, hide all sprites to start with
     // Sprites are assumed to be hidden from previous frame oam cleanup
     for (uint8_t c = 0; c < sprite_count; c++) {
-        set_sprite_prop(oam_high_water + c, 0u); // Clear sprite attributes
-        set_sprite_tile(oam_high_water + c, spr_next_free_tile + (c * GAMEPLAY_NOTICE_TILES_PER_SPRITE));
+        set_sprite_prop(message_start_sprite + c, 0u); // Clear sprite attributes
+        set_sprite_tile(message_start_sprite + c, spr_next_free_tile + (c * GAMEPLAY_NOTICE_TILES_PER_SPRITE));
     }
 
     // Short animation of PAUSE letters flying in from Left and Right edges
@@ -120,7 +118,7 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water,
 
         // Show sprites in next frame location
         for (uint8_t c = 0; c < sprite_count; c++) {
-            move_sprite(oam_high_water + c, *p_sprite_x++, GAMEPLAY_NOTICE_SPRITE_Y);
+            move_sprite(message_start_sprite + c, *p_sprite_x++, GAMEPLAY_NOTICE_SPRITE_Y);
         }
         // Wait 3 frames :)
         wait_vbl_done();
@@ -129,5 +127,5 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water,
     }
 
     // Hide all other non-score sprites * AFTER * animating the display
-    hide_sprites_range(SPR_ID_FREE_START, oam_high_water);
+    hide_sprites_range(SPR_ID_FREE_START, message_start_sprite);
 }

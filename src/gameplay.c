@@ -48,7 +48,6 @@ void gameplay_prestart(void) {
     // at the start of each round so gameplay is deterministic
     initrand(GAMEPLAY_START_RAND_INIT);
 
-    oam_high_water_prev = SPR_ID_MAX;
     score_reset();
     score_update();
 
@@ -102,6 +101,8 @@ bool gameplay_state_restore(uint8_t spr_next_free_tile, uint8_t oam_high_water) 
 
         // Give the player a moment, then unpause the music and map FX
         delay_lowcpu(GAMEPLAY_DELAY_AFTER_RESTORE);
+        // Clear out the notice sprites
+        hide_sprites_range(oam_high_water, MAX_HARDWARE_SPRITES);
 
         audio_sfx_play(SFX_STATE_RESTORE);  // TODO: SFX:State Restore OK
         audio_music_set(MUSIC_GAMEPLAY);
@@ -121,10 +122,20 @@ bool gameplay_state_restore(uint8_t spr_next_free_tile, uint8_t oam_high_water) 
 // Main game loop
 void gameplay_run(uint8_t spr_next_free_tile) {
 
+    oam_high_water = oam_high_water_prev = SPR_ID_MAX;
+
+    gameplay_display_notice(spr_next_free_tile, oam_high_water, sprite_ready_TILE_COUNT, sprite_ready_tiles);
+    delay_lowcpu(GAMEPLAY_DELAY_AFTER_RESTORE);
+    // Now clear out the notice sprites
+    hide_sprites_range(oam_high_water, MAX_HARDWARE_SPRITES);
+
     while(1) {
         wait_vbl_done();
 
         UPDATE_KEYS();
+
+        // == Sprites ==
+        oam_high_water = SPR_ID_FREE_START;
 
         // TODO: consider moving into functions
         switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__PAUSE))) {
@@ -135,12 +146,9 @@ void gameplay_run(uint8_t spr_next_free_tile) {
                 break;
 
             case BUTTON__PAUSE:
-                gameplay_pause(spr_next_free_tile, oam_high_water);
+                gameplay_pause(spr_next_free_tile, oam_high_water_prev);
                 break;
         }
-
-        // == Sprites ==
-        oam_high_water = SPR_ID_FREE_START;
 
         oam_high_water = entity_obstacles_update(oam_high_water);
         oam_high_water = entity_ship_update(oam_high_water);
@@ -159,12 +167,10 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         // If game is over, break out and return to main state select
         if (SHIP_STATE_GET() == SHIP_STATE_CRASH_ENDED) {
             // Try to restore if the user has rewinds left
-            if (gameplay_state_restore(spr_next_free_tile, oam_high_water)) {
-                // TODO: consider displaying a "GET READY" type indicator on restore (and dropping pause support?)
-            }
-            else
-                // Otherwise gameover, break out and game over
+            if (!(gameplay_state_restore(spr_next_free_tile, oam_high_water))) {
+                // No more lives. Break out and game over
                 break;
+            }
         }
 
         #ifdef VISUAL_DEBUG_BENCHMARK_MAIN
