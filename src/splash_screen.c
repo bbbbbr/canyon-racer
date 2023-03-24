@@ -169,7 +169,7 @@ uint8_t splash_intro_run(uint8_t bg_next_free_tile) {
             midframe_update_music_then_waitvbl();
 
             UPDATE_KEYS();
-            if (KEY_TICKED(J_ANY)) {
+            if (KEY_TICKED(J_START | J_A)) {
                 return_keys = keys;
                 break;
             }
