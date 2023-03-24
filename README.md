@@ -3,7 +3,7 @@
 
 A small Game Boy Racing Demo with Vertical Parallax Effect.
 
-This project started by experimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It has grown into a mini-game demo.
+This project started by experimenting with a vertical parallax effect on the original Game Boy, similar to the kind in the "[Demotronic](https://demozoo.org/productions/20662/)" Game Boy Color demo by [1.000.000 Boys](https://demozoo.org/productions/20662/). It was inspired by a [tweet](https://twitter.com/_Kimimi/status/1493231550040793092) about a canyon effect in the game Étoile Princess. Could it be done on the Game Boy?
 
 ![Canyon Racer Intro Splash Screen](/info/canyon_racer_intro_splash.png)
 ![Canyon Racer Gameplay Screen](/info/canyon_racer_gameplay.png)
