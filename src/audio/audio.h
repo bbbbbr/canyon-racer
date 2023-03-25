@@ -46,7 +46,7 @@ void audio_sfx_test_decrement(void);
 void audio_song_test_increment(void);
 void audio_song_test_decrement(void);
 
-void audio_vbl_isr();
-void audio_init();
+void audio_vbl_isr(void);
+void audio_init(void);
 
 #endif

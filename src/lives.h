@@ -27,7 +27,7 @@ extern const BCD lives_count_bcd_step_size;
 #define LIVES_COUNT_GET() ((uint8_t)lives_count)
 
 void lives_count_reset(void);
-void lives_count_increment();
+void lives_count_increment(void);
 
 void lives_display_update(void);
 

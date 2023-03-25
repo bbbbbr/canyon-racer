@@ -76,7 +76,7 @@ uint8_t audio_fading_out;
 // Must be installed AFTER mapfx_isr_install()
 //
 // TODO: should this get merged into mapfx_isr_install() to save the additial calling overhead?
-void audio_vbl_isr() {
+void audio_vbl_isr(void) {
 
     // Allow nested interrupts for this portion of VBL to allow
     // Stat LCD (Parallax Effect) ISR to interrupt it if needed
@@ -250,7 +250,7 @@ void audio_song_test_decrement(void) {
 
 
 // Call this BEFORE mapfx_isr_install()
-void audio_init() {
+void audio_init(void) {
 
     __critical {
         // Music not playing by default

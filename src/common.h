@@ -206,7 +206,7 @@ extern game_state_data state;
 void delay_lowcpu(uint16_t num_frames);
 void wait_in_halt_to_scanline(uint8_t exit_scanline);
 
-void game_state_save();
-void game_state_restore();
+void game_state_save(void);
+void game_state_restore(void);
 
 #endif

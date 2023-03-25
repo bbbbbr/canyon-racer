@@ -78,7 +78,7 @@ void intro_credits_show(void) {
 
 // VBL ISR portion of effect
 // Resets counters and slowly increments starting scanline
-static void intro_credits_effect_vbl_isr() {
+static void intro_credits_effect_vbl_isr(void) {
 
     // Reset scroll registers to zero at the start of every frame
     scroll_x_amount = 0u;

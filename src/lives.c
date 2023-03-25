@@ -15,7 +15,7 @@ void lives_count_reset(void) {
 
 
 // Increment number of lives, limit to max value
-void lives_count_increment() {
+void lives_count_increment(void) {
     // Only need to test lsbyte, no need for full BCD test since max is 99
     if ( *(uint8_t *)&(lives_count) != (uint8_t)LIVES_COUNT_MAX_BCD) {
         LIVES_COUNT_ADD_ONE();

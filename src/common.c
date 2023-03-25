@@ -53,7 +53,7 @@ void wait_in_halt_to_scanline(uint8_t exit_scanline) {
 }
 
 
-void game_state_save() {
+void game_state_save(void) {
 
     // Long critical sections may delay scanline ISR from running and
     // cause small, noticeable visual glitches. Most vars are only
@@ -78,7 +78,7 @@ void game_state_save() {
 }
 
 
-void game_state_restore() {
+void game_state_restore(void) {
 
     // Don't care about visual glitches here from a long
     // critical section since the whole screen often gets
