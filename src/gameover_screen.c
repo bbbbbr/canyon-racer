@@ -98,9 +98,14 @@ static void gameover_screen_initgfx(uint8_t spr_next_free_tile) {
         shadow_OAM[c].prop = 0;
     }
 
-    // Load the letter tiles
-    set_sprite_data(spr_next_free_tile, game_over_TILE_COUNT, game_over_tiles);
-
+    for (uint8_t c = 0; c < game_over_TILE_COUNT; c++) {
+        // Load letter tiles at bottom of the screen one at a time to reduce
+        // visual glitching + ensure safe vram writes while the map FX is running
+        wait_in_halt_to_scanline(144u - 10u);
+        __critical {
+            set_sprite_data(spr_next_free_tile + c, 1u, game_over_tiles + (c * BYTES_PER_TILE));
+        }
+    }
 }
 
 

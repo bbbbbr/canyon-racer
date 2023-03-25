@@ -13,6 +13,7 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t tile_count, uin
 #define GAMEPLAY_NOTICE_HEIGHT_PX        16u // Notice is 16 pixels high
 #define GAMEPLAY_NOTICE_SPRITE_Y         (((DEVICE_SCREEN_PX_HEIGHT - GAMEPLAY_NOTICE_HEIGHT_PX) / 2u) -  DEVICE_SPRITE_PX_OFFSET_Y)
 
+#define BYTES_PER_TILE                   16u
 
 #endif
 
