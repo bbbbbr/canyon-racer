@@ -92,7 +92,7 @@ bool gameplay_state_restore(uint8_t spr_next_free_tile, uint8_t oam_high_water) 
 
         // Fade in and display animated "READY" notice
         fade_in(FADE_DELAY_STATE_RESTORE_IN);
-        gameplay_display_notice(spr_next_free_tile, oam_high_water, sprite_ready_TILE_COUNT, sprite_ready_tiles);
+        gameplay_display_notice(spr_next_free_tile, sprite_ready_TILE_COUNT, sprite_ready_tiles);
 
         // Deduct Life / Restore Point and update display counters
         LIVES_COUNT_SUBTRACT_ONE();
@@ -124,7 +124,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
 
     oam_high_water = oam_high_water_prev = SPR_ID_MAX;
 
-    gameplay_display_notice(spr_next_free_tile, oam_high_water, sprite_ready_TILE_COUNT, sprite_ready_tiles);
+    gameplay_display_notice(spr_next_free_tile, sprite_ready_TILE_COUNT, sprite_ready_tiles);
     delay_lowcpu(GAMEPLAY_DELAY_AFTER_RESTORE);
     // Now clear out the notice sprites
     hide_sprites_range(oam_high_water, MAX_HARDWARE_SPRITES);

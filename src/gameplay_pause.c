@@ -28,7 +28,7 @@ void gameplay_pause(uint8_t spr_next_free_tile, uint8_t oam_high_water) {
 
     // ====== Animated Pause Notice Sprites ======
 
-    gameplay_display_notice(spr_next_free_tile, oam_high_water, sprite_pause_TILE_COUNT, sprite_pause_tiles);
+    gameplay_display_notice(spr_next_free_tile, sprite_pause_TILE_COUNT, sprite_pause_tiles);
 
     // ====== Wait for Start Button ======
     waitpadticked_lowcpu(J_START);

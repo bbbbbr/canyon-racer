@@ -93,7 +93,7 @@ const uint8_t gameplay_notice_sprite_x_frames[] = {
 
 
 
-void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t oam_high_water, uint8_t tile_count, uint8_t * tiles_addr) {
+void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t tile_count, uint8_t * tiles_addr) {
 
 
     // Load notice sprite tile data (8x16)
