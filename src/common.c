@@ -35,7 +35,7 @@ uint16_t rand_seed_copy;
 void delay_lowcpu(uint16_t num_frames) {
 
     while (num_frames--) {
-        wait_vbl_done();
+        vsync();
     }
 }
 

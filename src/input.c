@@ -15,7 +15,7 @@ void waitpadticked_lowcpu(UINT8 button_mask) {
 
     while (1) {
 
-        wait_vbl_done(); // yield CPU
+        vsync(); // yield CPU
         UPDATE_KEYS();
         if (KEY_TICKED(button_mask))
             break;

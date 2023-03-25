@@ -153,7 +153,7 @@ void gameover_screen_show(uint8_t spr_next_free_tile) {
             }
         #endif
 
-        wait_vbl_done();
+        vsync();
 
         static uint8_t c;
         uint8_t spr_angle = (uint8_t)(base_angle >> GAME_OVER_BIT_SHIFT);

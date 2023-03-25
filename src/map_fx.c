@@ -336,7 +336,7 @@ void mapfx_isr_install(bool add_audio_isr) {
     }
 
     // Try to wait until just after the start of the next frame before enabling effect
-    wait_vbl_done();
+    vsync();
 
     mapfx_isr_lcd_enable();
 }

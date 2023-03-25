@@ -62,7 +62,7 @@ static void midframe_update_music_then_waitvbl(void) {
 
     wait_in_halt_to_scanline(WIN_Y_UPDATE_MUSIC_AT);
     audio_vbl_isr(); // Update playback manually
-    wait_vbl_done();
+    vsync();
 }
 
 
@@ -223,7 +223,7 @@ static void sfx_test(uint8_t bg_next_free_tile) {
             // predictable. The LCD ISR will wake it.
             wait_in_halt_to_scanline(WIN_Y_SHOWING_TITLE + 1u);
             audio_vbl_isr(); // Update playback manually
-            wait_vbl_done();
+            vsync();
             UPDATE_KEYS();
         }
 

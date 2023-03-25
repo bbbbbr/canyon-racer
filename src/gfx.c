@@ -121,9 +121,9 @@ void gameplay_display_notice(uint8_t spr_next_free_tile, uint8_t tile_count, uin
             move_sprite(message_start_sprite + c, *p_sprite_x++, GAMEPLAY_NOTICE_SPRITE_Y);
         }
         // Wait 3 frames :)
-        wait_vbl_done();
-        wait_vbl_done();
-        wait_vbl_done();
+        vsync();
+        vsync();
+        vsync();
     }
 
     // Hide all other non-score sprites * AFTER * animating the display

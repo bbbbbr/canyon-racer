@@ -130,7 +130,7 @@ void gameplay_run(uint8_t spr_next_free_tile) {
     hide_sprites_range(oam_high_water, MAX_HARDWARE_SPRITES);
 
     while(1) {
-        wait_vbl_done();
+        vsync();
 
         UPDATE_KEYS();
 

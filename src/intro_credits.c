@@ -197,7 +197,7 @@ static void intro_credits_effect_init(void) {
     }
 
     // Try to wait until just after the start of the next frame before enabling effect
-    wait_vbl_done();
+    vsync();
     mapfx_isr_lcd_enable();
 }
 
@@ -214,7 +214,7 @@ static void intro_credits_effect_run(void) {
         }
         if (cur_line > EFFECT_Y_LINE_MAX)
             break;
-        wait_vbl_done();
+        vsync();
     }
 
     mapfx_isr_lcd_disable();

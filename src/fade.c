@@ -36,7 +36,7 @@ const uint8_t fade_steps_dmg_OBP1[] = {
 // Fade out to black
 void fade_out(uint8_t delay_len) {
     for (uint8_t c = 0; c < DMG_FADE_STEP_COUNT; c++) {
-        wait_vbl_done();
+        vsync();
         BGP_REG  = fade_steps_dmg_BGP[c];
         OBP0_REG = fade_steps_dmg_OBP0[c];
         OBP1_REG = fade_steps_dmg_OBP1[c];
@@ -48,7 +48,7 @@ void fade_out(uint8_t delay_len) {
 void fade_in(uint8_t delay_len) {
 
     for (uint8_t c = 0; c < DMG_FADE_STEP_COUNT; c++) {
-        wait_vbl_done();
+        vsync();
         BGP_REG  = fade_steps_dmg_BGP[ARRAY_LEN(fade_steps_dmg_BGP) - 1 - c];
         OBP0_REG = fade_steps_dmg_OBP0[ARRAY_LEN(fade_steps_dmg_OBP0) - 1 - c];
         OBP1_REG = fade_steps_dmg_OBP1[ARRAY_LEN(fade_steps_dmg_OBP1) - 1 - c];
