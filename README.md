@@ -69,7 +69,7 @@ Docs & Tools:
 
 
 ### Building:
-* [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.1.1)
+* [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020) (4.2.0+)
 * For SFX converversion from .sav files use the patched converter:
   - https://github.com/bbbbbr/CBT-FX/blob/length_fix/hammer2cbt.py
 
@@ -102,4 +102,3 @@ The two separate effects used to create the canyon environment:
 * **RIGHT** X Axis scrolling Sine Waves that distort the background and change the canyon bottom's shape.
 ![Canyon Racer Intro Splash Screen](/info/bg_scy_parallax_scrolling.gif)
 ![Canyon Racer Intro Splash Screen](/info/bg_scx_wave_scrolling.gif)
-
