@@ -36,16 +36,22 @@ endif
 # Set ROM Title / Name
 LCCFLAGS += -Wm-yn"CANYONRACER"
 	# Legal chars are from 0x20 - 0x5F
-	# Optional Alternate title that generates a Green CGB palette (id:0x0E -> checksum 0xBD)
-	# LCCFLAGS += -Wm-yn"CANYONRACERDD" # Or "CANYONRACER["
+	# Optional Alternate title that generates a Green BG / Red Obj CGB palette (id:0x0E -> checksum 0xBD)
+ 	# LCCFLAGS += -Wm-yn"CANYONRACERDD" # Or "CANYONRACER["
 	#
-	# Optional Alternate title that generates a GreyCGB palette (id:0x16 -> checksum 0x58)
-	# LCCFLAGS += -Wm-yn"CANYONRACER=MAX" # "CANYONRACER!VVV"
+	# Optional Alternate title that generates a Grey CGB palette (id:0x16 -> checksum 0x58)
+ 	# LCCFLAGS += -Wm-yn"CANYONRACER-FXX" # "CANYONRACER>GFX" # "CANYONRACER=MAX" # "CANYONRACER!VVV"
+    #
+	# Brown BG, Green / Blue Sprites
+	# checksum 0xA2 or 0xF7
+	#    "CANYONRACER$FX" with makefile and shell escapes
+	# LCCFLAGS += -Wm-yn"CANYONRACER\$$FX"
 
 # Set CGB Boot ROM color palette to 0x13 (relies on title settings above)
 # 1. Old Licensee is already 0x33 -> Use New Licensee
 # 2. Sets New Licensee to "01" "(Nintendo)
-# 3. (Sum of ROM Header title bytes 0x134 - 0x143) & 0xFF = 0x35 -> CGB Boot Pal 0x12
+# 3. (Calculated by Sum of ROM Header title bytes 0x134 - 0x143) & 0xFF = 0x35 -> CGB Boot Pal 0x12 (brown)
+#    https://gbdev.io/pandocs/Power_Up_Sequence.html#compatibility-palettes
 #    https://tcrf.net/Notes:Game_Boy_Color_Bootstrap_ROM#Manual_Select_Palette_Configurations
 LCCFLAGS += -Wm-yk01
 
