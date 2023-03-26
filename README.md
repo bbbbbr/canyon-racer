@@ -60,7 +60,7 @@ Additional code from:
 Assets:
   - Some canyon tiles are variations on this tileset: [sondanielson](https://sondanielson.itch.io/gameboy-simple-rpg-tileset). CCA License
   - Ship tiles are variations on this tileset: [Jerom](https://opengameart.org/content/retro-spaceships). CC-BY-3 License.
-  - Title Logo letter shapes are stylized versions of the [Vermin Vibes 1989](https://nalgames.com/fonts/vermin-vibes-1989) font. Non-commercial license
+  - Title Logo letter shapes are re-stylized versions of the [Vermin Vibes 1989](https://nalgames.com/fonts/vermin-vibes-1989) font. Purchased Business Lite license. Non-transferrable to other parties.
 
 Docs & Tools:
   - [Pan Docs](https://gbdev.io/pandocs/) are a useful resource
