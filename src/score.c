@@ -15,6 +15,7 @@
 #include <stdbool.h>
 
 #include "common.h"
+#include "magic_code.h"
 #include "score.h"
 #include "stats.h"
 #include "level.h"
@@ -24,9 +25,18 @@
 const BCD score_increment_amt = MAKE_BCD(00010); // Increment by 10 each time
 
 void score_reset(void) {
-    state.score = MAKE_BCD(00000);
+    if (IS_MAGIC_CODE_ACTIVE)
+        state.score = MAKE_BCD(888888);
+    else
+        state.score = MAKE_BCD(000000);
 }
 
+
+void score_increment(void) {
+    // When magic code is active score is forced to 88888 and won't increment
+    if (!(IS_MAGIC_CODE_ACTIVE))
+        bcd_add(&state.score, &score_increment_amt);
+}
 
 // DEBUG - show game level
 #ifdef DEBUG_SHOW_LEVEL_IN_SCORE

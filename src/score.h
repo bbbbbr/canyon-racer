@@ -31,9 +31,8 @@
 extern const BCD score_increment_amt;
 
 
-#define SCORE_INCREMENT() bcd_add(&state.score, &score_increment_amt)
-
 void score_reset(void);
+void score_increment(void);
 void score_update(void);
 
 void hi_score_render(uint8_t * p_vram_addr, uint8_t font_base_tile);

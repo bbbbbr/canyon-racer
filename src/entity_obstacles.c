@@ -129,7 +129,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
                 // Update for OBSTACLES only no score and level incrementing for ITEMS
                 // (not checked earlier since they still need to get moved off-screen and de-queued)
                 if ((object_type & OBJECT_TYPE_ITEM_MASK) <= OBSTACLE_TYPE_FULL) {
-                    SCORE_INCREMENT();
+                    score_increment();
                     score_update();
                     LEVEL_INC_AND_CHECK();
                 }

@@ -24,6 +24,7 @@
 #include "stats.h"
 #include <cartsave.h>
 
+#include "magic_code.h"
 #include "intro_credits.h"
 #include "splash_screen.h"
 #include "gameplay.h"
@@ -74,6 +75,8 @@ void init(void) {
     audio_init();
 
     mapfx_set_intro();
+
+    magic_code_reset();
 }
 
 

@@ -29,6 +29,7 @@
 
 #define SFX_STATE_RESTORE (SFX_PAUSE)
 
+#define SFX_MAGIC_CODE (SFX_LEVEL_UP)
 
 // #define SFX_SHIP_CRASH 6u // Replaced with a gameover crash sound + music track
 

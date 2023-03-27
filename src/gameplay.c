@@ -17,6 +17,7 @@
 
 #include "input.h"
 #include "common.h"
+#include "magic_code.h"
 #include "fade.h"
 #include "audio.h"
 #include "gfx.h"
@@ -192,7 +193,8 @@ void gameplay_run(uint8_t spr_next_free_tile) {
     }
 
     // Game Over: Update high score if applicable
-    stats_update(state.score);
+    if (!(IS_MAGIC_CODE_ACTIVE))
+        stats_update(state.score);
 }
 
 

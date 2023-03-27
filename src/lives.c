@@ -13,6 +13,7 @@
 #include <gbdk/bcd.h>
 
 #include "common.h"
+#include "magic_code.h"
 #include "lives.h"
 
 BCD lives_count;                                    // AKA "Rewind"
@@ -21,7 +22,10 @@ const BCD lives_count_bcd_step_size = MAKE_BCD(01); // 1 in BCD
 
 // Reset number of lives to default
 void lives_count_reset(void) {
-    lives_count = LIVES_COUNT_RESET;
+    if (IS_MAGIC_CODE_ACTIVE)
+        lives_count = LIVES_COUNT_CHEAT;
+    else
+        lives_count = LIVES_COUNT_RESET;
 }
 
 

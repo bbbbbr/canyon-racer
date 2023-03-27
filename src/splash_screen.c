@@ -30,6 +30,7 @@
 #include "fade.h"
 #include "score.h"
 
+#include "magic_code.h"
 #include "map_fx.h"
 
 #include "splash_screen.h"
@@ -159,6 +160,8 @@ uint8_t splash_intro_run(uint8_t bg_next_free_tile) {
 
     uint8_t return_keys;
 
+    magic_code_reset();
+
     // Start up effect (Splash screen music is run manually and not by vbl)
     mapfx_isr_install(MAPFX_AUDIO_VBL_NO);
 
@@ -180,7 +183,10 @@ uint8_t splash_intro_run(uint8_t bg_next_free_tile) {
             midframe_update_music_then_waitvbl();
 
             UPDATE_KEYS();
-            if (KEY_TICKED(J_START | J_A)) {
+            if (magic_code_update()) {
+                audio_sfx_play(SFX_MAGIC_CODE);
+            }
+            else if (KEY_TICKED(J_START | J_A)) {
                 return_keys = keys;
                 break;
             }

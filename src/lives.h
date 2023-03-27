@@ -18,6 +18,7 @@
 
 #define LIVES_COUNT_MAX_BCD        0x99         // Limit of 99 in BCD
 #define LIVES_COUNT_RESET          MAKE_BCD(10) // Initial number of lives / save states
+#define LIVES_COUNT_CHEAT          MAKE_BCD(88) // Initial number of lives / save states
 #define LIVES_COUNT_SUBTRACT_ONE() bcd_sub(&lives_count, &lives_count_bcd_step_size)
 #define LIVES_COUNT_ADD_ONE()      bcd_add(&lives_count, &lives_count_bcd_step_size)
 
