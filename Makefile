@@ -8,7 +8,7 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
 
-VERSION=0.5.1
+VERSION=0.7.5
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output

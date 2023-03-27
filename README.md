@@ -61,7 +61,7 @@ Some notes about the visual effects if you aren't playing on an actual Game Boy 
 
 
 ### MegaDuck
-On this platform the full vertical parallax effect is turned off since it may damage some generations of OEM Mega Duck screens (leaving a permanent vertical band) due to the rapid on/off cycling of pixels. Most likely the effect could be enabled safely for aftermarket screens, for the few people who have modded their devices.
+On this platform the full vertical parallax effect is turned off since it may damage some generations of OEM Mega Duck screens (leaving a permanent vertical band) due to the rapid on/off cycling of pixels. Most likely the effect could be enabled safely for aftermarket screens for the few people who have modded devices.
 
 
 ### Credits, Contributors and Thanks
