@@ -24,9 +24,10 @@ A short (yet infinite), very simple, kinda hard demo game with cool FX and music
 Give your eyes frequent rests. There can be some temporary sensation of visual movement after playing due to the vertical parallax.
 
 ### Controls
-- **Jumping**
+- **Jumping & Movement**
   - Jump: **A** button (tap for short or hold for longer)
   - Extra Long Jump: **A** + **Up** (required for some long jumps)
+  - Move Ship: D-PAD
 - **Save & Rewind / Lives**
   - Add Save State: **B** (any time during gameplay, but uses 1 Life)
   - Crash -> Rewind to Save State: Automatic when crashed (uses 1 Life, also rewinds Score)
@@ -75,7 +76,7 @@ Additional code from:
 Assets:
   - Some canyon tiles are variations on this tileset: [sondanielson](https://sondanielson.itch.io/gameboy-simple-rpg-tileset). CCA License
   - Ship tiles are variations on this tileset: [Jerom](https://opengameart.org/content/retro-spaceships). CC-BY-3 License.
-  - Title Logo letter shapes are re-stylized versions of the [Vermin Vibes 1989](https://nalgames.com/fonts/vermin-vibes-1989) font. Purchased Business Lite license. Non-transferrable to other parties.
+  - Title Logo letter shapes are re-stylized versions of the [Vermin Vibes 1989](https://nalgames.com/fonts/vermin-vibes-1989) font. Purchased Business Lite license. Non-transferable to other parties.
 
 Docs & Tools:
   - [Pan Docs](https://gbdev.io/pandocs/) are a useful resource
