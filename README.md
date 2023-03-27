@@ -33,6 +33,7 @@ Give your eyes frequent rests. There can be some temporary sensation of visual m
   - Crash -> Rewind to Save State: Automatic when crashed (uses 1 Life, also rewinds Score)
   - Lives: There is a limited supply of Lives (top readout in lower-right)
 - Pause: **Start**
+- Reset High Score: Hold **Select** + press **Start** on the title screen
 
 ### Techniques
 - **Save & Rewind:** Creating Save States uses 1 life each time, so add them carefully.

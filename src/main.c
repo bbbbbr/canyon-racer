@@ -123,8 +123,13 @@ void main() {
                     game_state = GAME_STATE_SHOW_HELP;
                     return_to_intro = true;
                 }
-                else if (return_button == J_START) {
-                    if (state.game_settings.help_never_shown)
+                else if (return_button & J_START) {
+                    if (return_button & J_SELECT) {
+                        // Hold Select + Press Start to reset high-score
+                        stats_hi_score_reset();
+                        game_state = GAME_STATE_SHOW_INTRO; // Return to show intro screen
+                    }
+                    else if (state.game_settings.help_never_shown)
                         game_state = GAME_STATE_SHOW_HELP;
                     else
                         game_state = GAME_STATE_START_GAME;

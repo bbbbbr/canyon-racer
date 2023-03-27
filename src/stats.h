@@ -18,6 +18,7 @@
 void stats_load(void);
 void stats_reset(void);
 void stats_update(BCD latest_score);
+void stats_hi_score_reset(void);
 
 
 #endif // _STATS_H

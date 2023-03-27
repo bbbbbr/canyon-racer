@@ -95,3 +95,17 @@ void stats_update(BCD latest_score) {
         #endif
     }
 }
+
+
+// Reset high score on user request
+void stats_hi_score_reset(void) {
+
+    state.game_settings.hi_score = MAKE_BCD(000000);
+    state.game_settings.save_checksum = stats_calc_checksum();
+
+    // For relevant carts, save the reset stats
+    #if defined(CART_31k_1kflash) || defined(CART_mbc5) || defined(CART_mbc5_rumble)
+        cartsave_save_data();
+    #endif
+
+}
