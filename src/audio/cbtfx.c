@@ -11,7 +11,7 @@ Thanks to bbbbbr for getting my code to ACTUALLY work
 // asm version by bbbbbr
 
 
-#include <gb/gb.h>
+#include <gbdk/platform.h>
 #include "cbtfx.h"
 #include "hUGEDriver.h"
 #define MUSIC_DRIVER_CH2_ON  hUGE_mute_channel(HT_CH2, HT_CH_PLAY);
