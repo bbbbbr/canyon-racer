@@ -33,7 +33,7 @@ extern const uint8_t * p_scx_table_frame_base;
 
 // Region scrolling speed
 // table size MUST be multiple of SCROLL_SCX_TABLE_MAP_SPEED
-#ifdef MEGADUCK
+#if defined(_MAP_FX_NOFX)
     // Some MegaDuck model LCDs can't handle faster pixel changes from Y Parallax scrolling
     // and may get damaged, so turn it off completely
     #define MAPFX_SCY_SPEED_STOP    0u

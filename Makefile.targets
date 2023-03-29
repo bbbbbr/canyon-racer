@@ -37,6 +37,12 @@ megaduck:
 	${MAKE} build-target PORT=sm83 PLAT=duck EXT=duck
 
 
+megaduck-nofx-clean:
+	${MAKE} clean-target EXT=nofx.duck
+megaduck-nofx:
+	${MAKE} build-target PORT=sm83 PLAT=duck EXT=nofx.duck MAP_FX_TOGGLE=NOFX
+
+
 sms-clean:
 	${MAKE} clean-target EXT=sms
 sms:

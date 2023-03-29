@@ -56,7 +56,7 @@ LCCFLAGS += -Wm-yn"CANYONRACER"
 LCCFLAGS += -Wm-yk01
 
 
-CFLAGS += -DCART_$(CART_TYPE)
+CFLAGS += -DCART_$(CART_TYPE) -D_MAP_FX_$(MAP_FX_TOGGLE)
 # CFLAGS += -Wf--max-allocs-per-node50000
 # CFLAGS += -Wf--max-allocs-per-node150000 # diminishing (but present) size returns after this
 # CFLAGS += -Wf--max-allocs-per-node500000
@@ -100,7 +100,7 @@ endif
 
 # Generic 32 Cart with no save support
 ifeq ($(CART_TYPE),32k_nosave)
-	TARGETS=gb pocket megaduck
+	TARGETS=gb pocket megaduck megaduck-nofx
 	CART_TYPE_INC_DIR = 32k_nosave
 endif
 
@@ -294,6 +294,27 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/help_screen_data.c
 	$(GBCOMPRESS) -v --cout --varname=help_screen_map_comp   $(RESDIR)/help_screen_data_map.bin   $(RESDIR)/help_screen_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=help_screen_tiles_comp $(RESDIR)/help_screen_data_tiles.bin $(RESDIR)/help_screen_tiles_comp.c
+	#
+	# MegaDuck on AP Notice
+	#
+	# Intro credits screen COMPRESSED version (saves 300+ bytes)
+	# -> .bin -> compress -> .c
+	rm -f $(RESDIR)/megaduck_on_ap*.c $(RESDIR)/megaduck_on_ap*.h $(RESDIR)/megaduck_on_ap*.bin
+	$(PNG2ASSET) $(RESDIR)/megaduck_on_ap.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/megaduck_on_ap_data.c
+	$(GBCOMPRESS) -v --cout --varname=megaduck_on_ap_map_comp   $(RESDIR)/megaduck_on_ap_data_map.bin   $(RESDIR)/megaduck_on_ap_map_comp.c
+	$(GBCOMPRESS) -v --cout --varname=megaduck_on_ap_tiles_comp $(RESDIR)/megaduck_on_ap_data_tiles.bin $(RESDIR)/megaduck_on_ap_tiles_comp.c
+	# Add in the ifdef so the data doesn't get included for GB
+	echo "#include <gbdk/platform.h>" > $(RESDIR)/megaduck_on_ap_map_comp.c.new
+	echo "#include <gbdk/platform.h>" > $(RESDIR)/megaduck_on_ap_tiles_comp.c.new
+	echo "#ifdef MEGADUCK" >> $(RESDIR)/megaduck_on_ap_map_comp.c.new
+	echo "#ifdef MEGADUCK" >> $(RESDIR)/megaduck_on_ap_tiles_comp.c.new
+	cat $(RESDIR)/megaduck_on_ap_map_comp.c >> $(RESDIR)/megaduck_on_ap_map_comp.c.new
+	cat $(RESDIR)/megaduck_on_ap_tiles_comp.c >> $(RESDIR)/megaduck_on_ap_tiles_comp.c.new
+	echo "#endif" >> $(RESDIR)/megaduck_on_ap_map_comp.c.new
+	echo "#endif" >> $(RESDIR)/megaduck_on_ap_tiles_comp.c.new
+	# overwrite original with ifdef version
+	mv -f $(RESDIR)/megaduck_on_ap_map_comp.c.new $(RESDIR)/megaduck_on_ap_map_comp.c
+	mv -f $(RESDIR)/megaduck_on_ap_tiles_comp.c.new $(RESDIR)/megaduck_on_ap_tiles_comp.c
 
 carts:
 	${MAKE} CART_TYPE=31k_1kflash
