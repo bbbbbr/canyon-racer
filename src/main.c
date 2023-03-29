@@ -32,6 +32,10 @@
 #include "help_screen.h"
 #include "map_fx.h"
 
+#ifdef MEGADUCK
+    #include "megaduck.h"
+#endif
+
 
 uint8_t bg_next_free_tile;
 uint8_t spr_next_free_tile;
@@ -52,6 +56,11 @@ void init_gfx(void) {
 
 
 void init(void) {
+
+    #ifdef MEGADUCK
+        // This should run before other things that touch the sound hardware
+        megaduck_check_is_analogue_pocket();
+    #endif
 
     #if defined(CART_mbc5) || defined(CART_mbc5_rumble)
         // Initialize MBC bank defaults
@@ -77,6 +86,11 @@ void init(void) {
     mapfx_set_intro();
 
     magic_code_reset();
+
+    #ifdef MEGADUCK
+        megaduck_show_warning_if_analogue_pocket_core();
+    #endif
+
 }
 
 
