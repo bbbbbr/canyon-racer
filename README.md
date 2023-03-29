@@ -54,10 +54,12 @@ Give your eyes frequent rests. There can be some temporary sensation of visual m
   - [3D Printable cart shell](https://github.com/bbbbbr/megaduck_cartridge_shell)
 
 
-### Effect Accuracy
-Some notes about the visual effects if you aren't playing on an actual Game Boy or chip clone:
+### Accuracy of Visual Effects and Music
+Some notes about the visual effects and music when not playing on an actual Game Boy or Mega Duck:
   - Use an accurate emulator (Emulicious, BGB, Sameboy, etc) and it should look ok.
-  - Currently the Analogue Pocket does not match OEM hardware for the column scroll effect, so timing is off a little.
+  - Analogue Pocket (currently)
+    - Game Boy cart / cores do not match OEM hardware timing, so column scroll effect is a little off.
+    - Megaduck core [Audio implementation is a little off](https://github.com/spiritualized1997/openFPGA-Megaduck/issues/2) as is the column scroll effect.
 
 
 ### MegaDuck
