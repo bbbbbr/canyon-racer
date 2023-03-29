@@ -81,7 +81,7 @@ void init(void) {
 
 
 
-void main() {
+void main(void) {
 
     init();
     game_state = GAME_STATE_STARTUP_CREDITS;
