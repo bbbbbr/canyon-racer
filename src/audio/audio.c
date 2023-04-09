@@ -91,7 +91,7 @@ void audio_vbl_isr(void) {
 
     // Allow nested interrupts for this portion of VBL to allow
     // Stat LCD (Parallax Effect) ISR to interrupt it if needed
-   __asm__("EI");
+   enable_interrupts();
 
     #ifdef VISUAL_DEBUG_BENCHMARK_AUDIO
         // VISUAL BENCHMARK END
