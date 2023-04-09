@@ -15,7 +15,8 @@
 #include "common.h"
 
 #define FADE_DELAY_NORM       (70u)
-#define FADE_DELAY_HELP       (120u)
+#define FADE_DELAY_HELP_IN    (40u)   // Faster fade while FX are running
+#define FADE_DELAY_HELP_OUT   (120u)
 #define FADE_DELAY_INTRO      (40u)  // Little faster than usual
 #define FADE_DELAY_FX_RUNNING (15u)  // BG FX use a lot of CPU idle time, so delay between fade steps is smaller
 #define FADE_DELAY_STATE_RESTORE_OUT (15u) // Short delay fading out

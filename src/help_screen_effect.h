@@ -9,9 +9,10 @@
 // For the purposes of this project "Share Alike" shall also include
 // distribution of the source code and any changes to it.
 
-#ifndef _INTRO_CREDITS_H
-#define _INTRO_CREDITS_H
+#ifndef _HELP_SCREEN_EFFECT_H
+#define _HELP_SCREEN_EFFECT_H
 
-void intro_credits_show(void);
+void help_effect_init(void);
+void help_effect_run(void);
 
 #endif

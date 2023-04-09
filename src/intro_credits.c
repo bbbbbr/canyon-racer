@@ -27,13 +27,19 @@
 #include "map_fx.h"
 #include "intro_credits.h"
 
-
 #include "../res/intro_credits_data.h"
 #include "../res/intro_credits_map_comp.h"
 #include "../res/intro_credits_tiles_comp.h"
 
-volatile uint8_t scroll_x_amount;
-volatile uint8_t effect_y_line;
+
+#define EFFECT_Y_LINE_MAX        143u
+#define EFFECT_START_Y             0u
+#define EFFECT_SCX_AMOUNT          4u
+#define EFFECT_TRANSITION_HEIGHT  32u
+
+
+static volatile uint8_t scroll_x_amount;
+static volatile uint8_t effect_y_line;
 
 static void intro_credits_effect_init(void);
 static void intro_credits_effect_run(void);
@@ -72,7 +78,8 @@ void intro_credits_show(void) {
     // Installs LCD and Music VBL ISRs
     intro_credits_effect_init();
 
-    // Fades in and then runs until effect completes
+    // Fades in and then runs until effect completes,
+    // then disables LCD ISR and removes VBL ISR
     fade_in(FADE_DELAY_INTRO);
     intro_credits_effect_run();
 

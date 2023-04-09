@@ -23,6 +23,8 @@
 #include "fade.h"
 #include "cartsave.h"
 
+#include "help_screen_effect.h"
+
 #include "../res/help_screen_data.h"
 #include "../res/help_screen_map_comp.h"
 #include "../res/help_screen_tiles_comp.h"
@@ -31,6 +33,7 @@
 void help_screen_run(void) {
 
     HIDE_SPRITES;
+    mapfx_isr_lcd_disable();
 
     // Clear flag that shows help very first time user plays game
     if (state.game_settings.help_never_shown) {
@@ -57,9 +60,14 @@ void help_screen_run(void) {
                   (help_screen_data_HEIGHT / help_screen_data_TILE_H),
                   decomp_buf);
 
-    fade_in(FADE_DELAY_HELP);
+    // Installs LCD and VBL ISRs
+    help_effect_init();
+
+    // Fades in and then runs until effect completes,
+    // then disables LCD ISR and removes VBL ISR
+    fade_in(FADE_DELAY_HELP_IN);
+    help_effect_run();
 
     waitpadticked_lowcpu(J_ANY);
-
-    fade_out(FADE_DELAY_HELP);
+    fade_out(FADE_DELAY_HELP_OUT);
 }
