@@ -15,9 +15,9 @@ Downloads and online playable version are at:
 
 
 ### Game Play
-A short (yet infinite), very simple, kinda hard demo game with cool FX and music.
+A very simple, kinda hard mini game with cool FX and music.
 
-- Guide the racer through the canyon without crashing into walls and jump over rocks.
+- Guide the racer through canyon walls and over rocks without crashing.
 - Create Save States and Rewind to them after crashing (both actions use up a Life).
 - Collect `+1` items to gain more Lives.
 
