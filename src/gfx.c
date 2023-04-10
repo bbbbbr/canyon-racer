@@ -26,18 +26,17 @@
 #include "../res/sprite_ship.h"
 
 
-// TODO: move to gfx.x
 uint8_t init_gfx_bg_mapfx(uint8_t bg_next_free_tile) {
 
     set_bkg_data(map_canyon_TILE_ORIGIN, map_canyon_TILE_COUNT, map_canyon_tiles);
 
+    // If CGB mode is enabled in the header, then enable compat code below.
+    // However, if it is, then timing needs to be adjusted in Vertical Parallax FX ISR
     // if (_cpu == CGB_TYPE) {
     //     // Set CGB Palette
     //     cgb_compatibility();
     // }
 
-    // TODO: Do this right with a full size map?
-    // Or just fill_bkg_tiles()
     set_bkg_tiles(0,0, map_canyon_WIDTH / map_canyon_TILE_W, map_canyon_HEIGHT / map_canyon_TILE_H, map_canyon_map);
     bg_next_free_tile += map_canyon_TILE_COUNT;
 
@@ -55,7 +54,6 @@ uint8_t init_gfx_sprites_gameplay(uint8_t spr_next_free_tile) {
     spr_next_free_tile += sprite_ship_TILE_COUNT + sprite_obstacles_TILE_COUNT + tiles_font_nums_TILE_COUNT;
 
 
-    // TODO: move to after game start
     // Score digits readout
     for (int c = 0u; c < SCORE_DIGITS; c++) {
         set_sprite_tile(SPR_ID_SCORE_START + c, SPR_TILES_FONTNUMS_DIGIT_0);

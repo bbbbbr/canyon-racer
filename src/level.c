@@ -42,7 +42,7 @@ static const level_entry level_data[] = {
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_EASY, OBST_INC_SPD_EASY),
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_NORM,  OBST_QTY_LVL_EASY, OBST_DIST_MIN_MED,  OBST_INC_SPD_EASY),
 
-// TODO: DEBUG
+// DEBUG:
 #ifdef DEBUG_FAST_LEVELS_EARLY
     LEVEL_ENTRY(MAPFX_LVL_EASY,   MAPFX_SCX_FAST, OBST_QTY_LVL_MED,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
     LEVEL_ENTRY(MAPFX_LVL_MED_LO, MAPFX_SCX_FAST, OBST_QTY_LVL_MED,  OBST_DIST_MIN_EASY, OBST_INC_SPD_HARD),
@@ -84,11 +84,6 @@ static const level_entry level_data[] = {
 // OPTIMIZE: inline using global var access if needed
 void level_update_vars(void) {
 
-    // TODO:
-    // - obstacle range mask
-    // - Level increment threshold dial in
-    // - obstacle up/down (floating / hidden / blacking?)
-
     // Update state.cur_level to new level data (includes obstacle state.cur_level)
     state.cur_level = level_data[state.game_level];
 
@@ -107,7 +102,7 @@ void level_init(void) {
     state.level_count_till_next = LEVEL_OBSTACLES_TILL_NEXT_RESET;
     state.game_level = GAME_LEVEL_RESET;
 
-    // TODO: FOR DEBUG
+    // DEBUG:
     // state.game_level = GAME_LEVEL_MAX;
 
     level_update_vars();
@@ -138,5 +133,5 @@ void level_increment(void) {
         audio_sfx_play(SFX_LEVEL_UP);
 
     // TODO: flash notice / etc on level up
-    //  - giving objects a chance to clear off the screen maybe? - with timeout?
+    //  - giving objects a chance to clear off the screen maybe? - straight segment - with timeout?
 }

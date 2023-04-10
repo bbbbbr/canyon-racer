@@ -31,7 +31,7 @@
 //
 //
 // == Vertical Parallax clock timing ==
-// TODO: Analogue Pocket .pocket format special timing & #define?
+// OPTIONAL: Analogue Pocket .pocket format special timing & #define? <- No, maybe their core timing will get fixed eventually
 //
 // == Interrupt Activity ==
 //
@@ -208,19 +208,12 @@ void vblank_isr_map_reset (void) {
         // TODO: optimize: make this less expensive to run in-frame
         if (state.p_scx_cur_table == state.p_scx_table_stop) {
             // End of table reached, transition to next table -> on the next frame
-            // TODO: optimize if needed (could just bump a pointer)
-            // TODO: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
+
+            // OPTIONAL: find a way to queue up changes from outside ISR but not relying on code sprinkled in every possible active state?
             //       could do a flag for "load next from queue", in queue is table entry + flag
             //        --> mapfx_scx_next_queued
             //            - apply it, and generate next  randomly with allowed override and save
-                    // TODO:
-                    //  mapfx_scx_next_queued can be overwritten manually outside of ISR to set transition segments
-                    //
-                    // state.p_scx_cur_table  = scx_tables[mapfx_scx_next_queued].start_address;
-                    // state.p_scx_table_stop = scx_tables[mapfx_scx_next_queued].end_address;
-                    // mapfx_scx_next_queued  =  (rand() & state.mapfx_level_mask) + state.mapfx_level_base;
             uint8_t next     =  (rand() & state.mapfx_level_mask) + state.mapfx_level_base;
-            // next     =  SCX_TABLE_STR_STR;
             state.p_scx_cur_table  = scx_tables[next].start_address;
             state.p_scx_table_stop = scx_tables[next].end_address;
             // ... frame_base set above

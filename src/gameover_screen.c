@@ -26,14 +26,12 @@
 
 #include "gameover_screen.h"
 
-// TODO: wait for obstacles to clear off screen? or "Sink" them out to make it faster
 
 // Start gameplay sprites after score sprite (overwrites obstacles/ship/etc)
 #define SPR_ID_GAME_OVER_START (SPR_ID_FREE_START)
 
 
-// TODO: Finalize which table to use. Movement looks a little chunkier in non-DMG gameover mode
-// TODO: OPTIMIZE: The bit shifting for the smaller table might be pushed out to GAME_OVER_BIT_SHIFT for more savings
+// OPTIONAL: Smaller table, movement is a little chunkier
 // #define USE_SIN_TABLE_128_BYTES_HALF_SIZE
 
 #ifndef USE_SIN_TABLE_128_BYTES_HALF_SIZE
@@ -102,7 +100,7 @@ static void gameover_screen_initgfx(uint8_t spr_next_free_tile) {
     hide_sprites_range(GAME_OVER_SPR_COUNT_START, MAX_HARDWARE_SPRITES);
 
     // Set sprite tile ID's and clear properties
-    // TODO: use a map for this instead so E can be de-duplicated?
+    // OPTIONAL: use a map for this instead so tile/letter "E" can be de-duplicated?
     uint8_t tile_counter = 0;
     for (uint8_t c = GAME_OVER_SPR_COUNT_START; c < GAME_OVER_SPR_COUNT_MAX; c++) {
         shadow_OAM[c].tile = spr_next_free_tile + gameover_sprite_map[tile_counter++];

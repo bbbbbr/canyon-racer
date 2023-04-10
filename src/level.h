@@ -15,8 +15,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define LEVEL_OBSTACLES_TILL_NEXT  10u // Gets hard a lot faster // TODO: Finalize
-// #define LEVEL_OBSTACLES_TILL_NEXT  20u // This works if there are more levels
+#define LEVEL_OBSTACLES_TILL_NEXT  10u // Gets hard a lot faster  // 20u is more chill
 #define LEVEL_OBSTACLES_TILL_NEXT_RESET (LEVEL_OBSTACLES_TILL_NEXT)
 
 

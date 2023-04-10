@@ -50,8 +50,6 @@ void intro_credits_show(void) {
 
     set_1bpp_colors(DMG_BLACK, DMG_WHITE);
 
-    // TODO: More interesting load sequence later if possible
-
     // == Compressed 1bpp assets version ==
     // 1bpp tiles and map versions of gb_decompress.* would be nice
     gb_decompress(intro_credits_tiles_comp, decomp_buf);

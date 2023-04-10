@@ -52,7 +52,6 @@ void entity_ship_center_in_canyon(void) {
     state.ship_x.w = (ship_canyon_left_x + (CANYON_WIDTH - sprite_ship_WIDTH) / 2) << 8;
 }
 
-// TODO: move to header
 // Roughly "classic" version
 // All values used with fixed point 8.8
 #define SHIP_JUMP_GRAVITY              32   // Gravity per frame
@@ -148,7 +147,6 @@ static void ship_handle_collisions(void) {
 }
 
 
-// TODO: split to more functions if there is enough overhead left
 uint8_t entity_ship_update(uint8_t oam_high_water) {
 
     ship_sprite_sel = SHIP_SPR_DEFAULT;
