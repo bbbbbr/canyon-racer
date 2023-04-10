@@ -1,0 +1,45 @@
+
+...........................Canyon Racer...........................
+                                              
+== Which ROM File to Use? ==                         
+
+Most people will want to use: gb/canyon_racer_0.7.5_mbc5.gb
+
+
+== Game Boy ==
+Standard MBC5 compatible ROM, use with a cart that has 8k (save) SRAM
+- gb/canyon_racer_0.7.5_mbc5.gb
+
+MBC5 compatible ROM with *RUMBLE* support, use with a cart that has 8k save (save) SRAM
+- gb/canyon_racer_0.7.5_mbc5_rumble.gb
+
+Bare 32K cart ROM, no MBC and no (save) SRAM
+- gb/canyon_racer_0.7.5_32k_nosave.gb
+
+For use with special Ferrante Crafts 31K ROM + 1K Save flash carts
+- gb/canyon_racer_0.7.5_31k_1kflash.gb
+
+
+== Analogue Pocket ==
+Standard MBC5 compatible ROM, use with a cart that has 8k (save) SRAM:
+- pocket/canyon_racer_0.7.5_mbc5.pocket
+
+MBC5 compatible ROM with *RUMBLE* support, use with a cart that has 8k save (save) SRAM:
+- pocket/canyon_racer_0.7.5_mbc5_rumble.pocket
+
+Bare 32K cart ROM, no MBC and no (save) SRAM:
+- pocket/canyon_racer_0.7.5_32k_nosave.pocket
+
+
+== Mega Duck ==
+Safe to use with unmodified OEM MegaDuck console screens.
+Bare 32K cart such as the kind Inside Gadgets carries :
+- nofx.duck/canyon_racer_0.7.5_32k_nosave.nofx.duck
+
+** WARNING **
+THIS VERSION MAY CAUSE PERMANENT STUCK PIXELS on some unmodified
+OEM MegaDuck screens. It is safe to use in emulators.
+Bare 32K cart such as the kind Inside Gadgets carries :
+ - duck/canyon_racer_0.7.5_32k_nosave.duck
+
+
