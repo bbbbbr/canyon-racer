@@ -56,6 +56,7 @@ LCCFLAGS += -Wm-yn"CANYONRACER"
 LCCFLAGS += -Wm-yk01
 
 
+# OPTIONAL: If more speed/ROM is needed can turn up optimization (at compile speed cost)
 CFLAGS += -DCART_$(CART_TYPE) -D_MAP_FX_$(MAP_FX_TOGGLE)
 # CFLAGS += -Wf--max-allocs-per-node50000
 # CFLAGS += -Wf--max-allocs-per-node150000 # diminishing (but present) size returns after this
