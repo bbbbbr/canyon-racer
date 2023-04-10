@@ -7,3 +7,5 @@ build/
 *.sav
 !res/source_audio/*.sav
 *.ini
+package/
+itch.io/

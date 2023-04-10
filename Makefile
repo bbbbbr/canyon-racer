@@ -4,6 +4,7 @@ ifndef GBDK_HOME
 	GBDK_HOME = ../../gbdk2020/gbdk-2020-git/build/gbdk/
 endif
 
+ZIP = zip
 PNG2ASSET = $(GBDK_HOME)bin/png2asset
 GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
@@ -149,14 +150,16 @@ AUDIODIR       = $(SRCDIR)/audio
 SFXDIR         = $(SRCDIR)/audio/sfx
 SONGSDIR       = $(SRCDIR)/audio/songs
 CART_TYPE_DIR  = $(SRCDIR)/cart_$(CART_TYPE_INC_DIR)
+PACKAGE_DIR    = package
+BUILD_DIR      = build
 
 # Add audio dir to include path
 CFLAGS += -Wf-I"$(AUDIODIR)/"
 
 OBJDIR      = obj/$(EXT)/$(CART_TYPE)
 RESDIR      = res
-BINDIR      = build/$(EXT)
-MKDIRS      = $(OBJDIR) $(BINDIR) # See bottom of Makefile for directory auto-creation
+BINDIR      = $(BUILD_DIR)/$(EXT)
+MKDIRS      = $(OBJDIR) $(BINDIR) $(BUILD_DIR) $(PACKAGE_DIR) # See bottom of Makefile for directory auto-creation
 
 BINS	      = $(OBJDIR)/$(PROJECTNAME).$(EXT)
 CSOURCES      = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c)))
@@ -225,6 +228,18 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
 	$(LCC) $(LCCFLAGS) $(CFLAGS) -o $(BINDIR)/$(PROJECTNAME).$(EXT) $(OBJS) $(OBJ_MUSIC_DRIVER_COMPILED)
+# Optional Packaging
+# - at start of line ignores error code for zip, which returns non-success if file was already "up to date"
+# -j removes paths
+ifdef ADD_ZIP
+	-cd $(BUILD_DIR); $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip $(EXT)/$(PROJECTNAME).$(EXT)
+	-$(ZIP) -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip README.md
+endif
+# Optional Cart flash
+# 6. insideGadgets 2 MByte 128KB SRAM Flash Cart (ULP) (Optional Rumble)
+ifdef FLASH_CART
+	-cd tools/gbxcart_gb; ./gbxcart_rw_flasher_v1.50 ../../$(BUILD_DIR)/$(EXT)/$(PROJECTNAME).$(EXT) 42
+endif
 
 
 # Rule to absorb .h header files which have been removed but may be
@@ -323,6 +338,16 @@ carts:
 	${MAKE} CART_TYPE=mbc5_rumble
 	${MAKE} CART_TYPE=32k_nosave
 
+package: zip-carts
+
+zip-carts:
+	${MAKE} ADD_ZIP=YES  CART_TYPE=31k_1kflash
+	${MAKE} ADD_ZIP=YES  CART_TYPE=mbc5
+	${MAKE} ADD_ZIP=YES  CART_TYPE=mbc5_rumble
+	${MAKE} ADD_ZIP=YES  CART_TYPE=32k_nosave
+
+zip-clean:
+	rm -f $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip
 
 carts-clean:
 	${MAKE} CART_TYPE=31k_1kflash clean
@@ -332,12 +357,12 @@ carts-clean:
 
 
 run:
-	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar build/gb/$(PROJECTNAME).gb &
+	java -jar ~/gbdev/Emulators/Emulicious/Emulicious.jar $(BUILD_DIR)/gb/$(PROJECTNAME).gb &
 
 romusage:
 # Ignores failure if romusage not in path
-	-romusage build/gb/$(PROJECTNAME).noi -sRd -g $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
-	-romusage build/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E > romusage.txt
+	-romusage $(BUILD_DIR)/gb/$(PROJECTNAME).noi -sRd -g $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E
+	-romusage $(BUILD_DIR)/gb/$(PROJECTNAME).noi $(ROMUSAGE_flags) -e:STACK:DEFF:100 -e:SHADOW_OAM:C000:A0 -E > romusage.txt
 
 # Needs stock inside gadgets firmware to work, can use flashgbx ui to swap it out if needed
 # Make sure 32K cart is specified
@@ -345,10 +370,13 @@ flashduck:
 	${MAKE} CART_TYPE=32k_nosave flashduck_run
 
 flashduck_run:
-	tools/gbxcart_rw_megaduck_32kb_flasher build/duck/$(PROJECTNAME).duck &
+	-cd tools/gbxcart_duck; ./gbxcart_rw_megaduck_32kb_flasher $(BUILD_DIR)/duck/$(PROJECTNAME).duck &
+
+flashcart:
+	${MAKE} FLASH_CART=YES
 
 save-clear:
-	rm -f build/gb/$(PROJECTNAME).sav
+	rm -f $(BUILD_DIR)/gb/$(PROJECTNAME).sav
 
 clean:
 	@echo Cleaning
