@@ -66,7 +66,7 @@ static inline void queue_next(void) {
     }
     else {
         state.obstacles_next_countdown = (rand() & OBSTACLE_NEXT_COUNT_BITMASK) + state.cur_level.obst_dist_min;
-        // TODO: DEBUG: force distance to min distance
+        // FOR DEBUG: force distance to min distance
         // state.obstacles_next_countdown = state.cur_level.obst_dist_min;
         state.obstacles_next_isdouble = false;
     }
@@ -94,8 +94,6 @@ void entity_obstacles_init(void) {
 }
 
 
-
-// TODO: MAYBE: OPTIMIZE: make oam_high_water global and don't pass it between functions
 uint8_t entity_obstacles_update(uint8_t oam_high_water) {
 
 
@@ -156,12 +154,14 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             idx--;
     }
 
+    return (oam_high_water);
+}
 
-    // TODO: move to function if there is overhead for it:
-    // entity_obstacles_check_spawn_new()
+
+void entity_obstacles_check_spawn_new(void) {
 
     // Add more obstacles if needed
-    // But only when the in normal gameplay -- TODO: Split ship motion state from game state
+    // But only when the in normal gameplay
     if ((state.obstacles_active_count != state.cur_level.obst_qty_max) &&
         (SHIP_STATE_GET() & SHIP_BITS_PLAYER_ACTIVE)) {
 
@@ -178,7 +178,7 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             if (state.obstacles_active_last == OBSTACLES_COUNT_WRAP)
                 state.obstacles_active_last = 0;
 
-            // TODO: scroll screen down so starting at zero doesn't cause sprites to pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
+            // TODO: OPTIONAL: scroll screen down so starting at zero doesn't cause sprites to pop on-screen? If so, adjust OBSTACLE_REMOVE_Y
             state.obstacles[state.obstacles_active_last].y.w = OBSTACLE_SPAWN_Y;
 
             // Override the obstacle and replace it with the queued item
@@ -197,6 +197,4 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
             queue_next();
         }
     }
-
-    return (oam_high_water);
 }

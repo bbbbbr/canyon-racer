@@ -38,9 +38,8 @@
 
 #include "../res/sprite_ready.h"
 
-// TODO: make global?
-uint8_t oam_high_water;
-uint8_t oam_high_water_prev;
+static uint8_t oam_high_water;
+static uint8_t oam_high_water_prev;
 
 
 
@@ -149,7 +148,6 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         // == Sprites ==
         oam_high_water = SPR_ID_FREE_START;
 
-        // TODO: consider moving into functions
         switch ((GET_KEYS_TICKED(BUTTON__STATE_SAVE | BUTTON__PAUSE))) {
             case BUTTON__STATE_SAVE:
                 // If still in game play save the state
@@ -163,6 +161,8 @@ void gameplay_run(uint8_t spr_next_free_tile) {
         }
 
         oam_high_water = entity_obstacles_update(oam_high_water);
+        entity_obstacles_check_spawn_new();
+
         oam_high_water = entity_ship_update(oam_high_water);
 
         // Clamp to limit
