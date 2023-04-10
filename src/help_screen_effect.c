@@ -142,10 +142,10 @@ static void help_effect_vbl_isr(void) {
         cp  a, (hl)
         jr  c, .non_stretch_region_show_blank_line
 
-        // if ((LY_REG > _effect_y_line_mirror) -> no stretch region
+        // if ((LY_REG > effect_y_line_mirror) -> no stretch region
         ld  hl, #_effect_y_line_mirror
         cp  a, (hl)
-        jr  nc, .non_stretch_region_show_blank_line  // TODO: this is off by -1 (currently LY_REG >= effect_y_line_mirror) // possible to remove this?
+        jr  nc, .non_stretch_region_show_blank_line  // TODO: is this off by -1? (currently LY_REG >= effect_y_line_mirror)
 
 
         .stretch_fx_region:
@@ -206,7 +206,7 @@ void help_effect_init(void) {
 
     CRITICAL {
         // Fire interrupt at start of HBlank (Mode 0) right before rendering
-        STAT_REG = STATF_MODE00;  // TODO
+        STAT_REG = STATF_MODE00;
         add_VBL(help_effect_vbl_isr); // Resets counters each frame and increments effect
     }
 

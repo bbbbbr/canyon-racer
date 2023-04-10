@@ -33,7 +33,6 @@
 void help_screen_run(void) {
 
     HIDE_SPRITES;
-    mapfx_isr_lcd_disable();
 
     // Clear flag that shows help very first time user plays game
     if (state.game_settings.help_never_shown) {
@@ -46,8 +45,6 @@ void help_screen_run(void) {
     // Reset scroll in case it's off due to previous background fx
     SCY_REG = 0u;
     set_1bpp_colors(DMG_BLACK, DMG_WHITE);
-
-    // TODO: More interesting load sequence later if possible
 
     // == Compressed 1bpp assets version ==
     // 1bpp tiles and map versions of gb_decompress.* would be nice
