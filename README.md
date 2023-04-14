@@ -112,7 +112,7 @@ There is additional timing variation based on the opcode being executed at the t
 This demo game tries to work with those limitations and does not compensate for artifacts.
 
 ### Sine Waves
-In addition to the Vertical parallax, scrolling horizontal sine waves of various sizes are used to distort the background. This looks better and gives the canyon a shape to navigate through.
+In addition to the Vertical parallax, scrolling horizontal sine waves are used to distort the background. This looks better and gives the canyon a shape to navigate through. The different sine wave shapes and sizes are randomly stitched together ​from a set of pre-computed tables and scrolled through to give the sensation of movement (and an endless variable course to play on).
 
 #### How They Look
 The two separate effects used to create the canyon environment:
