@@ -102,7 +102,13 @@ uint8_t entity_obstacles_update(uint8_t oam_high_water) {
     uint8_t idx = state.obstacles_active_last;
     for (uint8_t c = state.obstacles_active_count; c != 0; c--) {
 
-        state.obstacles[idx].y.w += state.cur_level.obst_speed;
+        #ifdef DEBUG_COLLISION_HITBOXES
+            // Freezes obstacle once it reaches mid-screen
+            if (state.obstacles[idx].y.h < 100u)
+                state.obstacles[idx].y.w += state.cur_level.obst_speed;
+        #else
+            state.obstacles[idx].y.w += state.cur_level.obst_speed;
+        #endif
         uint8_t y_pos = state.obstacles[idx].y.h;
         uint8_t object_type = state.obstacles[idx].type;
 
