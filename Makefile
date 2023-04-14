@@ -77,7 +77,7 @@ LCCFLAGS_gg      =
 
 # MBC5 - *NO* Rumble
 ifeq ($(CART_TYPE),mbc5)
-	TARGETS=gb # pocket  # Turn of .pocket during development for faster compile times
+	TARGETS=gb pocket
 	LCCFLAGS_gb      += -Wl-yt0x1B -Wl-ya1 # Set an MBC for banking:0x1B 	MBC-5 	SRAM 	BATTERY 		8 MB
 	LCCFLAGS_pocket  += -Wl-yt0x1B -Wl-ya1 # Same as for .gb
 	CART_TYPE_INC_DIR = mbc5
@@ -85,7 +85,7 @@ endif
 
 # MBC5 - *WITH* Rumble
 ifeq ($(CART_TYPE),mbc5_rumble)
-	TARGETS=gb # pocket  # Turn of .pocket during development for faster compile times
+	TARGETS=gb pocket
 	LCCFLAGS_gb      += -Wl-yt0x1E -Wl-ya1 # Set an MBC for banking:0x1E   MBC-5   SRAM   BATTERY   RUMBLE   8 MB
 	LCCFLAGS_pocket  += -Wl-yt0x1E -Wl-ya1 # Same as for .gb
 	CART_TYPE_INC_DIR = mbc5
@@ -233,7 +233,6 @@ $(BINS):	$(OBJS)
 # -j removes paths
 ifdef ADD_ZIP
 	-cd $(BUILD_DIR); $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip $(EXT)/$(PROJECTNAME).$(EXT)
-	-$(ZIP) -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip README.md
 endif
 # Optional Cart flash
 # 6. insideGadgets 2 MByte 128KB SRAM Flash Cart (ULP) (Optional Rumble)
@@ -345,6 +344,9 @@ zip-carts:
 	${MAKE} ADD_ZIP=YES  CART_TYPE=mbc5
 	${MAKE} ADD_ZIP=YES  CART_TYPE=mbc5_rumble
 	${MAKE} ADD_ZIP=YES  CART_TYPE=32k_nosave
+	-$(ZIP) -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip README.md
+# -j junk path
+	-$(ZIP) -j -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip info/Which\ ROM\ File\ To\ Use.txt
 
 zip-clean:
 	rm -f $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip
@@ -370,7 +372,7 @@ flashduck:
 	${MAKE} CART_TYPE=32k_nosave flashduck_run
 
 flashduck_run:
-	-cd tools/gbxcart_duck; ./gbxcart_rw_megaduck_32kb_flasher $(BUILD_DIR)/duck/$(PROJECTNAME).duck &
+	-cd tools/gbxcart_duck; ./gbxcart_rw_megaduck_32kb_flasher ../../$(BUILD_DIR)/duck/$(PROJECTNAME).duck &
 
 flashcart:
 	${MAKE} FLASH_CART=YES
