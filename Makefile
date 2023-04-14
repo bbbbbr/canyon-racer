@@ -9,7 +9,7 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
 
-VERSION=0.7.5
+VERSION=0.7.6
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
@@ -259,8 +259,14 @@ assets:
 	# Canyon BG Map
 	$(PNG2ASSET) $(RESDIR)/map_canyon.png -map -noflip
 	# Ship
-	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
-	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 24  -spr8x16 -c $(RESDIR)/sprite_ship.c
+	# -pw/h is hitbox
+	# px/y -8, -16 offset is to remove GB hardware sprite offset
+	# Actual ship is (0,0)-(31, 25)
+	# Make hitbox forgiving (8 x 18), see entity_ship.h for alignement details
+	$(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 17  -spr8x16 -c $(RESDIR)/sprite_ship.c
+	# Old, stricter hitbox:
+	# $(PNG2ASSET) $(RESDIR)/sprite_ship.png -sw 24 -sh 32 -px -8 -py -16 -pw 8 -ph 24  -spr8x16 -c $(RESDIR)/sprite_ship.c
+
 	# Obstacles
 	# -pw/h is hitbox, -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/sprite_obstacles.png -sw 32 -sh 16 -px -8 -py -16 -pw 32 -ph 8  -spr8x16 -c $(RESDIR)/sprite_obstacles.c

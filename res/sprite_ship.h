@@ -18,7 +18,7 @@
 #define sprite_ship_PIVOT_X -8
 #define sprite_ship_PIVOT_Y -16
 #define sprite_ship_PIVOT_W 8
-#define sprite_ship_PIVOT_H 24
+#define sprite_ship_PIVOT_H 17
 
 BANKREF_EXTERN(sprite_ship)
 

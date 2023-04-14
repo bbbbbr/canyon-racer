@@ -122,9 +122,12 @@
     #define OBSTACLE_HITBOX_X_ST__TYPE_ITEM_PLUS_1 ((sprite_obstacles_WIDTH / 4u) * 1u)
     #define OBSTACLE_HITBOX_X_END_TYPE_ITEM_PLUS_1 ((sprite_obstacles_WIDTH / 4u) * 3u)
 
-
-    #define OBSTACLE_HITBOX_Y_TOP    ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u)
-    #define OBSTACLE_HITBOX_Y_BOTTOM ((sprite_obstacles_PIVOT_H) + ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u))
+    // Obstacles are in top half of 8x16 sprites, so start hitbox at top, not centered
+    #define OBSTACLE_HITBOX_Y_TOP     (0u)
+    #define OBSTACLE_HITBOX_Y_BOTTOM  (OBSTACLE_HITBOX_Y_TOP + sprite_obstacles_PIVOT_H)
+    // Old, stricter hitbox:
+    // #define OBSTACLE_HITBOX_Y_TOP     ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u)
+    // #define OBSTACLE_HITBOX_Y_BOTTOM  ((sprite_obstacles_PIVOT_H) + ((sprite_obstacles_HEIGHT - sprite_obstacles_PIVOT_H) / 2u))
 
 
 extern const uint8_t obstacles_x_hitbox_left[];

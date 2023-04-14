@@ -81,10 +81,18 @@
 
 // ship_x & ship_y are in upper left of metasprite hit box (0, 8) of metasprite
 #define SHIP_HITBOX_X_LEFT   ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u)
-#define SHIP_HITBOX_X_RIGHT  ((sprite_ship_PIVOT_W) + ((sprite_ship_WIDTH - sprite_ship_PIVOT_W) / 2u))
+#define SHIP_HITBOX_X_RIGHT  (SHIP_HITBOX_X_LEFT + (sprite_ship_PIVOT_W))
 
-#define SHIP_HITBOX_Y_TOP    ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u)
-#define SHIP_HITBOX_Y_BOTTOM ((sprite_ship_PIVOT_H) + ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u))
+// Pivot W/H is hitbox size
+// Actual ship is (0,0)-(31, 25)
+// Make hitbox forgiving (8 x 17)
+// 8 pix buffer on sides, top has a little more padding than bottom since ship front is "hollowish"
+// Aligned to top instead of centered since ship isn't centered in gfx
+#define SHIP_HITBOX_Y_TOP       (5u)
+#define SHIP_HITBOX_Y_BOTTOM    (SHIP_HITBOX_Y_TOP + sprite_ship_PIVOT_H)
+// Old, stricter hitbox:
+// #define SHIP_HITBOX_Y_TOP    ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u)
+// #define SHIP_HITBOX_Y_BOTTOM ((sprite_ship_PIVOT_H) + ((sprite_ship_HEIGHT - sprite_ship_PIVOT_H) / 2u))
 
 #define SHIP_STATE_GET() (state.ship_state)
 #define SHIP_STATE_SET(value) (state.ship_state = value)
