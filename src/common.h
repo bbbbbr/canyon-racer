@@ -71,6 +71,8 @@ extern uint8_t decomp_buf[];
 
 // #define DEBUG_SKIP_INTRO_CREDITS
 
+// #define DEBUG_COLLISION_HITBOXES
+
 // ===========================
 
 #define DMG_MGB_LESS_BLUR_STYLE
