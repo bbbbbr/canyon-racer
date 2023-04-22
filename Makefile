@@ -357,6 +357,7 @@ zip-carts:
 	-$(ZIP) -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip README.md
 # -j junk path
 	-$(ZIP) -j -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip info/Which\ ROM\ File\ To\ Use.txt
+	-$(ZIP) -j -u $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip info/Changelog.md
 
 zip-clean:
 	rm -f $(PACKAGE_DIR)/canyon_racer_ROMs_$(VERSION).zip
