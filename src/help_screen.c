@@ -22,17 +22,25 @@
 #include "gfx.h"
 #include "fade.h"
 #include "cartsave.h"
+#include "stats.h"
 
-#include "help_screen_effect.h"
+#include "sound_test.h"
+
+#include "rotate_screen_effect.h"
 
 #include "../res/help_screen_data.h"
 #include "../res/help_screen_map_comp.h"
 #include "../res/help_screen_tiles_comp.h"
 
+#define HELP_SCREEN_BLANK_LINE_FOR_HIDING 10u // All black scanline for hiding in help screen map
 
 void help_screen_run(void) {
 
     HIDE_SPRITES;
+
+    __critical {
+         add_VBL(audio_vbl_isr);
+    }
 
     // Clear flag that shows help very first time user plays game
     if (state.game_settings.help_never_shown) {
@@ -58,13 +66,50 @@ void help_screen_run(void) {
                   decomp_buf);
 
     // Installs LCD and VBL ISRs
-    help_effect_init();
+    rotate_screen_effect_init(HELP_SCREEN_BLANK_LINE_FOR_HIDING);
 
     // Fades in and then runs until effect completes,
     // then disables LCD ISR and removes VBL ISR
     fade_in(FADE_DELAY_HELP_IN);
-    help_effect_run();
+    rotate_screen_effect_run();
 
-    waitpadticked_lowcpu(J_ANY);
+    bool open_sound_test = false;
+    bool loop_run = true;
+
+    while(loop_run) {
+        // waitpadticked_lowcpu(J_ANY);
+        vsync();
+
+        UPDATE_KEYS();
+
+        if (KEY_PRESSED(J_START | J_A | J_B | J_UP)) {
+            // All key presses except SELECT exit the help screen after processing below
+            loop_run = false; // Exit
+            switch (KEYS()) {
+
+                // Enter sound test menu
+                case (J_SELECT | J_B):
+                    open_sound_test = true;
+                    break;
+
+                // Hold Select + Press Start to reset high-score
+                case (J_SELECT | J_UP):
+                    // Then de-install audio vbl isr
+                    audio_sfx_play(SFX_RESET_HISCORE);
+
+                    stats_hi_score_reset();
+                    break;
+
+            }
+        }
+
+    }
     fade_out(FADE_DELAY_HELP_OUT);
+
+    if (open_sound_test)
+        sound_test_run();
+
+    __critical {
+         remove_VBL(audio_vbl_isr);
+    }
 }

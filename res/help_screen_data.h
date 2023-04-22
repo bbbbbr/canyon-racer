@@ -11,7 +11,7 @@
 #define help_screen_data_TILE_H 8
 #define help_screen_data_WIDTH 160
 #define help_screen_data_HEIGHT 144
-#define help_screen_data_TILE_COUNT 68
+#define help_screen_data_TILE_COUNT 85
 #define help_screen_data_PALETTE_COUNT 1
 #define help_screen_data_COLORS_PER_PALETTE 2
 #define help_screen_data_TOTAL_COLORS 2
@@ -20,7 +20,7 @@
 BANKREF_EXTERN(help_screen_data)
 
 extern const palette_color_t help_screen_data_palettes[2];
-extern const uint8_t help_screen_data_tiles[544];
+extern const uint8_t help_screen_data_tiles[680];
 
 extern const unsigned char help_screen_data_map[360];
 #define help_screen_data_map_attributes help_screen_data_map

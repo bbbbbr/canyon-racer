@@ -19,7 +19,7 @@
 #include "map_fx.h"
 
 
-#define EFFECT_HIDE_LINE      10u // Map scanline to use as Blank/Hidden
+uint8_t effect_hide_line; // Map scanline to use as Blank/Hidden
 
 // The speed the flip reveal effect visible region increases (1 = slow, larger = faster/coarser)
 #define EFFECT_DIR_UP          (uint8_t)-4
@@ -59,7 +59,7 @@ static uint8_t effect_done;
 
 // VBL ISR portion of effect
 // Moves effect starting scanline up and down
-static void help_effect_vbl_isr(void) {
+static void rotate_screen_effect_vbl_isr(void) {
 
     // Update the effect start for the new frame
     effect_y_line += effect_line_inc;
@@ -113,12 +113,12 @@ static void help_effect_vbl_isr(void) {
 #ifndef INTRO_EFFECT_ASM_VERSION
 
     // Effect might be able to run without a double buffer...
-    static void help_effect_lcd_isr(void) __interrupt {
+    static void rotate_screen_effect_lcd_isr(void) __interrupt {
 
         // Hide above the effect line and it's mid-screen mirror point
         if ((LY_REG < effect_y_line) || (LY_REG > effect_y_line_mirror)) {
             // Scroll to blank line
-            SCY_REG = CALC_SCY_TO_SHOW_MAP_Y_AT_SCANLINE_N(EFFECT_HIDE_LINE, LY_REG);
+            SCY_REG = CALC_SCY_TO_SHOW_MAP_Y_AT_SCANLINE_N(effect_hide_line, LY_REG);
         } else {
             // Select source Map Y line to show in stretched render region, then increment to next source line
             SCY_REG = CALC_SCY_TO_SHOW_MAP_Y_AT_SCANLINE_N((uint8_t)(map_y_line_to_display >> 8), LY_REG);
@@ -130,7 +130,7 @@ static void help_effect_vbl_isr(void) {
 
     // Budget: 456
     // ASM version to ensure it has no absolute jumps and can be relocated
-    static void help_effect_lcd_isr(void) __naked {
+    static void rotate_screen_effect_lcd_isr(void) __naked {
         __asm \
 
         push af
@@ -166,17 +166,17 @@ static void help_effect_vbl_isr(void) {
         adc a, (hl)        // HL has #_map_y_line_to_display + 1
         ld  (hl), a
 
-        jr .help_effect_exit
+        jr .rotate_screen_effect_exit
 
 
         .non_stretch_region_show_blank_line:
         // SCY = map_y_of_blank_line - LY_REG
         ld  l, a     // a has LY_REG
-        ld  a, #10 //#EFFECT_HIDE_LINE
+        ld  a, (#_effect_hide_line)
         sub a, l
         ldh (_SCY_REG), a
 
-        .help_effect_exit:
+        .rotate_screen_effect_exit:
         pop hl
         pop af
         reti
@@ -187,12 +187,14 @@ static void help_effect_vbl_isr(void) {
 #endif // #ifdef INTRO_EFFECT_ASM_VERSION
 
 // For calculating Effect ISR function length
-static void help_effect_lcd_isr__end(void) __naked { }
+static void rotate_screen_effect_lcd_isr__end(void) __naked { }
 
 
 
 // Initialize the LCD Effect and install the ISRs (LCD + Music)
-void help_effect_init(void) {
+void rotate_screen_effect_init(uint8_t blank_line_for_hiding) {
+
+    effect_hide_line = blank_line_for_hiding;
 
     effect_y_line     = EFFECT_INIT_Y;
     effect_line_inc   = EFFECT_INIT_INC;
@@ -202,12 +204,12 @@ void help_effect_init(void) {
 
     mapfx_isr_lcd_disable();
     // Copy the Effect LCD ISR into the RAM buffer the interrupt executes from
-    copy_lcd_isr_to_isr_ram((void *)&help_effect_lcd_isr, (void *)&help_effect_lcd_isr__end);
+    copy_lcd_isr_to_isr_ram((void *)&rotate_screen_effect_lcd_isr, (void *)&rotate_screen_effect_lcd_isr__end);
 
     CRITICAL {
         // Fire interrupt at start of HBlank (Mode 0) right before rendering
         STAT_REG = STATF_MODE00;
-        add_VBL(help_effect_vbl_isr); // Resets counters each frame and increments effect
+        add_VBL(rotate_screen_effect_vbl_isr); // Resets counters each frame and increments effect
     }
 
     // Wait until just after the start of the next frame before enabling effect
@@ -218,7 +220,7 @@ void help_effect_init(void) {
 
 // Runs until effect completes, turns off effect and deinstalls vbl handler when done
 // Loops until effect_y_line reaches top of the screen
-void help_effect_run(void) {
+void rotate_screen_effect_run(void) {
 
     volatile uint8_t done;
 
@@ -230,7 +232,7 @@ void help_effect_run(void) {
 
     mapfx_isr_lcd_disable();
     CRITICAL {
-        remove_VBL(help_effect_vbl_isr);
+        remove_VBL(rotate_screen_effect_vbl_isr);
     }
     SCY_REG = 0u; // Restore default scy value
 }

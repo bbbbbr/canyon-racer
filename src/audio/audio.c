@@ -38,9 +38,6 @@ extern const hUGESong_t music_gameplay;
 extern const hUGESong_t music_gameover;
 extern const hUGESong_t music_credits;
 
-uint8_t sfx_test_counter = 0u;
-uint8_t song_test_counter = 0u;
-
 const uint8_t audio_fade_steps[] = {0b00000000, // Sound off
                                     0b00010001,
                                     0b00100010,
@@ -76,6 +73,9 @@ const hUGESong_t * song_list[] = {
     &music_credits
 };
 
+
+const uint8_t sfx_list_max = ARRAY_LEN(sfx_list) - 1u;
+const uint8_t music_list_max = ARRAY_LEN(song_list) -1u;
 
 bool    music_is_playing;
 uint8_t sfx_enqueued;
@@ -222,42 +222,6 @@ void audio_sfx_play(uint8_t sfx_id) {
     }
 }
 
-
-// ====== START: DEBUG ======
-// TODO: For debugging, remove
-
-void audio_sfx_test_increment(void) {
-
-    sfx_test_counter++;
-    if (sfx_test_counter >= ARRAY_LEN(sfx_list))
-        sfx_test_counter = 0u;
-}
-
-void audio_sfx_test_decrement(void) {
-
-    if (sfx_test_counter > 0u)
-        sfx_test_counter--;
-    else
-        sfx_test_counter = ARRAY_LEN(sfx_list) - 1u;
-}
-
-
-void audio_song_test_increment(void) {
-
-    song_test_counter++;
-    if (song_test_counter >= ARRAY_LEN(song_list))
-        song_test_counter = 0u;
-}
-
-void audio_song_test_decrement(void) {
-
-    if (song_test_counter > 0u)
-        song_test_counter--;
-    else
-        song_test_counter = ARRAY_LEN(song_list) - 1u;
-}
-
-// ====== END: DEBUG ======
 
 
 // Call this BEFORE mapfx_isr_install()

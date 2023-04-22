@@ -9,7 +9,7 @@ PNG2ASSET = $(GBDK_HOME)bin/png2asset
 GBCOMPRESS = $(GBDK_HOME)bin/gbcompress
 LCC = $(GBDK_HOME)bin/lcc
 
-VERSION=0.7.6
+VERSION=0.7.7
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
@@ -279,7 +279,7 @@ assets:
 	# Splash Logo
 	# Non-compressed version
 	# $(PNG2ASSET) $(RESDIR)/splash_logo.png -map -c $(RESDIR)/splash_logo.c
-	#
+
 	# Splash Logo screen COMPRESSED version (saves ~800 bytes)
 	# -> .bin -> compress -> .c
 	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -noflip -bin -c $(RESDIR)/splash_logo_data.c
@@ -291,7 +291,7 @@ assets:
 	# Game over Sprites
 	# -8, -16 offset is to remove GB hardware sprite offset
 	$(PNG2ASSET) $(RESDIR)/game_over.png -tiles_only -keep_palette_order -px -8 -py -16  -spr8x16 -c $(RESDIR)/game_over.c
-	#
+
 	# Intro credits screen
 	# Non-compressed version
 	#  Needs both -bpp 1 -pack_mode 1bpp
@@ -303,12 +303,16 @@ assets:
 	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
-	#
+
 	# Help screen
 	# Non-compressed version
 	#  Needs both -bpp 1 -pack_mode 1bpp
 	# $(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -c res/help_screen_data.c
-	#
+
+	# Sound Test screen
+	# Sinlge 8x8 sprite cursor
+	$(PNG2ASSET) $(RESDIR)/sprite_sound_test_cursor.png -sw 8 -sh 8 -spr8x8 -c $(RESDIR)/sprite_sound_test_cursor.c
+
 	# Intro credits screen COMPRESSED version (saves ~250 bytes)
 	# -> .bin -> compress -> .c
 	rm -f $(RESDIR)/help_screen*.c $(RESDIR)/help_screen*.h $(RESDIR)/help_screen*.bin
@@ -318,7 +322,7 @@ assets:
 	#
 	# MegaDuck on AP Notice
 	#
-	# Intro credits screen COMPRESSED version (saves 300+ bytes)
+	# Mega Duck AP Notice screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
 	rm -f $(RESDIR)/megaduck_on_ap*.c $(RESDIR)/megaduck_on_ap*.h $(RESDIR)/megaduck_on_ap*.bin
 	$(PNG2ASSET) $(RESDIR)/megaduck_on_ap.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/megaduck_on_ap_data.c

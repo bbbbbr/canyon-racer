@@ -12,7 +12,7 @@
 #ifndef _RAM_LCD_ISR_H
 #define _RAM_LCD_ISR_H
 
-#define RAM_ISR_SZ_BYTES (46)  // Manually sized for now. Current MapFX Parallax LCD ISR is 44 bytes, Intro credits ISR is 43 bytes, Help screen ISR is 46
+#define RAM_ISR_SZ_BYTES (47)  // Manually sized for now. Current MapFX Parallax LCD ISR is 44 bytes, Intro credits ISR is 43 bytes, Help screen ISR is 46
 
 #define FUNC_LENGTH(start_addr, end_addr) ((void *)&(end_addr) - (void *)&(start_addr))
 

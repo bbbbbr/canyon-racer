@@ -9,10 +9,10 @@
 // For the purposes of this project "Share Alike" shall also include
 // distribution of the source code and any changes to it.
 
-#ifndef _HELP_SCREEN_EFFECT_H
-#define _HELP_SCREEN_EFFECT_H
+#ifndef _ROTATE_SCREEN_EFFECT_H
+#define _ROTATE_SCREEN_EFFECT_H
 
-void help_effect_init(void);
-void help_effect_run(void);
+void rotate_screen_effect_init(uint8_t blank_line_for_hiding);
+void rotate_screen_effect_run(void);
 
 #endif

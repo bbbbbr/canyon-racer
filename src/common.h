@@ -63,8 +63,6 @@ extern uint8_t decomp_buf[];
 // Debug option to show level in score
 // #define DEBUG_SHOW_LEVEL_IN_SCORE
 
-// #define DEBUG_SOUND_TEST
-
 // #define DEBUG_MUSIC_IS_OFF
 
 // #define DEBUG_FAST_LEVELS_EARLY
@@ -77,6 +75,7 @@ extern uint8_t decomp_buf[];
 
 #define DMG_MGB_LESS_BLUR_STYLE
 
+#define TILE_SIZE_PX   8u
 
 #define FIXED_BITSHIFT 8
 

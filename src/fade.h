@@ -21,6 +21,8 @@
 #define FADE_DELAY_FX_RUNNING (15u)  // BG FX use a lot of CPU idle time, so delay between fade steps is smaller
 #define FADE_DELAY_STATE_RESTORE_OUT (15u) // Short delay fading out
 #define FADE_DELAY_STATE_RESTORE_IN  (5u)  // Very short delay fading in
+#define FADE_DELAY_SOUND_TEST_IN  (40u) // Faster fade while FX are running
+#define FADE_DELAY_SOUND_TEST_OUT (120u)
 
 void fade_in(uint8_t delay_len);
 void fade_out(uint8_t delay_len);
