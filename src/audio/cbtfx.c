@@ -128,9 +128,15 @@ void CBTFX_update(void) NONBANKED {
                 MUSIC_DRIVER_CH4_ON;
                 if (CBTFX_ch_used & CBTFX_CH2){
                     NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
+                    // Try to restore Channel 2 in main sound panning reg
+                    // (otherwise gets left muted sometimes when that isn't wanted)
+                    NR51_REG |= (AUDTERM_2_LEFT | AUDTERM_2_RIGHT);
                 }
                 if (CBTFX_ch_used & CBTFX_CH4){
                     NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
+                    // Try to restore Channel 4 in main sound panning reg
+                    // (otherwise gets left muted sometimes when that isn't wanted)
+                    NR51_REG |= (AUDTERM_4_LEFT | AUDTERM_4_RIGHT);
                 }
                 // Don't zero channels here - they get tested on next play...?
                 // CBTFX_ch_used = 0;
@@ -360,6 +366,12 @@ void CBTFX_update(void) __naked NONBANKED {
                     ldh  (_NR22_REG + 0), a
                     ldh  (_NR23_REG + 0), a
                     ldh  (_NR24_REG + 0), a
+
+                    ; // Try to restore Channel 2 in main sound panning reg
+                    ; // (otherwise gets left muted sometimes when that isn't wanted)
+                    ldh   a, (_NR51_REG)
+                    or    #(AUDTERM_2_LEFT | AUDTERM_2_RIGHT)
+                    ldh  (_NR51_REG), a
                 .cbtfx_skip_ch2_zero:
 
                 ; // if (CBTFX_ch_used & 32){
@@ -372,6 +384,12 @@ void CBTFX_update(void) __naked NONBANKED {
                     ldh  (_NR42_REG + 0), a
                     ldh  (_NR43_REG + 0), a
                     ldh  (_NR44_REG + 0), a
+
+                    ; // Try to restore Channel 4 in main sound panning reg
+                    ; // (otherwise gets left muted sometimes when that isn't wanted)
+                    ldh   a, (_NR51_REG)
+                    or    a, #(AUDTERM_4_LEFT | AUDTERM_4_RIGHT)
+                    ldh  (_NR51_REG), a
                 .cbtfx_skip_ch4_zero:
 
             .cbtfx_play_update_done:
