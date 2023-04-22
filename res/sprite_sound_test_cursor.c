@@ -7,7 +7,7 @@
 BANKREF(sprite_sound_test_cursor)
 
 const palette_color_t sprite_sound_test_cursor_palettes[4] = {
-	RGB8(  0,  0,  0), RGB8(248,248,248), RGB8(224,156, 33), RGB8( 34,127,  0)
+	RGB8(  0,  0,  0), RGB8(248,248,248), RGB8(224,156,129), RGB8( 42,127,  0)
 	
 };
 
