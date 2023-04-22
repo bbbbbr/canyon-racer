@@ -200,6 +200,7 @@ static void sound_test_menu(void) {
                         audio_sfx_play(sound_menu_counter[SOUND_MENU_IDX_SFX] - SOUND_TEST_COUNTER_MIN_VAL);
                         // TODO: Fixme: MUSIC 1 PLAYING (title) -> Play SFX 6 (speed up) -> leaves 1 channel muted for a while
                     else if (sound_menu_cursor == SOUND_MENU_IDX_MUSIC) {
+                        audio_music_pause();
                         audio_music_set(sound_menu_counter[SOUND_MENU_IDX_MUSIC] - SOUND_TEST_COUNTER_MIN_VAL);
                         audio_music_unpause();
                     }
