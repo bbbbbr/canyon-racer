@@ -1,4 +1,4 @@
-Canyon Racer Fonts are under a CC-0 License
+Canyon Racer Fonts are under a CC-0 License, but attribution is welcome.
 Author: bbbbbr
 
 Fonts are derived from in-game UI text

@@ -349,6 +349,17 @@ carts:
 
 package: zip-carts
 
+zip-fonts:
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip Readme.md
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip notify_font/*.png
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip splash_font/*.png
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip gameover_font/*.png
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip sound_test_font/*.png
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip notify_font/ttf/*.ttf
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip splash_font/ttf/*.ttf
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip gameover_font/ttf/*.ttf
+	-cd font; $(ZIP) -u ../$(PACKAGE_DIR)/canyon_racer_fonts.zip sound_test_font/ttf/*.ttf
+
 zip-carts:
 	${MAKE} ADD_ZIP=YES  CART_TYPE=31k_1kflash
 	${MAKE} ADD_ZIP=YES  CART_TYPE=mbc5
