@@ -1,7 +1,9 @@
 Canyon Racer Fonts are under a CC-0 License, but attribution is welcome.
 Author: bbbbbr
 
-Fonts are derived from in-game UI text
+Fonts are derived from in-game UI text of the Canyon Racer Game Bopy demo game.
+
+The size should be set to "16 pixels" or "3.8 pt" for the pixel accurate versions.
 
 Converted using PixelFont Converter by YellowAfterlife
 https://yal.cc/r/20/pixelfont/
