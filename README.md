@@ -73,7 +73,9 @@ Music & SFX: [BeatScribe](https://twitter.com/beatscribemusic)
 
 Additional code from:
   - SFX Driver: [Coffee "Valen" Bat](https://twitter.com/cofebbat) : [CBTFX Driver](https://github.com/datguywitha3ds/CBT-FX)
-  - Music Driver: [SuperDisk](https://github.com/SuperDisk) : [hUGETracker](https://github.com/SuperDisk/hUGETracker) / [hUGEDriver](https://github.com/SuperDisk/)
+  - Music Driver:
+    - Original version: [SuperDisk](https://github.com/SuperDisk) : [hUGETracker](https://github.com/SuperDisk/hUGETracker) / [hUGEDriver](https://github.com/SuperDisk/)
+    - Version used: [Modified build with MegaDuck support](https://github.com/bbbbbr/hUGEDriver)
   - Ferrante Crafts 31k ROM + 1k Flash cart support - [toxa](https://github.com/untoxa/)
 
 Assets:
