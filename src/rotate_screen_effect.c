@@ -61,6 +61,9 @@ static uint8_t effect_done;
 // Moves effect starting scanline up and down
 static void rotate_screen_effect_vbl_isr(void) {
 
+    // Reset LY for first scanline
+    SCY_REG = CALC_SCY_TO_SHOW_MAP_Y_AT_SCANLINE_N(effect_hide_line, 0); // Scanline 0
+
     // Update the effect start for the new frame
     effect_y_line += effect_line_inc;
 
