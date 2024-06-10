@@ -28,7 +28,7 @@ jobs:
           # tar xvfz GBDK-2020_4.1.0_Linux-x64.tar.gz
           #
           # GBDK 4.3.0-pre
-          curl -Lo gbdk-linux64.tar.gz https://github.com/gbdk-2020/gbdk-2020/releases/download/pre-release/gbdk-linux64.tar.gz
+          curl -Lo gbdk-linux64.tar.gz https://github.com/gbdk-2020/gbdk-2020/releases/download/4.3.0/gbdk-linux64.tar.gz
           tar xvfz gbdk-linux64.tar.gz
 
       # ==== Build Steps ====
