@@ -22,18 +22,18 @@ settings_rec __at (0xA000) sram_stats;
 
 void cartsave_restore_data(void) {
 
-    ENABLE_RAM_MBC5;
+    ENABLE_RAM_MBC5_LOCAL;
     memcpy((void *)&state.game_settings, (void *)&sram_stats, sizeof(state.game_settings));
-    DISABLE_RAM_MBC5;
+    DISABLE_RAM_MBC5_LOCAL;
 }
 
 
 // TODO: warning on failure to save?
 void cartsave_save_data(void) {
 
-    ENABLE_RAM_MBC5;
+    ENABLE_RAM_MBC5_LOCAL;
     memcpy((void *)&sram_stats, (void *)&state.game_settings, sizeof(state.game_settings));
-    DISABLE_RAM_MBC5;
+    DISABLE_RAM_MBC5_LOCAL;
 }
 
 

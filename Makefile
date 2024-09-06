@@ -85,7 +85,7 @@ endif
 
 # MBC5 - *WITH* Rumble
 ifeq ($(CART_TYPE),mbc5_rumble)
-	TARGETS=gb pocket
+	TARGETS=gb pocket megaduck
 	LCCFLAGS_gb      += -Wl-yt0x1E -Wl-ya1 # Set an MBC for banking:0x1E   MBC-5   SRAM   BATTERY   RUMBLE   8 MB
 	LCCFLAGS_pocket  += -Wl-yt0x1E -Wl-ya1 # Same as for .gb
 	CART_TYPE_INC_DIR = mbc5

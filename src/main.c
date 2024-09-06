@@ -65,9 +65,9 @@ void init(void) {
     #if defined(CART_mbc5) || defined(CART_mbc5_rumble)
         // Initialize MBC bank defaults
         // Upper ROM bank to 1, And SRAM/XRAM bank to 0
-        SWITCH_ROM_MBC5(1);
-        SWITCH_RAM(MBC_RAM_BANK_0);
-        DISABLE_RAM_MBC5;
+        SWITCH_ROM_MBC5_LOCAL(1);
+        SWITCH_RAM_MBC5_LOCAL(MBC_RAM_BANK_0);
+        DISABLE_RAM_MBC5_LOCAL;
     #endif
 
     // if (_cpu == CGB_TYPE) {

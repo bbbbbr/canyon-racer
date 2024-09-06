@@ -29,6 +29,24 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+
+////////////////////////////////////////////////
+// MBC5 Macros which don't get modified by #if defined(__TARGET_duck) as in the GBDK headers
+
+extern volatile uint8_t AT(0x0000) rRAMG_LOCAL;
+extern volatile uint8_t AT(0x2000) rROMB0_LOCAL;
+extern volatile uint8_t AT(0x3000) rROMB1_LOCAL;
+extern volatile uint8_t AT(0x4000) rRAMB_LOCAL;
+
+
+#define SWITCH_ROM_MBC5_LOCAL(b) (_current_bank = (b), rROMB1_LOCAL = 0, rROMB0_LOCAL = (b))
+#define SWITCH_RAM_MBC5_LOCAL(b) (rRAMB_LOCAL = (b))
+#define ENABLE_RAM_MBC5_LOCAL    (rRAMG_LOCAL = 0x0A)
+#define DISABLE_RAM_MBC5_LOCAL   (rRAMG_LOCAL = 0x00)
+
+
+////////////////////////////////////////////////
+
 #define SECONDS_IN_FRAMES(sec) (sec * 60u)
 
 extern uint8_t decomp_buf[];

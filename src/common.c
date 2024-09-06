@@ -28,6 +28,12 @@
 
 #include "../res/splash_logo_map_comp.h"
 
+volatile uint8_t AT(0x0000) rRAMG_LOCAL;
+volatile uint8_t AT(0x2000) rROMB0_LOCAL;
+volatile uint8_t AT(0x3000) rROMB1_LOCAL;
+volatile uint8_t AT(0x4000) rRAMB_LOCAL;
+
+
 // Set array size to whichever is largest
 // Shared decompression array buffer
 #define MAX_DECOM_SZ_INTROCREDITS MAX(intro_credits_map_comp_sz_decomp, intro_credits_tiles_comp_sz_decomp)
