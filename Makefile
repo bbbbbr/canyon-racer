@@ -284,7 +284,7 @@ assets:
 
 	# Splash Logo screen COMPRESSED version (saves ~800 bytes)
 	# -> .bin -> compress -> .c
-	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -noflip -bin -c $(RESDIR)/splash_logo_data.c
+	$(PNG2ASSET) $(RESDIR)/splash_logo.png -map -noflip -no_palettes -bin -c $(RESDIR)/splash_logo_data.c
 	$(GBCOMPRESS) -v --cout --varname=splash_logo_map_comp   $(RESDIR)/splash_logo_data_map.bin   $(RESDIR)/splash_logo_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=splash_logo_tiles_comp $(RESDIR)/splash_logo_data_tiles.bin $(RESDIR)/splash_logo_tiles_comp.c
 
@@ -302,7 +302,7 @@ assets:
 	# Intro credits screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
 	rm -f $(RESDIR)/intro_credits*.c $(RESDIR)/intro_credits*.h $(RESDIR)/intro_credits*.bin
-	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/intro_credits_data.c
+	$(PNG2ASSET) $(RESDIR)/intro_credits.png -bpp 1 -pack_mode 1bpp -map -noflip -no_palettes -bin -c $(RESDIR)/intro_credits_data.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_map_comp   $(RESDIR)/intro_credits_data_map.bin   $(RESDIR)/intro_credits_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=intro_credits_tiles_comp $(RESDIR)/intro_credits_data_tiles.bin $(RESDIR)/intro_credits_tiles_comp.c
 
@@ -318,7 +318,7 @@ assets:
 	# Intro credits screen COMPRESSED version (saves ~250 bytes)
 	# -> .bin -> compress -> .c
 	rm -f $(RESDIR)/help_screen*.c $(RESDIR)/help_screen*.h $(RESDIR)/help_screen*.bin
-	$(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/help_screen_data.c
+	$(PNG2ASSET) $(RESDIR)/help_screen.png -bpp 1 -pack_mode 1bpp -map -noflip -no_palettes -bin -c $(RESDIR)/help_screen_data.c
 	$(GBCOMPRESS) -v --cout --varname=help_screen_map_comp   $(RESDIR)/help_screen_data_map.bin   $(RESDIR)/help_screen_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=help_screen_tiles_comp $(RESDIR)/help_screen_data_tiles.bin $(RESDIR)/help_screen_tiles_comp.c
 	#
@@ -327,7 +327,7 @@ assets:
 	# Mega Duck AP Notice screen COMPRESSED version (saves 300+ bytes)
 	# -> .bin -> compress -> .c
 	rm -f $(RESDIR)/megaduck_on_ap*.c $(RESDIR)/megaduck_on_ap*.h $(RESDIR)/megaduck_on_ap*.bin
-	$(PNG2ASSET) $(RESDIR)/megaduck_on_ap.png -bpp 1 -pack_mode 1bpp -map -noflip -bin -c $(RESDIR)/megaduck_on_ap_data.c
+	$(PNG2ASSET) $(RESDIR)/megaduck_on_ap.png -bpp 1 -pack_mode 1bpp -map -noflip -no_palettes -bin -c $(RESDIR)/megaduck_on_ap_data.c
 	$(GBCOMPRESS) -v --cout --varname=megaduck_on_ap_map_comp   $(RESDIR)/megaduck_on_ap_data_map.bin   $(RESDIR)/megaduck_on_ap_map_comp.c
 	$(GBCOMPRESS) -v --cout --varname=megaduck_on_ap_tiles_comp $(RESDIR)/megaduck_on_ap_data_tiles.bin $(RESDIR)/megaduck_on_ap_tiles_comp.c
 	# Add in the ifdef so the data doesn't get included for GB
